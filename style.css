@@ -1,19 +1,19 @@
-.centre{
+.centre {
     text-align: center;
 }
 
-p{
+p {
     font-style: italic;
     margin-left: 20px;
 }
 
-input{
+input {
     font-style: italic;
     margin: 3px;
     text-align: center;
 }
 
-button{
+button {
     color: white;
     border: none;
     font-size: 20px;
@@ -22,18 +22,38 @@ button{
     background-color: rgb(205, 38, 247);
     text-decoration: none;
 }
-.buttoncalc:hover{
+
+.buttoncalc:hover {
     color: blue;
     fill: blue;
 }
 
-.pinkplus{
+.pinkplus {
     width: 40px;
     top: 170px;
     left: -10px;
     margin-left: 1050px;
     position: absolute;
 }
-*{
+
+.heart {
+    position: relative;
+    width: 740px;
+    margin: auto;
+    display: block;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.score{
+    font-size: 100px;
+}
+
+* {
     font-family: Arial, Helvetica, sans-serif;
 }
