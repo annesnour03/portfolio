@@ -27,6 +27,13 @@ button{
     fill: blue;
 }
 
+.pinkplus{
+    width: 40px;
+    top: 170px;
+    left: -10px;
+    margin-left: 1050px;
+    position: absolute;
+}
 *{
     font-family: Arial, Helvetica, sans-serif;
 }
