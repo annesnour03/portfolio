@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="logic.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,34 +12,38 @@
 
 <body>
     <div class="centre">
-        <h1>Welcome to love-meter</h1>
-        <h2>Here you can test the love between two people</h2>
+
+        <div>
+            <h1>Welcome to love-meter</h1>
+            <h2>Here you can test the love between two people</h2>
+        </div>
+
+        <div>
+            <p>To start, enter the two desired names into the text-box.</p>
+        </div>
+        <!-- Input boxes -->
+
+        <div >
+            <input type="text" id="firstname" placeholder="First person">
+        </div>
+
+        <img src="resource/pinkplus.png" alt="pinkplus" class="pinkplus">
+
+        <div>
+            <input type="text" id="secondname" placeholder="Second person">
+        </div>
+        <!-- Button to run -->
+        <div class="centre">
+            <button class="buttoncalc" id="calculate" onclick="calculate()">Calculate</button>
+        </div>
     </div>
 
-    <div class="centre">
-        <p>To start, enter the two desired names into the text-box.</p>
-    </div>
-    <!-- Input boxes -->
-
-    <div class="centre">
-        <input type="text" id="firstname" placeholder="First person">
-    </div>
-
-    <img src="resource/pinkplus.png" alt="pinkplus" class="pinkplus">
-    <div class="centre">
-        <input type="text" id="secondname" placeholder="Second person">
-    </div>
-    <!-- Button to run -->
-    <div class="centre">
-        <button class="buttoncalc" id="calculate">Calculate</button>
-    </div>
-    
     <!-- Heart -->
     <div>
         <img src="resource/heart.png" alt="heart" class="heart">
     </div>
     <!-- Score -->
-    <div class="centered score">
+    <div class="centered score" id="score">
         <h3>0%</h3>
     </div>
 </body>
