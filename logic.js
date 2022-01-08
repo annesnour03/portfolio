@@ -1,16 +1,21 @@
 function calculate() {
-    var firstname = document.getElementById("firstname")
-    var secondname = document.getElementById("secondname")
+    var firstbox = document.getElementById("firstname")
+    var secondbox = document.getElementById("secondname")
 
-    if (textbox_input(firstname, secondname)) // ?? '== false' is not needed?
+    var firstname = firstbox.value
+    var secondname = secondbox.value
+    console.log(firstname,secondname);
+
+    if (textbox_input(firstbox, secondbox)) // ?? '== false' is not needed?
         return
 
     document.getElementById('calculate').innerHTML = "Calculating..."
 
     setTimeout(() => {
         document.getElementById('calculate').innerHTML = "Calculate"
-    }, 2000);
-    calc_love(firstname, secondname)
+    }, 2000)
+    let love = calc_love(firstname, secondname)
+    document.getElementById("score").innerHTML = String(love) + "%"
 }
 
 function textbox_input(firstname, secondname) {
@@ -41,16 +46,20 @@ function textbox_input(firstname, secondname) {
 }
 
 function calc_love(firstname, secondname) {
+    firstname = String(firstname).toLocaleLowerCase().replace(/\W/g, '')
+    secondname = String(secondname).toLocaleLowerCase().replace(/\W/g, '')
+
     console.log('nigerian')
     var firstval = 0
-    for (const i in firstname) {
-        console.log(i);
-        firstval += i - 97
+    var secondval = 0
+    for (const i of firstname) {
+        firstval += i.charCodeAt(0) - 96
     }
 
-    console.log(firstval)
-    return "yoyo"
+    for (const i of secondname) {
+        secondval += i.charCodeAt(0) - 96
+    }
 
+    console.log(firstval + secondval)
+    return (firstval + secondval )% 101
 }
-
-calc_love("aap", "boek")
