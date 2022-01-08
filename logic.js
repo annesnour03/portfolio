@@ -4,7 +4,7 @@ function calculate() {
 
     var firstname = firstbox.value
     var secondname = secondbox.value
-    console.log(firstname,secondname);
+    console.log(firstname, secondname);
 
     if (textbox_input(firstbox, secondbox)) // ?? '== false' is not needed?
         return
@@ -53,13 +53,13 @@ function calc_love(firstname, secondname) {
     var firstval = 0
     var secondval = 0
     for (const i of firstname) {
-        firstval += i.charCodeAt(0) - 96
+        firstval += i.charCodeAt(0) ** 2 - 96
     }
 
     for (const i of secondname) {
-        secondval += i.charCodeAt(0) - 96
+        secondval += i.charCodeAt(0) ** 2 - 96
     }
 
     console.log(firstval + secondval)
-    return (firstval + secondval )% 101
+    return (firstval + secondval) % 101
 }
