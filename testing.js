@@ -53,4 +53,4 @@ function calc_love(firstname, secondname) {
 
 }
 
-calc_love("aap", "boek")
+calc_love("aap","boek")

@@ -11,6 +11,7 @@ input {
     font-style: italic;
     margin: 3px;
     text-align: center;
+    border: 2px solid black;
 }
 
 button {
@@ -50,8 +51,15 @@ button {
     transform: translate(-50%, -50%);
 }
 
-.score{
+.score {
     font-size: 100px;
+}
+
+.error {
+    position: fixed;
+    top: 17rem;
+    right: 58rem;
+    visibility: visible;
 }
 
 * {
