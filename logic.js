@@ -1,3 +1,4 @@
+const reserved = ['annes','mabel','yassine','teun']
 function calculate() {
     var firstbox = document.getElementById("firstname")
     var secondbox = document.getElementById("secondname")
@@ -19,11 +20,10 @@ function calculate() {
 }
 
 function textbox_input(firstname, secondname) {
-
-
     var firstval = firstname.value
     var secondval = secondname.value
     var empty = false
+
     if (firstval == "") {
         console.log('invalid')
         firstname.style.border = "2px solid red"
@@ -49,7 +49,10 @@ function calc_love(firstname, secondname) {
     firstname = String(firstname).toLocaleLowerCase().replace(/\W/g, '')
     secondname = String(secondname).toLocaleLowerCase().replace(/\W/g, '')
 
-    console.log('nigerian')
+    if (checkreserved(firstname,secondname) == true){
+        console.log("yOO");
+        return 100
+    }
     var firstval = 0
     var secondval = 0
     for (const i of firstname) {
@@ -62,4 +65,11 @@ function calc_love(firstname, secondname) {
 
     console.log(firstval + secondval)
     return (firstval + secondval) % 101
+}
+
+function checkreserved(x,y){
+    if (reserved.includes(x && y)){
+        return true
+    }
+    return false
 }
