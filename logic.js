@@ -13,11 +13,14 @@ function calculate() {
 
     document.getElementById('calculate').innerHTML = "Calculating..."
 
+    // Wait 2 seconds
     setTimeout(() => {
         document.getElementById('calculate').innerHTML = "Calculate"
     }, 2000)
+
     let love = calc_love(firstname, secondname)
-    console.log(love);
+    const obj = document.getElementById("score");
+    animateValue(obj, 0,love,2000)
     document.getElementById("score").innerHTML = String(love) + "%"
 }
 
@@ -79,3 +82,17 @@ function checkreserved(x,y){
     }
     return 1
 }
+// Counting up animation function
+function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start) + String("%");
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
