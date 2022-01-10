@@ -1,5 +1,5 @@
-const reserved = ['annes','mabel']
-const badname = ['yassine']
+const reserved = ['annes', 'mabel']
+const other_reserve = ['yassine']
 function calculate() {
     var firstbox = document.getElementById("firstname")
     var secondbox = document.getElementById("secondname")
@@ -18,9 +18,13 @@ function calculate() {
         document.getElementById('calculate').innerHTML = "Calculate"
     }, 2000)
 
+    // Count up and down depending on value
     let love = calc_love(firstname, secondname)
     const obj = document.getElementById("score");
-    animateValue(obj, 0,love,2000)
+    const previous = parseInt(obj.innerText)
+
+    console.log(previous, typeof (previous));
+    animateValue(obj, previous, love, 2000)
     document.getElementById("score").innerHTML = String(love) + "%"
 }
 
@@ -54,30 +58,31 @@ function calc_love(firstname, secondname) {
     firstname = String(firstname).toLocaleLowerCase().replace(/\W/g, '')
     secondname = String(secondname).toLocaleLowerCase().replace(/\W/g, '')
 
-    const reserve = checkreserved(firstname,secondname)
-    if (reserve == 100 || reserved < 0){
+    const reserve = checkreserved(firstname, secondname)
+    if (reserve == 100 || reserve == 69) {
         console.log("reserved name!");
-        return String(reserve)
+        return reserve
     }
     var firstval = 0
     var secondval = 0
     for (const i of firstname) {
-        firstval += i.charCodeAt(0) ** 2 - 96
+        firstval += i.charCodeAt(0) ** 6 - 96
     }
 
     for (const i of secondname) {
-        secondval += i.charCodeAt(0) ** 2 - 96
+        secondval += i.charCodeAt(0) ** 6 - 96
     }
 
     console.log(firstval + secondval)
     return (firstval + secondval) % 101
 }
 
-function checkreserved(x,y){
-    if (reserved.includes(x && y)){
+function checkreserved(x, y) {
+    if (reserved.includes(x) && reserved.includes(y)) {
+        console.log(x, y);
         return 100
     }
-    else if(badname.includes(x || y)){
+    else if (other_reserve.includes(x) || other_reserve.includes(y)) {
         return 69
     }
     return 1
@@ -96,3 +101,4 @@ function animateValue(obj, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+console.log(calc_love("yassine", "annes"));
