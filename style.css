@@ -14,10 +14,10 @@ input {
     border: 2px solid black;
 }
 
-.secondinput{
+.secondinput {
     display: flex;
     margin-left: 50rem;
-     position: relative;
+    position: relative;
     text-align: center;
 }
 
@@ -37,10 +37,10 @@ button {
 }
 
 .pinkplus {
-    width: 40px;
-    top: -5rem;
-    left: 6.5%;
-    position: relative;
+    width: 3%;
+    top: 9rem;
+    left: 10%;
+    position: absolute;
 }
 
 .heart {
@@ -60,15 +60,19 @@ button {
 .score {
     font-size: 100px;
     font-weight: bold;
+    max-width: 100%;
+    left: 50%;
+    top: 40%;
+    position:absolute;
 }
 
-.error {
-    position: fixed;
-    top: 17rem;
-    right: 58rem;
-    visibility: visible;
+.maxw {
+    width: 100%;
+    min-width: 840px;
 }
-
+.relative{
+    position: relative;
+}
 
 * {
     font-family: Arial, Helvetica, sans-serif;

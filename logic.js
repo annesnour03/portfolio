@@ -1,4 +1,5 @@
-const reserved = ['annes','mabel','yassine','teun']
+const reserved = ['annes','mabel']
+const badname = ['yassine']
 function calculate() {
     var firstbox = document.getElementById("firstname")
     var secondbox = document.getElementById("secondname")
@@ -16,6 +17,7 @@ function calculate() {
         document.getElementById('calculate').innerHTML = "Calculate"
     }, 2000)
     let love = calc_love(firstname, secondname)
+    console.log(love);
     document.getElementById("score").innerHTML = String(love) + "%"
 }
 
@@ -49,9 +51,10 @@ function calc_love(firstname, secondname) {
     firstname = String(firstname).toLocaleLowerCase().replace(/\W/g, '')
     secondname = String(secondname).toLocaleLowerCase().replace(/\W/g, '')
 
-    if (checkreserved(firstname,secondname) == true){
-        console.log("yOO");
-        return 100
+    const reserve = checkreserved(firstname,secondname)
+    if (reserve == 100 || reserved < 0){
+        console.log("reserved name!");
+        return String(reserve)
     }
     var firstval = 0
     var secondval = 0
@@ -69,7 +72,10 @@ function calc_love(firstname, secondname) {
 
 function checkreserved(x,y){
     if (reserved.includes(x && y)){
-        return true
+        return 100
     }
-    return false
+    else if(badname.includes(x || y)){
+        return 69
+    }
+    return 1
 }
