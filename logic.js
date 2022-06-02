@@ -1,5 +1,6 @@
 const reserved = ['annes', 'mabel']
 const other_reserve = ['yassine']
+
 function calculate() {
     var firstbox = document.getElementById("firstname")
     var secondbox = document.getElementById("secondname")
@@ -100,5 +101,3 @@ function animateValue(obj, start, end, duration) {
     };
     window.requestAnimationFrame(step);
 }
-
-console.log(calc_love("yassine", "annes"));
