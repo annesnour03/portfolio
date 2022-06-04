@@ -2,7 +2,7 @@
   "cacheBootResources": true,
   "config": [ ],
   "debugBuild": true,
-  "entryAssembly": "personal-website",
+  "entryAssembly": "personal_website",
   "icuDataMode": 0,
   "linkerEnabled": false,
   "resources": {
@@ -196,13 +196,13 @@
       "mscorlib.dll": "sha256-ghlJNtzzYlKIliGPuf0A0Yu6dmLycSx3F9uyeddFb\/g=",
       "netstandard.dll": "sha256-qpOz\/RBwhlIYfaE2GDEmjiproxkvSf2b9GeqHxvH+lg=",
       "System.Private.CoreLib.dll": "sha256-sfzSZ3YKC2rpF77TVOKLuPgQag93QXr9U4AUc9d\/LKA=",
-      "personal-website.dll": "sha256-kYxyDLydUjZGh5u7OOE4pzFCfBGPYm+cV71bVpPKhmM="
+      "personal_website.dll": "sha256-oWu\/9s7PHEdO9IDgE\/HyexSb0iOTHSOKjf1zbNLv01Q="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "personal-website.pdb": "sha256-MNpfH+jjZnDjJfsAf4H1rXF7nWWhDBOuscPKz0xjJTE="
+      "personal_website.pdb": "sha256-\/9D6\/OMrkzllOh2zP76GCWGe0ssmOrt3yuee07my+hU="
     },
     "runtime": {
       "dotnet.6.0.5.hwbkw4y3en.js": "sha256-783uOt0jgblQfP6Yz5TJeuW2xxtl6UHZQPngZtCz79U=",

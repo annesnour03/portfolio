@@ -1551,11 +1551,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/annes/Desktop/code/personal-website/personal-website.csproj",
-      "projectName": "personal-website",
-      "projectPath": "/home/annes/Desktop/code/personal-website/personal-website.csproj",
+      "projectUniqueName": "/home/annes/Desktop/code/personal_website/personal_website.csproj",
+      "projectName": "personal_website",
+      "projectPath": "/home/annes/Desktop/code/personal_website/personal_website.csproj",
       "packagesPath": "/home/annes/.nuget/packages/",
-      "outputPath": "/home/annes/Desktop/code/personal-website/obj/",
+      "outputPath": "/home/annes/Desktop/code/personal_website/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/annes/.nuget/NuGet/NuGet.Config"

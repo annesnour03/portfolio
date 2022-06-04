@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EL0UzEOqASa5YcCMZfcRER06Pfiy/ZXA+U5lyIofqMiw5qrA4UXPG4p5yuxB93kKT3+0tL6FQMpBsY2RUlqyOA==",
+  "dgSpecHash": "hrQeMOYFzqwzwgvgHBnWupE2wGmZXtL0vM5S09IkpuTjPRce6AVzsi3fAAUYf9OgtjywnqZ3VD74LLCYV2R9Iw==",
   "success": true,
-  "projectFilePath": "/home/annes/Desktop/code/personal-website/personal-website.csproj",
+  "projectFilePath": "/home/annes/Desktop/code/personal_website/personal_website.csproj",
   "expectedPackageFiles": [
     "/home/annes/.nuget/packages/microsoft.aspnetcore.authorization/6.0.5/microsoft.aspnetcore.authorization.6.0.5.nupkg.sha512",
     "/home/annes/.nuget/packages/microsoft.aspnetcore.components/6.0.5/microsoft.aspnetcore.components.6.0.5.nupkg.sha512",
