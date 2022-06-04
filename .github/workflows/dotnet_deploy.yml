@@ -24,4 +24,4 @@ jobs:
         FOLDER: build/wwwroot # The folder the action should deploy.
         SINGLE_COMMIT: true
     - name: Add .nojekyll file
-          run: touch build/wwwroot/.nojekyll
+      run: touch build/wwwroot/.nojekyll
