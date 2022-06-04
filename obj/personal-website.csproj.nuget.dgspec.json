@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "/home/annes/Desktop/code/personal-website/personal_website.csproj": {}
+    "/home/annes/Desktop/code/personal-website/personal-website.csproj": {}
   },
   "projects": {
-    "/home/annes/Desktop/code/personal-website/personal_website.csproj": {
+    "/home/annes/Desktop/code/personal-website/personal-website.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/annes/Desktop/code/personal-website/personal_website.csproj",
-        "projectName": "personal_website",
-        "projectPath": "/home/annes/Desktop/code/personal-website/personal_website.csproj",
+        "projectUniqueName": "/home/annes/Desktop/code/personal-website/personal-website.csproj",
+        "projectName": "personal-website",
+        "projectPath": "/home/annes/Desktop/code/personal-website/personal-website.csproj",
         "packagesPath": "/home/annes/.nuget/packages/",
         "outputPath": "/home/annes/Desktop/code/personal-website/obj/",
         "projectStyle": "PackageReference",
@@ -37,6 +37,17 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -47,15 +58,23 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+              "version": "[6.0.5, 6.0.5]"
+            }
+          ],
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
           "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/168/sdk/6.0.300/RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
         }
       }
     }
