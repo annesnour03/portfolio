@@ -1,43 +1,56 @@
-name: Deploy to GitHub Pages
-
-# Run workflow on every push to the master branch
+name: DeployToGHPages
+ 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - gh-pages
 
+ 
 jobs:
-  deploy-to-github-pages:
-    # use ubuntu-latest image to run steps on
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    # uses GitHub's checkout action to checkout code form the master branch
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
     
-    # sets up .NET Core SDK 3.1
-    - name: Setup .NET Core SDK
+    - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1
+        dotnet-version: '3.1.102'
 
-    # publishes Blazor project to the release-folder
-    - name: Publish .NET Core Project
-      run: dotnet publish personal_website.csproj -c Release -o release --nologo
-    
-    # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to personal_website
-      run: sed -i 's/<base href="\/" \/>/<base href="\/personal_website\/" \/>/g' release/wwwroot/index.html
-    
-    # copy index.html to 404.html to serve the same file when a file is not found
-#     - name: copy index.html to 404.html
-#       run: cp release/wwwroot/index.html release/wwwroot/404.html
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
 
-    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
-    - name: Add .nojekyll file
-      run: touch release/wwwroot/.nojekyll
-      
-    - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+    - name: dotnet publish
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/blazorapp
+
+    - name: dotnet changehtml
+      run: mv ${{env.DOTNET_ROOT}}/blazorapp/wwwroot/GHIndex.html  ${{env.DOTNET_ROOT}}/blazorapp/wwwroot/index.html
+     
+    - name: Publish artifacts
+      uses: actions/upload-artifact@master
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: master
-        FOLDER: release/wwwroot
+        name: blazorStaticSite
+        path: ${{env.DOTNET_ROOT}}/blazorapp
+ 
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+ 
+    # Download artifacts
+    - name: Download artifacts
+      uses: actions/download-artifact@master
+      with:
+        name: blazorStaticSite
+ 
+    - name: Deploy to GitHub Pages 🚀
+      uses: crazy-max/ghaction-github-pages@v2.1.1
+      with:
+        # Build directory to deploy
+        build_dir: wwwroot 
+        # Allow Jekyll to build your site
+        jekyll: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
