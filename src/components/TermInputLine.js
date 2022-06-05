@@ -13,6 +13,7 @@ function TermInputLine() {
         input.current.style.width = `${8 * (nameLength + deviceLength + cwdLength + 2)}px;`
         console.log(input.current.style.width)
     })
+
     return (
         <>
         <span  className='signle-input'>
