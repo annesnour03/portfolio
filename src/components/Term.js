@@ -1,19 +1,22 @@
 import logo from '../assets/logo.svg';
-import './../Term.css';
+import './../index.css';
 import FloatGui from './FloatGui';
-function App() {
+import TermInputLine from './TermInputLine';
+function Term() {
   return (
     <div >
       <div className="App">
         <header className="App-header">
-          <div className="term-outline">
+          <div className="term-outline unselectable">
             <FloatGui linkto="/gui" />
+            <TermInputLine/>
 
-          </div>
+                      </div>
         </header>
       </div>
     </div>
   );
+
 }
 
-export default App;
+export default Term;

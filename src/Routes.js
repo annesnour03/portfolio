@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 /**
  * Import all page components here
  */
-import App from './components/Term';
+import Term from './components/Term';
 import Gui from './components/Gui';
 
 function Paths() {
@@ -13,7 +13,7 @@ function Paths() {
         <div>
         <Router>
             <Routes>
-                <Route exact path='/' element={<App/>}></Route>
+                <Route exact path='/' element={<Term/>}></Route>
                 <Route exact path='/gui' element={<Gui/>}></Route>
             </Routes>
         </Router>

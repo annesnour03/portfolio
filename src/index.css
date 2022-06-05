@@ -45,3 +45,79 @@ code {
     user-select: none;
     /* Standard */
 }
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.signle-input {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.static {
+    display: inline-flex;
+    width: fit-content;
+    -moz-fit-content: fit-content;
+}
+
+.input-line {
+    display: inline-flex;
+    flex-grow: 1;
+    width: 100%;
+    /* border: 2px solid purple; */
+    margin-right: 20px;
+}
+
+.term-outline {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    border: 2px solid red;
+    padding-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.term-initial {
+    color: salmon;
+    padding-left: 2px;
+}
+
+#term-machine {
+    padding-left: 0px !important;
+}
+
+.term-cwd {
+    color: lightblue
+}
+
+.term-input {
+    /* border: 2px solid red; */
+    border:none;
+    outline-width: 0;
+    padding: 0;
+    background: transparent;
+    height: 30px;
+    width: 100%;
+}
+
+.term-input[type="text"] {
+    font-size: 24px;
+    color: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
