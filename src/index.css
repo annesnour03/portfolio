@@ -11,7 +11,7 @@ code {
 
 .circle {
     display: flex;
-    position: absolute;
+    position: fixed;
     justify-content: center;
     right: 0;
     bottom: 0;
@@ -23,8 +23,7 @@ code {
 
 .floating-button {
     display: flex;
-    position: absolute;
-    justify-self: center;
+    position: fixed;
     width: max(8%, 80px);
     right: 0;
     bottom: 0;
@@ -32,7 +31,7 @@ code {
     border: 4pt solid red;
     border-radius: 50%;
     cursor: pointer;
-    margin: 0px 1vw 1vw 0px;
+    margin: 0px 4vw 2vw 0px;
 }
 
 .unselectable {
@@ -84,7 +83,11 @@ code {
     border: 2px solid red;
     padding-top: 10px;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .term-initial {
@@ -101,13 +104,13 @@ code {
 }
 
 .term-input {
-    /* border: 2px solid red; */
-    border:none;
+    border: none;
     outline-width: 0;
     padding: 0;
     background: transparent;
     height: 30px;
     width: 100%;
+    /* pointer-events:none; */
 }
 
 .term-input[type="text"] {
