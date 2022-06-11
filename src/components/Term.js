@@ -23,14 +23,6 @@ const ALL_INPUT = [
 	"touch"
 ]
 
-function test() {
-
-	var a = [1, 2, 3]
-	var b = [...a, 44]
-	console.log(b);
-}
-
-
 var key = 0
 function Term() {
 	const [input, setInput] = useState([<TermInputLine change={wrapper} key={key} />])

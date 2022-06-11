@@ -35,7 +35,7 @@ function TermInputLine(props) {
         if (!(ALL_INPUT.includes(trimmedInputString.split(' ')[0])) && trimmedInputString) {
             input.target.style = "color:red;"
             return false
-        }
+        }   
 
         input.target.style = "color:white;"
         if (input.key == 'Enter') {
@@ -60,6 +60,7 @@ function TermInputLine(props) {
                 break
         }
     }
+
     function output() {
         return (
             <>

@@ -46,7 +46,7 @@ code {
 }
 
 .App-header {
-    background-color: #282c34;
+    background-color: #414444;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -80,7 +80,7 @@ code {
     position: absolute;
     width: 95%;
     height: 95%;
-    border: 2px solid red;
+    border: 2px solid #88f0fd;
     padding-top: 10px;
     white-space: nowrap;
     overflow-y: scroll;
@@ -91,7 +91,8 @@ code {
 }
 
 .term-initial {
-    color: salmon;
+    color: #43919B;
+    /* annes@annes text color */
     padding-left: 2px;
 }
 
@@ -100,7 +101,7 @@ code {
 }
 
 .term-cwd {
-    color: blue
+    color: #88f0fd
 }
 
 .term-input {
@@ -118,9 +119,10 @@ code {
     color: white;
 }
 
-.dollar{
+.dollar {
     margin-right: 0.5vw;
 }
+
 input:focus,
 select:focus,
 textarea:focus,
