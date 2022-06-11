@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
-import { TermExecute, validateInput } from './TermExecute'
+import { TermExecute } from './TermExecute'
 
 const ALL_INPUT = [
     "help",
+    "welcome",
     "clear",
     "src",
     "ls",
@@ -50,7 +51,9 @@ function TermInputLine(props) {
             case "help":
                 props.change()
                 setReadOnly(true)
-                setOutputMessage(<p>{"This is the help message"}</p>)
+                setOutputMessage(
+                <p>{"This is the help message"}</p>
+                )
                 break
 
             // Simply enter or spaces.
