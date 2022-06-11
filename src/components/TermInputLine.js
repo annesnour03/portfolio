@@ -29,7 +29,6 @@ function TermInputLine(props) {
     const validateInput = (input) => {
         const inputString = input.target.value;
         const trimmedInputString = inputString.trim();
-        console.log(inputString);
 
         // Case of empty input, or all spaces --> caret white.
 
@@ -49,7 +48,6 @@ function TermInputLine(props) {
         const command = args[0]
         switch (command) {
             case "help":
-                console.log("help");
                 props.change()
                 setReadOnly(true)
                 setOutputMessage(<p>{"This is the help message"}</p>)
@@ -58,6 +56,7 @@ function TermInputLine(props) {
             // Simply enter or spaces.
             case "":
                 props.change()
+                setReadOnly(true)
                 break
         }
     }
@@ -79,7 +78,6 @@ function TermInputLine(props) {
                 </span>
                 <div className='margin-0 selectable'>
                     {outputMessage}
-
                 </div>
             </>
         )
