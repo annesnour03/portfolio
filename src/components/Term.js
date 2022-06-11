@@ -31,13 +31,12 @@ function test() {
 }
 
 
-var i = 0
+var key = 0
 function Term() {
-	const [input, setInput] = useState([<TermInputLine change={wrapper} key={i} />])
+	const [input, setInput] = useState([<TermInputLine change={wrapper} key={key} />])
 	function wrapper() {
-		i+=1
-		console.log("input = ", input);
-		setInput(input => [...input, <TermInputLine change={wrapper} key={i} />])
+		key+=1
+		setInput(input => [...input, <TermInputLine change={wrapper} key={key} />])
 	}
 
 	return (

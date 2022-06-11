@@ -3,34 +3,33 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
 import { TermExecute, validateInput } from './TermExecute'
-var inputs = []
+
+const ALL_INPUT = [
+    "help",
+    "clear",
+    "src",
+    "ls",
+    "cd",
+    "whoami",
+    "r6",
+    "gui",
+    "chess",
+    "gol",
+    "resume",
+    "contact",
+    "yassine",
+    "easter-egg",
+]
+
 function TermInputLine(props) {
-    const name = useRef(null)
-    const device = useRef(null)
-    const cwd = useRef(null)
-    const input = useRef(null)
+    const [outputMessage, setOutputMessage] = useState("")
+    const [readOnly, setReadOnly] = useState(false)
 
-
-
-    const ALL_INPUT = [
-        "help",
-        "src",
-        "ls",
-        "cd",
-        "whoami",
-        "r6",
-        "gui",
-        "chess",
-        "gol",
-        "resume",
-        "contact",
-        "yassine",
-        "easter-egg",
-    ]
 
     const validateInput = (input) => {
         const inputString = input.target.value;
         const trimmedInputString = inputString.trim();
+        console.log(inputString);
 
         // Case of empty input, or all spaces --> caret white.
 
@@ -52,8 +51,13 @@ function TermInputLine(props) {
             case "help":
                 console.log("help");
                 props.change()
-                console.log(props);
+                setReadOnly(true)
+                setOutputMessage(<p>{"This is the help message"}</p>)
+                break
 
+            // Simply enter or spaces.
+            case "":
+                props.change()
                 break
         }
     }
@@ -63,16 +67,20 @@ function TermInputLine(props) {
                 <span className='signle-input'>
 
                     <span className="static">
-                        <span ref={name} className="term-initial unselectable">adawdwdwdwdawds</span>
-                        <span ref={device} className="term-initial unselectable" id="term-machine">@ACER</span>
+                        <span className="term-initial unselectable">annes</span>
+                        <span className="term-initial unselectable" id="term-machine">@annes-Aspire-A715-74G</span>
                         <span className="unselectable" >:</span>
-                        <span ref={cwd} className="term-cwd unselectable" >/</span>
+                        <span className="term-cwd unselectable" >/</span>
+                        <span className="unselectable dollar" >$</span>
                     </span>
                     <span className='input-line'>
-                        <input type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' onKeyUp={validateInput} autoFocus />
+                        <input disabled={readOnly} type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' onChangeCapture={validateInput} onKeyDown={validateInput} autoFocus />
                     </span>
                 </span>
-                <br></br>
+                <div className='margin-0 selectable'>
+                    {outputMessage}
+
+                </div>
             </>
         )
     }
