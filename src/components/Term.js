@@ -4,29 +4,17 @@ import './../index.css';
 import FloatGui from './FloatGui';
 import TermInputLine from './TermInputLine';
 
-const ALL_INPUT = [
-	"help",
-	"src",
-	"ls",
-	"cd",
-	"whoami",
-	"r6",
-	"gui",
-	"chess",
-	"gol",
-	"resume",
-	"contact",
-	"yassine",
-	"easter-egg",
-	"touch"
-]
 
 var key = 0
 function Term() {
-	const [input, setInput] = useState([<TermInputLine change={wrapper} key={key} />])
-	function wrapper() {
+	const [input, setInput] = useState([<TermInputLine newInput={appendInput} key={key} clear={clearHistory} />])
+	function appendInput() {
 		key += 1
-		setInput(input => [...input, <TermInputLine change={wrapper} key={key} />])
+		setInput(input => [...input, <TermInputLine newInput={appendInput} key={key} clear={clearHistory} />])
+	}
+	function clearHistory() {
+		setInput([])
+		
 	}
 
 	return (
@@ -45,7 +33,7 @@ function Term() {
 								<span className="unselectable dollar" >$</span>
 							</span>
 							<span className='input-line'>
-								<input disabled="true" value={"welcome"} type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' autoFocus />
+								<input disabled={true} value={"welcome"} type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' autoFocus />
 							</span>
 						</span>
 						<div className='margin-0 selectable' >
@@ -61,8 +49,8 @@ function Term() {
 								To see all the commands, try "help"!
 							</p>
 						</div>
-
 						{input}
+
 					</div>
 				</header>
 			</div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
-import { TermExecute } from './TermExecute'
+import run from './TermExecute'
 
 const ALL_INPUT = [
     "help",
@@ -36,33 +36,15 @@ function TermInputLine(props) {
         if (!(ALL_INPUT.includes(trimmedInputString.split(' ')[0])) && trimmedInputString) {
             input.target.style = "color:red;"
             return false
-        }   
+        }
 
         input.target.style = "color:white;"
         if (input.key == 'Enter') {
-            run(trimmedInputString.split(' '))
+            run(props,trimmedInputString.split(' '),setReadOnly,setOutputMessage)
         }
         return true
     }
 
-    const run = (args) => {
-        const command = args[0]
-        switch (command) {
-            case "help":
-                props.change()
-                setReadOnly(true)
-                setOutputMessage(
-                <p>{"This is the help message"}</p>
-                )
-                break
-
-            // Simply enter or spaces.
-            case "":
-                props.change()
-                setReadOnly(true)
-                break
-        }
-    }
 
     function output() {
         return (
