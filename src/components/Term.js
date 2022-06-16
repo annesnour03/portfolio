@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import asciiAnnes from '../assets/jsxElements';
 import './../index.css';
 import FloatGui from './FloatGui';
@@ -7,15 +7,69 @@ import TermInputLine from './TermInputLine';
 
 var key = 0
 function Term() {
-	const [input, setInput] = useState([<TermInputLine newInput={appendInput} key={key} clear={clearHistory} />])
-	function appendInput() {
-		key += 1
-		setInput(input => [...input, <TermInputLine newInput={appendInput} key={key} clear={clearHistory} />])
+	const [historyIndex, setHistoryIndex] = useState(0)
+	const [history, setHistory] = useState([])
+
+	useEffect(() => {
+		if(key){
+			key += 1
+
+
+
+
+			console.log(history);
+			appendInput()
+		}
+	}, [history])
+	var params = {
+		clear: clearHistory,
+		addHistory: addHistory,
+		setHistoryIndex: changeHistoryIndex,
+		"history" :history,
+
 	}
+	const [input, setInput] = useState([<TermInputLine params={params} key={key} />])
+
+	// Used after enter has been pressed (valid command neeeded).
+	function appendInput() {
+
+		setInput(input => [...input, <TermInputLine params={params} key={key} />])
+	}
+
+	// Used for the "clear" command
 	function clearHistory() {
 		setInput([])
-		
+
 	}
+
+	// Adds command it to a invisible history
+	function addHistory(command) {
+		setHistory(history => [...history, command])
+		key+=1
+
+	}
+
+	function changeHistoryIndex(direction) {
+		if (direction == 1) {
+			frontHistoryIndex()
+		}
+		else if (direction == -1) {
+			backHistoryIndex()
+		}
+
+		function backHistoryIndex() {
+			if (historyIndex > 0)
+				setHistoryIndex(historyIndex - 1)
+		}
+
+		function frontHistoryIndex() {
+			if (historyIndex != history.length)
+				setHistoryIndex(historyIndex + 1)
+		}
+	}
+
+
+
 
 	return (
 		<div >
