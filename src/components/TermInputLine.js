@@ -31,7 +31,6 @@ function TermInputLine(props) {
 
     function prevHistory() {
         document.getElementById("input-line").focus()
-        console.log(props.history, currentHistoryIndex, props.history.length)
 
         if (currentHistoryIndex > 0) {
             setcurrentHistoryIndex(currentHistoryIndex - 1)
@@ -41,22 +40,15 @@ function TermInputLine(props) {
 
     function nextHistory() {
         document.getElementById("input-line").focus()
-        console.log(props.history, currentHistoryIndex, props.history.length)
         if (currentHistoryIndex < props.history.length - 1) {
-            console.log("SETTING")
             setVal(props.history[currentHistoryIndex + 1])
             setcurrentHistoryIndex(currentHistoryIndex + 1)
 
         }
-        else if (currentHistoryIndex== props.history.length - 1) {
-            console.log("CLEARING")
+        else if (currentHistoryIndex == props.history.length - 1) {
             setVal("")
-            // if (currentHistoryIndex == 0)
             setcurrentHistoryIndex(currentHistoryIndex + 1)
-
-
         }
-
     }
 
     const validateInput = (input) => {

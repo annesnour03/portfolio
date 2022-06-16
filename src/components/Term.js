@@ -13,11 +13,6 @@ function Term() {
 	useEffect(() => {
 		if(key){
 			key += 1
-
-
-
-
-			console.log(history);
 			appendInput()
 		}
 	}, [history])
