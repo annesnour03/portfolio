@@ -1,4 +1,6 @@
 import asciiAnnes from "../assets/jsxElements"
+import './../index.css';
+
 function run(props, args, setReadOnly, setOutputMessage) {
     const command = args[0]
     const commandHandler = {
@@ -12,7 +14,27 @@ function run(props, args, setReadOnly, setOutputMessage) {
 
     function help() {
         setReadOnly(true)
-        setOutputMessage(<p>{"This is the help message"}</p>)
+        setOutputMessage(<>
+
+            <p>{"Currently available commands:"}</p>
+            <div className="margin-0" style={{"color" : "green"}}>
+
+                <p>&emsp;&emsp;help</p>
+                <p>&emsp;&emsp;welcome</p>
+                <p>&emsp;&emsp;whoami</p>
+                <p>&emsp;&emsp;clear</p>
+            </div>
+            <p>{"Commands that will be avaiable in the future:"}</p>
+            <p>&emsp;&emsp;cd</p>
+            <p>&emsp;&emsp;ls</p>
+            <p>&emsp;&emsp;r6</p>
+            <p>&emsp;&emsp;gui</p>
+            <p>&emsp;&emsp;chess</p>
+            <p>&emsp;&emsp;gol</p>
+            <p>&emsp;&emsp;resume</p>
+            <p>&emsp;&emsp;contact</p>
+        </>
+        )
     }
 
     function welcome() {

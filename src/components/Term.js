@@ -4,14 +4,15 @@ import './../index.css';
 import FloatGui from './FloatGui';
 import TermInputLine from './TermInputLine';
 
-
+const FORWARDS = 1
+const BACKWARDS = -1
 var key = 0
 function Term() {
 	const [historyIndex, setHistoryIndex] = useState(0)
 	const [history, setHistory] = useState([])
 
 	useEffect(() => {
-		if(key){
+		if (key) {
 			key += 1
 			appendInput()
 		}
@@ -20,7 +21,7 @@ function Term() {
 		clear: clearHistory,
 		addHistory: addHistory,
 		setHistoryIndex: changeHistoryIndex,
-		"history" :history,
+		"history": history,
 
 	}
 	const [input, setInput] = useState([<TermInputLine params={params} key={key} />])
@@ -39,28 +40,28 @@ function Term() {
 
 	// Adds command it to a invisible history
 	function addHistory(command) {
-		setHistory(history => [...history, command])
-		key+=1
+		if (!command) {
+			appendInput()
+		} else {
+			if (history.at(-1) != command)
+				setHistory(history => [...history, command])
+			else
+				appendInput()
+		}
+		key += 1
 
 	}
 
 	function changeHistoryIndex(direction) {
-		if (direction == 1) {
-			frontHistoryIndex()
+		if (direction == FORWARDS) {
+			if (historyIndex != history.length)
+				setHistoryIndex(historyIndex + 1)
 		}
-		else if (direction == -1) {
-			backHistoryIndex()
-		}
-
-		function backHistoryIndex() {
+		else if (direction == BACKWARDS) {
 			if (historyIndex > 0)
 				setHistoryIndex(historyIndex - 1)
 		}
 
-		function frontHistoryIndex() {
-			if (historyIndex != history.length)
-				setHistoryIndex(historyIndex + 1)
-		}
 	}
 
 
