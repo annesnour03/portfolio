@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import asciiAnnes from '../assets/jsxElements';
+import {asciiAnnes} from '../assets/jsxElements';
 import './../index.css';
 import FloatGui from './FloatGui';
 import TermInputLine from './TermInputLine';
