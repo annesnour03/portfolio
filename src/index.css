@@ -149,4 +149,12 @@ button:focus {
     display: inline-flex;
     flex-wrap: wrap;
     gap: 12px;
+    align-items: center;
+}
+
+.rank-icon{
+    justify-self: center;
+    align-self: center;
+    width: 2.5vw;
+    height: auto;
 }

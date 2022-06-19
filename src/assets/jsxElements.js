@@ -58,12 +58,12 @@ const availableCommands = (<>
     <p>&emsp;&emsp;welcome</p>
     <p>&emsp;&emsp;whoami</p>
     <p>&emsp;&emsp;clear</p>
+    <p>&emsp;&emsp;r6<span style={{ color: "red" }}>*</span></p> 
     </>)
 
 const futureCommands = (<>
     <p>&emsp;&emsp;cd</p>
     <p>&emsp;&emsp;ls</p>
-    <p>&emsp;&emsp;r6</p>
     <p>&emsp;&emsp;gui</p>
     <p>&emsp;&emsp;chess</p>
     <p>&emsp;&emsp;gol</p>

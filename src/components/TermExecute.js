@@ -1,5 +1,7 @@
 import { asciiAnnes, availableCommands, futureCommands } from "../assets/jsxElements"
 import './../index.css';
+import $ from 'jquery';
+
 import api from '../api/r6api'
 
 function run(props, args, setReadOnly, setOutputMessage) {
@@ -13,6 +15,8 @@ function run(props, args, setReadOnly, setOutputMessage) {
         "": enter
     }[command]
     commandHandler?.()
+    scrollSmoothlyToBottom("outline")
+
 
     function help() {
         setReadOnly(true)
@@ -25,6 +29,9 @@ function run(props, args, setReadOnly, setOutputMessage) {
             </div>
             <p>{"Commands that will be avaiable in the future:"}</p>
             {futureCommands}
+            <p>
+                PS : Commands marked with a <span style={{ color: "red" }}>*</span>, have additional arguments, type "<a style={{ color: "#88f0fd" }}>help r6</a>" for example.
+            </p>
         </>
         )
     }
@@ -64,6 +71,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
     }
 
     function clear() {
+        setReadOnly(true)
         props.clear()
     }
 
@@ -72,14 +80,12 @@ function run(props, args, setReadOnly, setOutputMessage) {
     }
 
     async function r6() {
-        //  Simply r6, so display the squad's stats
+        const theSquad = ["xruprim", "hockeyHeld", "PhantomGod73", "IIJulianll", "Widder7013", "Koen_Meneer"]
+        //  Simply "r6", so display the squad's stats
         if (!args[1]) {
-            setOutputMessage(
-                <span>
-                    Loading the squad's data! Please hold.
-                </span>)
+            setOutputMessage(<span>Loading the squad's data! Please hold.</span>)
 
-            Promise.all(await fetchAllPlayers(["xruprim", "hockeyHeld", "PhantomGod73", "IIJulianll", "Widder7013", "Koen_Meneer"])).
+            Promise.all(await fetchAllPlayers(theSquad)).
                 then(
                     (players) => {
                         players.sort((first, second) => {
@@ -90,70 +96,109 @@ function run(props, args, setReadOnly, setOutputMessage) {
                     }).then((sorted) => {
                         setOutputMessage(
                             sorted.map((player, index) => {
-                                // Try to make the "═" the same length as others.
-                                const fillLength = Math.ceil((60 - player.username.length) / 2)
-                                return (
-                                    <>
-
-                                        <span key={index}>
-                                            {`${"═".repeat(fillLength)}${player.username}${"═".repeat(fillLength)}`}
-                                        </span>
-                                        <br />
-                                        {/* Here we display the stats */}
-                                        <div className="stats">
-                                            current mmr:
-                                            <span style={{ "color":"#6cf03c"}}>
-                                                 {player.currentMMR}
-
-                                            </span>
-                                            {/* <br /> */}
-                                            <span>
-                                                | wins: {player.wins} |
-
-                                            </span>
-                                            <span>
-                                                time played: {player.timePlayed}
-                                            </span>
-                                            <br />
-                                            <br />
-                                        </div>
-                                            <br />
-
-                                    </>
-                                )
+                                return formatStats(player, index)
                             })
-
                         )
+                        scrollSmoothlyToBottom("outline")
+
+
 
                     })
 
-        } else {
-            api.userInfo("xruprim", "pc").then((userInfo) => {
-                console.log(userInfo);
-                setOutputMessage(
-                    <span>
-                        ══════════════════════{userInfo.username}══════════════════════
-                    </span>)
+            setReadOnly(true)
+            return
+        }
 
-            })
+        // Case of requesting a specific players details.
+        setOutputMessage(
+            <span>
+                Loading {args[1]}'s data! Please hold.
+            </span>
+        )
 
+        api.userInfo(args[1], "pc").then((userInfo) => {
+            setOutputMessage(
+                formatStats(userInfo, 10)
+            )
+            scrollSmoothlyToBottom("outline")
+
+        }).catch((error) => {
+            setOutputMessage(
+                <span>
+                    {`${error}`}
+                </span>
+            )
+            scrollSmoothlyToBottom("outline")
+        })
+
+        /**
+        * This function formats the player's stats in to a nice line in HTML.
+        * The top3 players get a color (gold, silver, bronze).
+        * @param {object}  player object with stats inside.
+        * @param {integer}  index relative to the squad members.
+        * @return  formatted html
+        */
+        function formatStats(player, index) {
+            // Try to make the "═" the same length as others.
+            const filler = player.username.length % 2 ? 0 : 1
+            const fillLengthStart = Math.ceil((60 - player.username.length) / 2)
+            const fillLengthEnd = fillLengthStart + filler
+
+            const leaderboardColors = ["gold", "silver", "#CD7F32"]
+            const playerNameColor = index <= 2 ? leaderboardColors[index] : "white"
+            console.log(playerNameColor, player.username)
+            return (
+                <>
+
+                    <span key={index} style={{ "color": `${playerNameColor}` }}>
+                        {`${"═".repeat(fillLengthStart)}${player.username}${"═".repeat(fillLengthEnd)}`}
+                    </span>
+                    <br />
+                    {/* Here we display the stats */}
+                    <div className="stats">
+                        current mmr:
+                        <span style={{ "color": "#6cf03c" }}>
+                            {player.currentMMR}
+
+                        </span>
+                        <img src={player.rankIcon} className="rank-icon unselectable" />
+                        {/* <br /> */}
+                        <span>
+                            | wins: {player.wins} |
+
+                        </span>
+                        <span>
+                            time played: {player.timePlayed}
+                        </span>
+                        <br />
+                        <br />
+                    </div>
+                    <br />
+
+                </>
+            )
+
+        }
+        async function fetchAllPlayers(players) {
+            let promises = []
+            players.forEach(player => {
+                const promise = api.userInfo(player, "pc")
+                promises.push(promise)
+            });
+            return promises
         }
 
         setReadOnly(true)
     }
-    async function fetchAllPlayers(players) {
-        let promises = []
-        players.forEach(player => {
-            const promise = api.userInfo(player, "pc")
-            promises.push(promise)
-        });
-        return promises
-        // const yo = await api.userInfo("xruprim", "pc")
-        // const yo1 = await api.userInfo("hockeyheld", "pc")
-        // const yo2 = await api.userInfo("PhantomGod73", "pc")
-        // const yo3 = await api.userInfo("IIJulianll", "pc")
-        // return [yo,yo1,yo2,yo3]
-    }
+
 }
+const scrollSmoothlyToBottom = (id) => {
+    const element = $(`#${id}`);
+    element.animate({
+        scrollTop: element.prop("scrollHeight")
+    }, 500);
+}
+
+
 
 export default run
