@@ -145,16 +145,23 @@ button:focus {
     /* Standard */
 }
 
-.stats{
+.stats {
     display: inline-flex;
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
 }
 
-.rank-icon{
+.rank-icon {
     justify-self: center;
     align-self: center;
     width: 2.5vw;
     height: auto;
+}
+
+.highlight-color {
+    color: #88f0fd;
+}
+.dimmed-color{
+    color:#858888;
 }

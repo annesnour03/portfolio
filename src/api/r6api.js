@@ -14,16 +14,21 @@ function toInt(string) {
 }
 
 async function userInfo(uname, platform) {
-        var { data } = await axios.get(`https://corsanywhere.herokuapp.com/https://r6.tracker.network/profile/${platform}/${uname}`).catch(error => {
-            throw new Error("The username provided is incorrect.")
-        })
+    var { data } = await axios.get(`https://corsanywhere.herokuapp.com/https://r6.tracker.network/profile/${platform}/${uname}`).catch(error => {
+        throw new Error("The username or platform provided is incorrect.")
+    })
     const $ = await cheerio.load(data)
     const username = getText($(".trn-profile-header__name"))
     if (!username) {
         throw new Error("Name given does not exist!")
     }
     const level = getText($(".trn-card__content  > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2)"))
-    const currentMMR = toInt(getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(1) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2)")))
+
+    // Banned alias makes page shift.
+    var currentMMR = toInt(getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(1) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2)")))
+    if (!currentMMR) {
+        currentMMR = toInt(getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2)")))
+    }
     const rankIcon = ($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(1) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(1) > img")).first().attr('src')
 
 
@@ -32,7 +37,11 @@ async function userInfo(uname, platform) {
     const kills = toInt(getText($("div.trn-defstat--large:nth-child(3) > div:nth-child(2)")))
     const kd = getText($("div.trn-defstat--large:nth-child(4) > div:nth-child(2)"))
 
-    const timePlayed = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__content > div:nth-child(2) > div.trn-card__content > div.trn-defstats.trn-defstats--width4 > div:nth-child(6) > div.trn-defstat__value"))
+    var timePlayed = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__content > div:nth-child(3) > div.trn-card__content > div.trn-defstats.trn-defstats--width4 > div:nth-child(6) > div.trn-defstat__value"))
+    const playedWith = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__content > div.r6-queued-with.trn-card > div.r6-queued-with__title"))
+    // Page is different when there is a "played with" at the top of the screen.
+    if (!playedWith)
+        timePlayed = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__content > div:nth-child(2) > div.trn-card__content > div.trn-defstats.trn-defstats--width4 > div:nth-child(6) > div.trn-defstat__value"))
     const bestAllTime = toInt(getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2)")).slice(0, -4))
 
 

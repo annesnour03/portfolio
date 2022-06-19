@@ -20,20 +20,37 @@ function run(props, args, setReadOnly, setOutputMessage) {
 
     function help() {
         setReadOnly(true)
-        setOutputMessage(<>
+        if (!args[1]) {
+            setOutputMessage(<>
 
-            <p>{"Currently available commands:"}</p>
-            <div className="margin-0" style={{ "color": "green" }}>
+                <p>{"Currently available commands:"}</p>
+                <div className="margin-0" style={{ "color": "green" }}>
 
-                {availableCommands}
-            </div>
-            <p>{"Commands that will be avaiable in the future:"}</p>
-            {futureCommands}
-            <p>
-                PS : Commands marked with a <span style={{ color: "red" }}>*</span>, have additional arguments, type "<a style={{ color: "#88f0fd" }}>help r6</a>" for example.
-            </p>
-        </>
-        )
+                    {availableCommands}
+                </div>
+                <p>{"Commands that will be avaiable in the future:"}</p>
+                {futureCommands}
+                <p>
+                    PS : Commands marked with a <span style={{ color: "red" }}>*</span>, have additional arguments, type "<a className="highlight-color">help r6</a>" for example.
+                </p>
+            </>
+            )
+            return
+        }
+
+        // User specified a command for help.
+        switch (args[1]) {
+            case "r6":
+                setOutputMessage(<>
+                    <p>This command displays the Rainbow Six Siege stats of a given player.</p>
+                    <p>Usage: <a className="highlight-color">r6</a></p>
+                    <p>Using r6 without argument lists the squads stats!</p>
+                    <br/>
+                    <p>Usage: <a className="highlight-color">r6</a> {"<playername>"} <a className="dimmed-color">{"[platform]"}</a></p>
+                    <p>The platform here is PC as a default, but can be specified to : {"[xbox,psn]"}</p>
+                </>)
+                break
+        }
     }
 
     function welcome() {
@@ -42,7 +59,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
             {asciiAnnes}
             <br></br>
             <p>
-                Hello my name is <a style={{ color: "#88f0fd" }}>Annes Negmel-Din</a> and this is my interactive portfolio.
+                Hello my name is <a className="highlight-color">Annes Negmel-Din</a> and this is my interactive portfolio.
             </p>
             <p>
                 If you want to switch to GUI mode, enter "gui" or click on the floating button.
@@ -65,7 +82,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
         const days = Math.floor(daysSinceBirth % 365.25)
         setOutputMessage(
             <p>
-                My name is <a style={{ color: "#88f0fd" }}>Annes Negmel-Din</a> and I'm {age} years and {days} days old.
+                My name is <a className="highlight-color">Annes Negmel-Din</a> and I'm {age} years and {days} days old.
             </p>)
         setReadOnly(true)
     }
@@ -115,8 +132,9 @@ function run(props, args, setReadOnly, setOutputMessage) {
                 Loading {args[1]}'s data! Please hold.
             </span>
         )
+        const platform = args[2] ? args[2] : "pc"
 
-        api.userInfo(args[1], "pc").then((userInfo) => {
+        api.userInfo(args[1], platform).then((userInfo) => {
             setOutputMessage(
                 formatStats(userInfo, 10)
             )
