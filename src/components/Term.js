@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {asciiAnnes} from '../assets/jsxElements';
+import { asciiAnnes } from '../assets/jsxElements';
 import './../index.css';
 import FloatGui from './FloatGui';
 import TermInputLine from './TermInputLine';
@@ -17,6 +17,7 @@ function Term() {
 			appendInput()
 		}
 	}, [history])
+
 	var params = {
 		clear: clearHistory,
 		addHistory: addHistory,
@@ -72,7 +73,7 @@ function Term() {
 			<div className="App">
 				<header className="App-header">
 					<div className="term-outline unselectable" id="outline">
-						<FloatGui linkto="/gui" />
+						{/* <FloatGui linkto="/gui" /> */}
 						<span className='signle-input'>
 
 							<span className="static">

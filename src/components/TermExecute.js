@@ -15,6 +15,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
         "": enter
     }[command]
     commandHandler?.()
+    setReadOnly(true)
     scrollSmoothlyToBottom("outline")
 
 
@@ -45,7 +46,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
                     <p>This command displays the Rainbow Six Siege stats of a given player.</p>
                     <p>Usage: <a className="highlight-color">r6</a></p>
                     <p>Using r6 without argument lists the squads stats!</p>
-                    <br/>
+                    <br />
                     <p>Usage: <a className="highlight-color">r6</a> {"<playername>"} <a className="dimmed-color">{"[platform]"}</a></p>
                     <p>The platform here is PC as a default, but can be specified to : {"[xbox,psn]"}</p>
                 </>)
@@ -164,10 +165,8 @@ function run(props, args, setReadOnly, setOutputMessage) {
 
             const leaderboardColors = ["gold", "silver", "#CD7F32"]
             const playerNameColor = index <= 2 ? leaderboardColors[index] : "white"
-            console.log(playerNameColor, player.username)
             return (
                 <>
-
                     <span key={index} style={{ "color": `${playerNameColor}` }}>
                         {`${"═".repeat(fillLengthStart)}${player.username}${"═".repeat(fillLengthEnd)}`}
                     </span>
