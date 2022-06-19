@@ -144,3 +144,9 @@ button:focus {
     user-select: text;
     /* Standard */
 }
+
+.stats{
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
