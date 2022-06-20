@@ -162,6 +162,17 @@ button:focus {
 .highlight-color {
     color: #88f0fd;
 }
-.dimmed-color{
-    color:#858888;
+
+.dimmed-color {
+    color: #858888;
+}
+
+canvas {}
+
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    color: inherit;
 }

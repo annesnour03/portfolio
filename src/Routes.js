@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
  */
 import Term from './components/Term';
 import Gui from './components/Gui';
-
+import GameofLife from './components/GameofLife';
 function Paths() {
     return (
         <div>
@@ -15,6 +15,7 @@ function Paths() {
             <Routes>
                 <Route exact path='/' element={<Term/>}></Route>
                 <Route exact path='/gui' element={<Gui/>}></Route>
+                    <Route exact path='/gol' element={<GameofLife/>}></Route>
             </Routes>
         </Router>
         </div>

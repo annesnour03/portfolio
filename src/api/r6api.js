@@ -14,7 +14,9 @@ function toInt(string) {
 }
 
 async function userInfo(uname, platform) {
-    var { data } = await axios.get(`https://corsanywhere.herokuapp.com/https://r6.tracker.network/profile/${platform}/${uname}`).catch(error => {
+    const link = `https://corsanywhere.herokuapp.com/https://r6.tracker.network/profile/${platform}/${uname}`
+    const actualLink = `https://r6.tracker.network/profile/${platform}/${uname}`
+    var { data } = await axios.get(link).catch(error => {
         throw new Error("The username or platform provided is incorrect.")
     })
     const $ = await cheerio.load(data)
@@ -57,6 +59,7 @@ async function userInfo(uname, platform) {
         bestAllTime,
         timePlayed,
         rankIcon,
+        actualLink,
     }
 }
 

@@ -167,9 +167,9 @@ function run(props, args, setReadOnly, setOutputMessage) {
             const playerNameColor = index <= 2 ? leaderboardColors[index] : "white"
             return (
                 <>
-                    <span key={index} style={{ "color": `${playerNameColor}` }}>
+                    <a href={player.actualLink} target="_blank"> <span key={index} style={{ "color": `${playerNameColor}` }} >
                         {`${"═".repeat(fillLengthStart)}${player.username}${"═".repeat(fillLengthEnd)}`}
-                    </span>
+                    </span></a>
                     <br />
                     {/* Here we display the stats */}
                     <div className="stats">
