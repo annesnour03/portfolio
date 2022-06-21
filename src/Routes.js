@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 /**
  * Import all page components here
  */
-import Term from './components/Term';
+import Term from './components/term/Term';
 import Gui from './components/Gui';
-import GameofLife from './components/GameofLife';
+import GameofLife from './components/gameoflife/GameofLife';
 function Paths() {
     return (
         <div>

@@ -1,8 +1,8 @@
-import { asciiAnnes, availableCommands, futureCommands } from "../assets/jsxElements"
-import './../index.css';
+import { asciiAnnes, availableCommands, futureCommands } from "../../assets/jsxElements"
+import './../../index.css';
 import $ from 'jquery';
 
-import api from '../api/r6api'
+import api from '../../api/r6api'
 
 function run(props, args, setReadOnly, setOutputMessage) {
     const command = args[0]
@@ -165,6 +165,15 @@ function run(props, args, setReadOnly, setOutputMessage) {
 
             const leaderboardColors = ["gold", "silver", "#CD7F32"]
             const playerNameColor = index <= 2 ? leaderboardColors[index] : "white"
+
+            var currentRankedKdColor = "white"
+            if (player.currentRankedKd < 1)
+                currentRankedKdColor = "red"
+            else if (player.currentRankedKd <= 1.5)
+                currentRankedKdColor = "#469c27"
+            else
+                currentRankedKdColor = "#6cf03c"
+
             return (
                 <>
                     <a href={player.actualLink} target="_blank"> <span key={index} style={{ "color": `${playerNameColor}` }} >
@@ -179,7 +188,6 @@ function run(props, args, setReadOnly, setOutputMessage) {
 
                         </span>
                         <img src={player.rankIcon} className="rank-icon unselectable" />
-                        {/* <br /> */}
                         <span>
                             | wins: {player.wins} |
 
@@ -190,6 +198,19 @@ function run(props, args, setReadOnly, setOutputMessage) {
                         <br />
                         <br />
                     </div>
+                    <br />
+                    <div className="stats">
+                        {player.currentRankedKd > -1 && <span style={{ color: `${currentRankedKdColor}` }}>
+                            <a style={{ color: "white" }}>current ranked kd: </a>{player.currentRankedKd}
+                        </span>}
+                    </div>
+                    {player.currentRankedKd > -1 && <br />}
+                    <div className="stats">
+
+                        <span>best mmr: {player.bestMMR}</span>
+                        <img src={player.bestMMRIcon} className="rank-icon unselectable" />
+                    </div>
+
                     <br />
 
                 </>

@@ -147,6 +147,7 @@ button:focus {
 
 .stats {
     display: inline-flex;
+    max-width: 100%;
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
