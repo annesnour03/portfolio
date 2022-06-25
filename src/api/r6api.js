@@ -19,7 +19,7 @@ async function userInfo(uname, platform) {
     var { data } = await axios.get(link).catch(error => {
         throw new Error("The username or platform provided is incorrect.")
     })
-    console.log(await data);
+
     const $ = await cheerio.load(data)
     const username = getText($(".trn-profile-header__name"))
     if (!username) {
