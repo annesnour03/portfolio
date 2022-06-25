@@ -1,6 +1,6 @@
 import axios from "axios"
-const cheerio = require("cheerio")
 
+const cheerio = require("cheerio")
 
 const api = {
     userInfo: userInfo
@@ -14,11 +14,12 @@ function toInt(string) {
 }
 
 async function userInfo(uname, platform) {
-    const link = `https://app.cors.bridged.cc/https://r6.tracker.network/profile/${platform}/${uname}`
     const actualLink = `https://r6.tracker.network/profile/${platform}/${uname}`
+    const link = `https://cors-anywhere.herokuapp.com/${actualLink}`
     var { data } = await axios.get(link).catch(error => {
         throw new Error("The username or platform provided is incorrect.")
     })
+    console.log(await data);
     const $ = await cheerio.load(data)
     const username = getText($(".trn-profile-header__name"))
     if (!username) {
@@ -32,7 +33,7 @@ async function userInfo(uname, platform) {
         currentMMR = toInt(getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2)")))
     }
     const rankIcon = ($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(1) > div.trn-card__content.trn-card--light.pt8.pb8 > div:nth-child(2) > div:nth-child(1) > img")).first().attr('src')
-    const bestMMR = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2)")).slice(0, -4)
+    const bestMMR = getText($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2)")).slice(0,-4)
     const bestMMRIcon = ($("#profile > div.trn-scont.trn-scont--swap > div.trn-scont__aside > div:nth-child(2) > div > div:nth-child(1) > div.r6-quickseason__image > img")).first().attr('src')
 
 
