@@ -3,8 +3,8 @@ import Sidenav from './Sidenav'
 
 export default function Games() {
   return (
-      <>
-      <Sidenav/>
-      </>
+    <>
+      <Sidenav />
+    </>
   )
 }

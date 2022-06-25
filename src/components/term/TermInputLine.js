@@ -26,8 +26,6 @@ function TermInputLine(props) {
     const [outputMessage, setOutputMessage] = useState("")
     const [readOnly, setReadOnly] = useState(false)
 
-
-
     function prevHistory() {
         document.getElementById("input-line").focus()
 
@@ -89,7 +87,8 @@ function TermInputLine(props) {
 
 
     return (
-        <>
+        <section className='one-action'>
+
             <span className='signle-input'>
 
                 <span className="static">
@@ -106,7 +105,7 @@ function TermInputLine(props) {
             <div className='margin-0 selectable'>
                 {outputMessage}
             </div>
-        </>
+        </section>
     )
 }
 export default TermInputLine
