@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import TermHistory from './TermHistory'
 import run from './TermExecute'
 
 const ALL_INPUT = [
@@ -73,10 +72,12 @@ function TermInputLine(props) {
         if (input.key == 'Enter') {
             run(props, trimmedInputString.split(' '), setReadOnly, setOutputMessage)
             props.addHistory(inputString)
+            props.appendInput()
         }
 
         return true
     }
+
 
 
     // Make cursor not go to the start or end.

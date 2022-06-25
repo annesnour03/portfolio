@@ -12,11 +12,13 @@ function run(props, args, setReadOnly, setOutputMessage) {
         "whoami": whoami,
         "clear": clear,
         "r6": r6,
+        "gui": gui,
         "": enter
     }[command]
     commandHandler?.()
     setReadOnly(true)
-    scrollSmoothlyToBottom("outline")
+    if (command)
+        scrollSmoothlyToBottom("outline")
 
 
     function help() {
@@ -226,6 +228,12 @@ function run(props, args, setReadOnly, setOutputMessage) {
             return promises
         }
 
+        setReadOnly(true)
+    }
+
+    function gui() {
+        const float = document.getElementById("float-button")
+        float.click()
         setReadOnly(true)
     }
 

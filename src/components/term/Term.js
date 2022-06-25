@@ -6,21 +6,21 @@ import TermInputLine from './TermInputLine';
 
 const FORWARDS = 1
 const BACKWARDS = -1
-var key = 0
 function Term() {
 	const [historyIndex, setHistoryIndex] = useState(0)
 	const [history, setHistory] = useState([])
+	const [key, setKey] = useState(0)
 
 	useEffect(() => {
-		if (key) {
-			key += 1
-			appendInput()
-		}
-	}, [history])
+		if (key)
+			setInput(input => [...input, <TermInputLine params={params} key={key} />])
+
+	}, [key])
 
 	var params = {
 		clear: clearHistory,
 		addHistory: addHistory,
+		appendInput, appendInput,
 		setHistoryIndex: changeHistoryIndex,
 		"history": history,
 
@@ -29,8 +29,7 @@ function Term() {
 
 	// Used after enter has been pressed (valid command neeeded).
 	function appendInput() {
-
-		setInput(input => [...input, <TermInputLine params={params} key={key} />])
+		setKey(key + 1)
 	}
 
 	// Used for the "clear" command
@@ -49,7 +48,6 @@ function Term() {
 			else
 				appendInput()
 		}
-		key += 1
 
 	}
 
@@ -66,14 +64,12 @@ function Term() {
 	}
 
 
-
-
 	return (
 		<div >
 			<div className="App">
 				<header className="App-header">
 					<div className="term-outline unselectable" id="outline">
-						{/* <FloatGui linkto="/gui" /> */}
+						<FloatGui linkto="/gui" />
 						<span className='signle-input'>
 
 							<span className="static">

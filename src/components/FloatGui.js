@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function FloatGui(data) {
     return (
         <Link to={data.linkto}>
-            <img src={usericon} className="floating-button unselectable" alt="logo" />
+            <img src={usericon} className="floating-button unselectable" alt="logo" id="float-button" />
         </Link>
     )
 }
