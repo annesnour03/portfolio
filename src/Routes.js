@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, HashRouter, Route, Routes } from "react-router-dom";
 
 
 /**
@@ -12,6 +12,8 @@ import GameofLife from './components/gameoflife/GameofLife';
 function Paths() {
     return (
         <div>
+            <HashRouter basename='/porfolio'>
+                
         <Router>
             <Routes>
                 <Route exact path='/' element={<Term/>}></Route>
@@ -20,6 +22,8 @@ function Paths() {
                 <Route exact path='/games' element={<Games/>}></Route>
             </Routes>
         </Router>
+            </HashRouter>
+
         </div>
     );
     
