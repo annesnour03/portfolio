@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import './gui.css'
 export default function Sidenav() {
-
-    const [open, setOpen] = useState()
-    function collapse() {
+    const [open, setOpen] = useState(true)
+    const resizePX = 1600
+    function collapseNav() {
         const sidenav = document.getElementById("sidenav")
         const home = document.getElementById("home")
         const allText = document.querySelectorAll(".sidenav p,h1")
@@ -17,11 +17,59 @@ export default function Sidenav() {
         // TODO Add local storage here
     }
 
+    function openNav() {
+        const sidenav = document.getElementById("sidenav")
+        const home = document.getElementById("home")
+        const allText = document.querySelectorAll(".sidenav p,h1")
+        for (const elem of allText) {
+            elem.style.display = "block"
+        }
+        sidenav.style.width = "15vw"
+        home.style.marginTop = "20px"
+    }
+
+    function changeNav() {
+        if (open) {
+            collapseNav()
+            setOpen(false)
+        }
+        else if (window.innerWidth > resizePX)  {
+            openNav()
+            setOpen(true)
+        }
+    }
+    
+
+    const checkWidth = () => {
+        if (window.innerWidth <= resizePX){
+            setOpen(false)
+            collapseNav()
+        }
+        // ! Maybe enable in the future, depends on likings.
+        // else{
+            // setOpen(true)
+            // openNav()
+        // }
+    }
+    useEffect(() => {
+        window.addEventListener('resize', checkWidth);
+
+        if (open) {
+            localStorage.setItem("sidenav", 1)
+        }
+        else {
+            localStorage.setItem("sidenav", 0)
+        }
+
+        return () => window.removeEventListener('resize', checkWidth);
+
+    }, [open])
+
 
     return (
         <div className="sidenav" id='sidenav'>
             <div className="name"><p>annes</p></div>
-            <div className="collapse" onClick={collapse}>
+            <div className="collapse" onClick={changeNav}>
                 <span style={{ "display": "block" }}>
                     <i className='bx bx-menu-alt-right'></i>
                 </span>
