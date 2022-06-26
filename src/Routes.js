@@ -12,7 +12,6 @@ import GameofLife from './components/gameoflife/GameofLife';
 function Paths() {
     return (
         <div>
-            <HashRouter basename='/porfolio'>
                 
         <Router>
             <Routes>
@@ -22,7 +21,6 @@ function Paths() {
                 <Route exact path='/games' element={<Games/>}></Route>
             </Routes>
         </Router>
-            </HashRouter>
 
         </div>
     );
