@@ -15,7 +15,7 @@ function toInt(string) {
 
 async function userInfo(uname, platform) {
     const actualLink = `https://r6.tracker.network/profile/${platform}/${uname}`
-    const link = `https://cors-anywhere.herokuapp.com/${actualLink}`
+    const link = `https://annes-cors-fixer.herokuapp.com/${actualLink}`
     var { data } = await axios.get(link).catch(error => {
         throw new Error("The username or platform provided is incorrect.")
     })
