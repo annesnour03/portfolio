@@ -1,10 +1,10 @@
 import React from 'react'
-import Sidenav from './Sidenav'
+import Sidenav from './GuiSidenav'
 
 export default function Games() {
   return (
     <>
-      <Sidenav />
+      <p>Helloaaw</p>
     </>
   )
 }

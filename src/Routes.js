@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
 /**
@@ -7,7 +7,7 @@ import { BrowserRouter as Router, HashRouter, Route, Routes } from "react-router
  */
 import Term from './components/term/Term';
 import Gui from './components/gui/Gui';
-import Games from './components/gui/Games';
+import Games from './components/gui/GuiGames';
 import GameofLife from './components/gameoflife/GameofLife';
 function Paths() {
     return (
@@ -18,7 +18,7 @@ function Paths() {
                 <Route exact path='/' element={<Term/>}></Route>
                 <Route exact path='/gui' element={<Gui/>}></Route>
                 <Route exact path='/gol' element={<GameofLife/>}></Route>
-                <Route exact path='/games' element={<Games/>}></Route>
+                {/* <Route exact path='/gui/games' element={<Games/>}></Route> */}
             </Routes>
         </Router>
 
