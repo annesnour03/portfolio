@@ -4,28 +4,27 @@ import Sidenav from './GuiSidenav'
 
 
 import Icon from '../../assets/searchIcon.png'
+import Card from './GuiCard'
 export default function Games() {
-  return (
-    <>
-      <div className="search">
-        <div className="search-bar-wrapper">
+	const ALL_CARDS = [1,2,3,4,5,6,7,8,9,10,11,12]
+	return (
+		<>
+			<div className="search">
+				<div className="search-bar-wrapper">
 
-          <input className='search-input' placeholder='Search for a utility' />
+					<input className='search-input' placeholder='Search for a utility' />
 
-          {/* TODO make the searchicon white instead of black */}
-          <img src={Icon} className="search-icon" alt="" />
-        </div>
-      </div>
+					{/* TODO make the searchicon white instead of black */}
+					<img src={Icon} className="search-icon" alt="" />
+				</div>
+			</div>
 
-      <div className="all-cards">
+			<div className="all-cards">
 
-
-        <div className="card">
-          <p>hi im a card</p>
-        </div>
+{ALL_CARDS.map((i) => <Card msg={i}/>)}
 
 
-      </div>
-    </>
-  )
+			</div>
+		</>
+	)
 }
