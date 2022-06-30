@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Sidenav from './GuiSidenav'
 import Games from './GuiGames'
+import Settings from './GuiSettings';
 
 export default function Gui() {
     const [open, setOpen] = useState(true)
@@ -17,8 +18,9 @@ export default function Gui() {
         }
         sidenav.style.width = "auto"
         home.style.marginTop = "10vh"
-        container.style.marginLeft = "100px"
+        container.style.marginLeft = sidenav.offsetWidth + "px"
 
+        
     }
 
     function openNav() {
@@ -31,9 +33,9 @@ export default function Gui() {
         }
         sidenav.style.width = "15vw"
         home.style.marginTop = "20px"
-        container.style.marginLeft = "15vw"
+        container.style.marginLeft = sidenav.offsetWidth + "px"
     }
-
+    
     function changeNav() {
         if (open) {
             collapseNav()
@@ -43,10 +45,15 @@ export default function Gui() {
             openNav()
             setOpen(true)
         }
+        const sidenav = document.getElementById("sidenav")
+        const container = document.getElementById("container")
+        container.style.marginLeft = sidenav.offsetWidth + "px"
     }
 
 
     const checkWidth = () => {
+     
+
         if (window.innerWidth <= resizePX) {
             setOpen(false)
             collapseNav()
@@ -55,31 +62,38 @@ export default function Gui() {
         // else{
         //     setOpen(true)
         //     openNav()
-        // }
+        // }3
+        const sidenav = document.getElementById("sidenav")
+        const container = document.getElementById("container")
+        container.style.marginLeft = sidenav.offsetWidth + "px"
+        console.log("resize", sidenav.offsetWidth + " " + container.style.marginLeft)
     }
     useEffect(() => {
         window.addEventListener('resize', checkWidth);
 
-        if (open)
-            localStorage.setItem("sidenav", 1)
-        else
-            localStorage.setItem("sidenav", 0)
+        console.log("first", open)
+        // if (open)
+            // localStorage.setItem("sidenav", 1)
+        // else
+            // localStorage.setItem("sidenav", 0)
+        checkWidth()
+        // openNav()
+        // setOpen(true)
 
 
-        return () => window.removeEventListener('resize', checkWidth);
+        // return () => window.removeEventListener('resize', checkWidth);
 
-    }, [open])
+    }, [])
 
     return (
         <>
-            <Sidenav change={changeNav} />
+            <Sidenav change={changeNav}/>
             <div className="container" id='container'>
                 <Routes>
                     <Route exact path='/games' element={<Games />}></Route>
+                    <Route exact path='/settings' element={<Settings />}></Route>
                 </Routes>
-
             </div>
-            {/* <FloatGui linkto="/"/> */}
         </>
     )
 }

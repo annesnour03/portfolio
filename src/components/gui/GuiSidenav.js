@@ -29,7 +29,7 @@ export default function Sidenav(props) {
                     </div>
                 </span>
             </Link>
-            <Link to='/games'>
+            <Link to='/gui/games'>
                 <span style={{ "display": "block" }}>
                     <div className="option">
                         <i className='bx bxs-invader'></i>
@@ -38,7 +38,7 @@ export default function Sidenav(props) {
                 </span>
             </Link>
 
-            <Link to='/settings'>
+            <Link to='/gui/settings'>
                 <span style={{ "display": "block" }}>
                     <div className="option" id='contact'>
                         <i className='bx bx-cog'></i>

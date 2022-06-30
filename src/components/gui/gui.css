@@ -24,7 +24,8 @@ html {
     overflow: hidden;
     background-color: #414444;
     flex-direction: column;
-    transition: all 0.5s ease 0s;
+    /* TODO This transition breaks layout? */
+    /* transition: all 0.5s ease 1s; */
 }
 
 .sidenav .name {
@@ -93,7 +94,8 @@ html {
     margin-top: 20px;
 }
 
-@media only screen and (max-width: 1600px) {
+
+/* @media only screen and (max-width: 1600px) {
     .sidenav {
         width: auto;
     }
@@ -104,11 +106,62 @@ html {
     #home {
         margin-top: 10vh;
     }
+} */
+
+.container {
+    margin-left: 106px;
+    /* margin-left: 15.1vw; */
+    height: 100vh;
+    background-color: #414444;
+    overflow-x: hidden;
 }
 
-.container{
-    margin-left:100px;
-    border: 2px solid red;
-    height: 100vh;
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
-/*  */
+
+.search-bar-wrapper {
+    display: flex;
+    width: 90%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #1f2222;
+}
+
+.search-input {
+    width: 90%;
+    background: none;
+    border: none;
+    height: auto;
+    color: white;
+    font-size: 25px;
+    padding-left: 20px;
+    /* background-image: url(https://via.placeholder.com/24);
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    padding-right: 20px; */
+}
+
+.search-icon {
+    justify-self: center;
+    align-self: center;
+    /* position: absolute; */
+    height: 40px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.all-cards{
+    display: flex;
+    height: 100%;
+    border: 2px solid red;
+    margin-left: 50px;
+    margin-right: 50px;
+}
