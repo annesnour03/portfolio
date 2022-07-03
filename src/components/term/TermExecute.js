@@ -100,7 +100,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
     }
 
     async function r6() {
-        const theSquad = ["xruprim", "hockeyHeld", "PhantomGod73", "IIJulianll", "Widder7013", "Koen_Meneer"]
+        const theSquad = ["xruprim", "hockeyHeld", "PhantomGod73", "IIJulianll", "Widder7013", "Koen_Meneer","Kevin1Smid","SuicidleCat"]
         //  Simply "r6", so display the squad's stats
         if (!args[1]) {
             setOutputMessage(<span>Loading the squad's data! Please hold.</span>)
