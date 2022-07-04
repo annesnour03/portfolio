@@ -20,7 +20,7 @@ export default function Gui() {
         home.style.marginTop = "10vh"
         container.style.marginLeft = sidenav.offsetWidth + "px"
 
-        
+
     }
 
     function openNav() {
@@ -35,7 +35,7 @@ export default function Gui() {
         home.style.marginTop = "20px"
         container.style.marginLeft = sidenav.offsetWidth + "px"
     }
-    
+
     function changeNav() {
         if (open) {
             collapseNav()
@@ -52,7 +52,7 @@ export default function Gui() {
 
 
     const checkWidth = () => {
-     
+
 
         if (window.innerWidth <= resizePX) {
             setOpen(false)
@@ -73,9 +73,9 @@ export default function Gui() {
 
         console.log("first", open)
         // if (open)
-            // localStorage.setItem("sidenav", 1)
+        // localStorage.setItem("sidenav", 1)
         // else
-            // localStorage.setItem("sidenav", 0)
+        // localStorage.setItem("sidenav", 0)
         checkWidth()
         // openNav()
         // setOpen(true)
@@ -87,7 +87,7 @@ export default function Gui() {
 
     return (
         <>
-            <Sidenav change={changeNav}/>
+            <Sidenav change={changeNav} />
             <div className="container" id='container'>
                 <Routes>
                     <Route exact path='/games' element={<Games />}></Route>

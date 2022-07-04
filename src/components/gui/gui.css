@@ -178,7 +178,51 @@ html {
 
 .single-card {
     border: 2px solid red;
+    border-radius: 5px;
     width: 450px;
     height: 300px;
     margin: 30px;
+    overflow: hidden;
+}
+
+.single-card hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 0;
+    padding: 0;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.preview {
+    width: 100%;
+    height: fit-content;
+}
+
+.star {
+    float: right;
+    height: 45px;
+    width: 45px;
+    margin-right: 5px;
+    -webkit-user-drag: none;
+    user-select: none;
+    align-self: center;
+    justify-self: flex-end;
+    cursor: pointer;
+}
+
+.star:hover {
+    color: black;
+    filter: invert(84%) sepia(30%) saturate(3099%) hue-rotate(360deg) brightness(104%) contrast(104%);
+}
+
+.card-title {
+    color: white;
+    font-size: 20px;
+    margin-left: 3px;
 }
