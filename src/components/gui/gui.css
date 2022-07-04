@@ -217,8 +217,8 @@ html {
 }
 
 .star:hover {
-    color: black;
-    filter: invert(84%) sepia(30%) saturate(3099%) hue-rotate(360deg) brightness(104%) contrast(104%);
+    background: url("../../assets/star_filled.svg") no-repeat;
+
 }
 
 .card-title {
