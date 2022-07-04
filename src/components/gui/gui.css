@@ -185,6 +185,12 @@ html {
     overflow: hidden;
 }
 
+.single-card:nth-child(10) {
+    order: -2;
+    order:
+}
+
+
 .single-card hr {
     display: block;
     height: 1px;
@@ -218,7 +224,7 @@ html {
 
 .star:hover {
     background: url("../../assets/star_filled.svg") no-repeat;
-
+    opacity: 40%;
 }
 
 .card-title {

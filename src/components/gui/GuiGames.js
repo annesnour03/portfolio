@@ -20,7 +20,7 @@ export default function Games() {
 			</div>
 
 			<div className="all-cards">
-				{ALL_CARDS.map((i) => <Card msg={i} />)}
+				{ALL_CARDS.map((i,idx) => <Card msg={i} id={idx + 1}  />)}
 			</div>
 		</>
 	)

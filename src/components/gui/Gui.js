@@ -66,12 +66,10 @@ export default function Gui() {
         const sidenav = document.getElementById("sidenav")
         const container = document.getElementById("container")
         container.style.marginLeft = sidenav.offsetWidth + "px"
-        console.log("resize", sidenav.offsetWidth + " " + container.style.marginLeft)
     }
     useEffect(() => {
         window.addEventListener('resize', checkWidth);
 
-        console.log("first", open)
         // if (open)
         // localStorage.setItem("sidenav", 1)
         // else
