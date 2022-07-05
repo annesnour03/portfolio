@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Sidenav from './GuiSidenav'
-import Games from './GuiGames'
+import GuiGamesRoutes from './guiGames/GuiGamesRoutes'
 import Settings from './GuiSettings';
 
 export default function Gui() {
     const [open, setOpen] = useState(true)
     const resizePX = 1600
+
     function collapseNav() {
         const sidenav = document.getElementById("sidenav")
         const home = document.getElementById("home")
@@ -58,6 +59,7 @@ export default function Gui() {
             setOpen(false)
             collapseNav()
         }
+
         // ! Maybe enable in the future, depends on likings.
         // else{
         //     setOpen(true)
@@ -79,7 +81,7 @@ export default function Gui() {
         // setOpen(true)
 
 
-        // return () => window.removeEventListener('resize', checkWidth);
+        return () => window.removeEventListener('resize', checkWidth);
 
     }, [])
 
@@ -88,7 +90,7 @@ export default function Gui() {
             <Sidenav change={changeNav} />
             <div className="container" id='container'>
                 <Routes>
-                    <Route exact path='/games' element={<Games />}></Route>
+                    <Route exact path='/games/*' element={<GuiGamesRoutes />}></Route>
                     <Route exact path='/settings' element={<Settings />}></Route>
                 </Routes>
             </div>

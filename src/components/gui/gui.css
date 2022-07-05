@@ -160,7 +160,6 @@ html {
 
 .all-cards {
     display: flex;
-    border: 2px solid red;
     margin-left: 50px;
     margin-right: 50px;
     flex-wrap: wrap;
@@ -176,6 +175,14 @@ html {
     }
 }
 
+@media only screen and (max-width: 550px) {
+    .title-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .single-card {
     border: 2px solid red;
     border-radius: 5px;
@@ -184,12 +191,6 @@ html {
     margin: 30px;
     overflow: hidden;
 }
-
-.single-card:nth-child(10) {
-    order: -2;
-    order:
-}
-
 
 .single-card hr {
     display: block;

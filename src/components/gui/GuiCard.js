@@ -2,14 +2,14 @@ import React from 'react'
 import unfilledStar from '../../assets/star_unfilled.svg'
 import filledStar from '../../assets/star_filled.svg'
 import { useState } from 'react'
-import { useEffect } from 'react'
+import { Link } from 'react-router-dom';
 function removeAllInstances(arr, item) {
     for (var i = arr.length; i--;) {
         if (arr[i] === item) arr.splice(i, 1);
     }
 }
 function Card(props) {
-    const { msg, id } = props
+    const { title, img, link, id } = props
 
     var change = false
     var storage = JSON.parse(localStorage.getItem("fav")) || 0
@@ -61,11 +61,13 @@ function Card(props) {
     return (
         <>
             <div className="single-card" id="card" style={{ order: fav ? -1 : "initial" }}>
-                <img src={require('../../assets/prev_spin.png')} alt="" className="preview" />
+                <img src={img} alt="" className="preview" />
                 <hr></hr>
 
                 <div className="title-container">
-                    <p className='card-title'>Spin the wheel! {msg}</p>
+                    <Link to={link}>
+                        <p className='card-title'>{title}</p>
+                    </Link>
                     <a onClick={alterFav} >
                         <img src={fav ? filledStar : unfilledStar} className="star" />
                     </a>
