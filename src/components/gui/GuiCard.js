@@ -18,7 +18,7 @@ function Card(props) {
             change = true
         }
     }
-    console.log(change, id);
+
     const [fav, setFav] = useState(change)
     const addFav = () => {
         var storage = JSON.parse(localStorage.getItem("fav")) || 0
@@ -61,7 +61,9 @@ function Card(props) {
     return (
         <>
             <div className="single-card" id="card" style={{ order: fav ? -1 : "initial" }}>
-                <img src={img} alt="" className="preview" />
+                <Link to={link}>
+                    <img src={img} alt="" className="preview" />
+                </Link>
                 <hr></hr>
 
                 <div className="title-container">

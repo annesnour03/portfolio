@@ -12,7 +12,7 @@ export default function Gui() {
     function collapseNav() {
         const sidenav = document.getElementById("sidenav")
         const home = document.getElementById("home")
-        const allText = document.querySelectorAll(".sidenav p,h1")
+        const allText = document.querySelectorAll(".sidenav p, .sidenav h1")
         const container = document.getElementById("container")
         for (const elem of allText) {
             elem.style.display = "none"
@@ -27,7 +27,7 @@ export default function Gui() {
     function openNav() {
         const sidenav = document.getElementById("sidenav")
         const home = document.getElementById("home")
-        const allText = document.querySelectorAll(".sidenav p,h1")
+        const allText = document.querySelectorAll(".sidenav p, .sidenav h1")
         const container = document.getElementById("container")
         for (const elem of allText) {
             elem.style.display = "block"

@@ -233,3 +233,46 @@ html {
     font-size: 20px;
     margin-left: 3px;
 }
+
+.wheel {
+    cursor: pointer;
+    width: fit-content;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-direction: column; */
+}
+
+.wheel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-input {
+    display: flex;
+    width: 500px;
+    flex-direction: column;
+}
+
+.wheel-input h1 {
+    text-align: center;
+}
+
+.wheel-input textarea {
+    height: 200px;
+    color: white;
+    background-color: #1f2222;
+    resize: none;
+    border: none;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 10px
+}
+
+.wheel-input button{
+    height: 50px;
+}
+.wheel-input-container {
+    display: flex;
+    justify-content: center;
+}
