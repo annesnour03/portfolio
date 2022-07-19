@@ -237,9 +237,10 @@ html {
 .wheel {
     cursor: pointer;
     width: fit-content;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* flex-direction: column; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .wheel-container {
@@ -269,10 +270,53 @@ html {
     padding: 10px
 }
 
-.wheel-input button{
+.wheel-input button {
     height: 50px;
 }
+
 .wheel-input-container {
     display: flex;
     justify-content: center;
+}
+
+.spin-center-container{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+.spin-wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    /* justify-content: center; */
+}
+
+.spin-title{
+    color: white;
+}
+
+.spin-wrapper > h1 {
+    color:white;
+}
+.spin-history{
+    
+
+}
+
+.spin-history-item{
+    border: 2px solid rebeccapurple;
+    width: 100%;
+    height: 90px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+overflow: hidden;
+
+}
+
+.spin-history-item span{
+    /* display: flex; */
+
+
+}
+.spin-paramters{
+
 }

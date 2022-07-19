@@ -84,7 +84,16 @@ function TermInputLine(props) {
             e.preventDefault();
         }
     }, false);
+    useEffect(()=>{
+        const prevent = (event)=>{
+            event.preventDefault();
+            event.stopPropagation();
 
+        }
+        
+        window.addEventListener('mousedown', prevent)
+        return () =>window.removeEventListener('mousedown', prevent)
+    },[])
 
     return (
         <section className='one-action'>
@@ -99,7 +108,7 @@ function TermInputLine(props) {
                     <span className="unselectable dollar" >$</span>
                 </span>
                 <span className='input-line'>
-                    <input onBlur={({ target }) => target.focus()} onChange={e => setVal(e.target.value)} value={val} id="input-line" disabled={readOnly} type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' onChangeCapture={validateInput} onKeyDown={validateInput} autoFocus />
+                    <input id="a" onBlur={({ target }) => target.focus()} onChange={e => setVal(e.target.value)} value={val} id="input-line" disabled={readOnly} type="text" className="term-input" autoComplete='off' autoCapitalize='off' spellCheck='false' autoCorrect='off' onChangeCapture={validateInput} onKeyDown={validateInput} autoFocus />
                 </span>
             </span>
             <div className='margin-0 selectable'>

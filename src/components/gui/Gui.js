@@ -71,20 +71,16 @@ export default function Gui() {
     }
     useEffect(() => {
         window.addEventListener('resize', checkWidth);
-
-        // if (open)
-        // localStorage.setItem("sidenav", 1)
-        // else
-        // localStorage.setItem("sidenav", 0)
         checkWidth()
-        // openNav()
-        // setOpen(true)
-
-
         return () => window.removeEventListener('resize', checkWidth);
 
     }, [])
 
+    window.onload = () => {
+        const sidenav = document.getElementById("sidenav")
+        const container = document.getElementById("container")
+        container.style.marginLeft = sidenav.offsetWidth + "px"
+    }
     return (
         <>
             <Sidenav change={changeNav} />
