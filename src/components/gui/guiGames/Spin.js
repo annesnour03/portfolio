@@ -43,7 +43,7 @@ export default () => {
 					<h1 className='spin-title'>History</h1>
 					<div className="spin-history-item">
 						<div>
-							itemaw22222awdawdawawd
+							item1
 						</div>
 						<span>
 							item1

@@ -77,7 +77,7 @@ function run(props, args, setReadOnly, setOutputMessage) {
     function whoami() {
         const today = new Date()
         // American style date.
-        const birthday = new Date("03-01-2003")
+        const birthday = new Date("03-01-2003", "%m-%d-%Y")
 
         // Divide by milliseconds per day
         const daysSinceBirth = Math.floor((today - birthday) / (1000 * 60 * 60 * 24))
