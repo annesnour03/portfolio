@@ -1,15 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { HomePage } from "pages";
 
-function App() {
+const App = () => {
   return (
     <>
-      <button class="text-white px-4 sm:px-8 py-2 sm:py-3 bg-sky-700 hover:bg-sky-800">...</button>
-
-      <h2 className="text-8xl text-yellow-">test</h2>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/Utilities" element={<HomePage />} />
+      </Routes>
     </>
   );
-}
+};
 
 export default App;
