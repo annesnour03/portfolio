@@ -10,6 +10,36 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #010e1b;
 }
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+@font-face {
+  font-family: "UbuntuMono";
+  font-style: bold;
+  font-weight: normal;
+  src: url("./fonts/UbuntuMono-B.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "UbuntuMono";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./fonts/UbuntuMono-R.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "UbuntuMono";
+  font-style: italic;
+  font-weight: normal;
+  src: url("./fonts/UbuntuMono-RI.ttf") format("opentype");
+}
+
+
+
 .grow {
   transition: all 0.1s ease-in-out;
 }
@@ -292,5 +322,71 @@ code {
 }
 
 .active {
-  transform: scale(1.03);
+  /* transform: scale(1.03); */
+}
+
+/* Glitch css */
+.animation-404 {
+  animation: animation-glitch 1s linear infinite;
+}
+
+.animation-404::before,
+.animation-404::after {
+  content: "404";
+  position: absolute;
+  left: 0;
+}
+
+@keyframes animation-glitch {
+  2%,
+  64% {
+    transform: translate(2px, 0) skew(0deg);
+  }
+  4%,
+  60% {
+    transform: translate(-2px, 0) skew(0deg);
+  }
+  62% {
+    transform: translate(0, 0) skew(5deg);
+  }
+}
+
+.animation-404::after {
+  animation: animation-glitch-bottom 1s linear infinite;
+  -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+}
+
+@keyframes animation-glitch-bottom {
+  2%,
+  64% {
+    transform: translate(-2px, 0);
+  }
+  4%,
+  60% {
+    transform: translate(-2px, 0);
+  }
+  62% {
+    transform: translate(-22px, 5px) skew(21deg);
+  }
+}
+
+.animation-404::before {
+  animation: animation-glitch-top 1s linear infinite;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+}
+
+@keyframes animation-glitch-top {
+  2%,
+  64% {
+    transform: translate(2px, -2px);
+  }
+  4%,
+  60% {
+    transform: translate(-2px, 2px);
+  }
+  62% {
+    transform: translate(13px, -1px) skew(-13deg);
+  }
 }

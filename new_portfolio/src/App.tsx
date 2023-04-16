@@ -1,12 +1,12 @@
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import { HomePage } from "pages";
+import { HomePage, ErrorPage,Terminal } from "pages";
 
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/Utilities" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} errorElement />
+        <Route path="*" element={<ErrorPage />} errorElement />
       </Routes>
     </>
   );
