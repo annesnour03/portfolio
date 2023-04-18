@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useId, useState } from "react";
 import "../App.css";
+import React, { useCallback, useEffect, useId, useState } from "react";
 import tw from "tailwind-styled-components";
 import {
   LICHESS_URL,
@@ -8,7 +8,7 @@ import {
   myAge,
   GITHUB_URL,
   LINKEDIN_URL,
-} from "../constants";
+} from "../appconstants/constants";
 import { StarsCanvas, RevealView } from "../components";
 import {
   VerticalTimeline,
@@ -21,15 +21,16 @@ import { GiCook } from "react-icons/gi";
 import { IconType } from "react-icons";
 import { openLink } from "helpers/General";
 import styled from "styled-components";
+import { crafterlogo, uvalogo, weplogo } from "assets/logos";
 // @ts-expect-error
 import BIRDS from "vanta/dist/vanta.birds.min";
-import { crafter, uvalogo, weplogo } from "assets/logos";
+import { Link } from "react-router-dom";
 
 const ProjectView: React.FC = () => {
   const t = styled.div`
     flex: 0 0 100%;
     transition: all 0.5;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.5);
     will-change: transform;
   `;
   const Card = tw(t)`
@@ -77,7 +78,7 @@ const ProjectView: React.FC = () => {
   return (
     <div
       id="cards"
-      className="cards-scroll-bar snap-x1 snap-mandatory1 my-5 flex h-96 overflow-x-scroll p-2 pr-5 "
+      className="cards-scroll-bar snap-x1 snap-mandatory1 my-5 flex h-96 overflow-x-scroll px-2 py-5 pr-5 "
     >
       {[1, 2, 3, 4, 5, 6, 7].map((i) => (
         <Card key={i}>{i}</Card>
@@ -150,7 +151,7 @@ const ExperienceTimeLine: React.FC = () => {
               alt="crafter"
               className="select-none rounded-full"
               draggable={false}
-              src={crafter}
+              src={crafterlogo}
             />
           }
         >
@@ -229,12 +230,10 @@ const PersonalInformation: React.FC = () => {
       </div>
       <div className="flex w-2/3 flex-col p-2 max-md:w-full">
         {/* Title */}
-        <div className="flex h-fit w-full items-center justify-center">
-          <h1 className="inline-flex font-bold">Hobbies</h1>
-        </div>
+        <div className="flex h-fit w-full items-center justify-center"></div>
         <div className="flex h-full items-center justify-center">
           {/* Items */}
-          <div className="flex flex-wrap justify-center gap-5 max-md:flex-col max-md:items-center">
+          <div className="flex flex-wrap justify-center gap-5 gap-x-24 max-md:flex-col max-md:items-center">
             <HobbyIcon Icon={FaChess} onClick={() => openLink(LICHESS_URL)} />
             <HobbyIcon
               Icon={IoGameController}
@@ -248,7 +247,7 @@ const PersonalInformation: React.FC = () => {
   );
 };
 
-const Footer: React.FC = () => {
+export const Footer: React.FC = () => {
   const SocialIcon = ({
     Icon,
     onClick,
@@ -320,7 +319,9 @@ export const HomePage = () => {
           <div className="absolute z-10 w-full">
             <header className="flex h-16 justify-center gap-3 bg-transparent align-baseline">
               <LinkButton>Home</LinkButton>
-              <LinkButton>Terminal</LinkButton>
+              <LinkButton>
+                <Link  to="/terminal">Terminal</Link>
+              </LinkButton>
               <LinkButton onClick={() => scrollToExperienceSection()}>
                 Experience
               </LinkButton>
@@ -350,7 +351,7 @@ export const HomePage = () => {
         {/* Information */}
         <section className="ml-20 mr-20 h-screen snap-center pt-10 text-white">
           <div id={informationSection} className="text-3xl font-light">
-            Introduction
+            <h2 className="bounce-in1 text-5xl font-bold">Introduction</h2>
           </div>
           <PersonalInformation />
           <div id={experienceSection} className="hidden1 my-10">
@@ -369,8 +370,10 @@ export const HomePage = () => {
           </div>
 
           {/* Footer */}
-          <section>
-            <Footer />
+          <section className="my-5 mb-10">
+            <div>
+              <Footer />
+            </div>
           </section>
         </section>
       </div>
