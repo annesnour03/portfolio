@@ -1,7 +1,6 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import tw from "tailwind-styled-components";
 import "index.css";
-import { TerminalLogic } from "components/terminal/TerminalLogic";
 import { TerminalInputPromptLine } from "components/terminal/TerminalInputPromptLine";
 import PS1 from "components/terminal/PS1";
 type Props = {};
