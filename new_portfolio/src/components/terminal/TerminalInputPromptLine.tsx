@@ -8,11 +8,31 @@ import {
 import tw from "tailwind-styled-components";
 import PS1 from "./PS1";
 import { TerminalHistory } from "pages/Terminal";
-import { commandExists, runCommand, scrollSmoothlyToBottom } from "./utils";
+import {
+  commandExists,
+  getAutoCompletePrompt,
+  runCommand,
+  scrollSmoothlyToBottom,
+} from "./utils";
 
 const InputField = tw.input<{ $commandValid: boolean }>`
   ${(p) => (p.$commandValid ? "text-green-600" : "text-red-600")}
 
+    border-none
+    opacity-100
+    bg-transparent
+    resize-none
+    h-[24px]
+    select-none
+    outline-none
+    font-[UbuntuMono]
+    overflow-y-auto
+    flex-grow
+    caret-slate-600
+    `;
+
+const AutoCompleteText = tw.input`
+    text-gray-600
     border-none
     opacity-100
     bg-transparent
@@ -39,6 +59,8 @@ export const TerminalInputPromptLine = ({
   const [historyIndex, setHistoryIndex] = useState<number>(
     allPrompts.length - 1
   );
+  const [autoCompletePrompt, setAutoCompletePrompt] = useState<string>("");
+
   const getLatestPrompt = (): string => allPrompts.at(-1) ?? "";
   const updateLatestPrompt = (newValue: string) => {
     setAllPrompts([...allPrompts.slice(0, -1), newValue]);
@@ -49,8 +71,12 @@ export const TerminalInputPromptLine = ({
   const handleOnChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
     updateLatestPrompt(target.value);
+    updateAutoCompletePrompt(target.value);
   };
-
+  const updateAutoCompletePrompt = (newPromptValue: string) => {
+    setAutoCompletePrompt(getAutoCompletePrompt(newPromptValue));
+  };
+  const resetAutoCompletePrompt = () => setAutoCompletePrompt("");
   const getCommandHistoryData = () => {
     const removeAdjacentDuplicates = (arr: string[]): string[] => {
       return arr.filter((elem, i) => i === 0 || elem !== arr[i - 1]);
@@ -75,6 +101,8 @@ export const TerminalInputPromptLine = ({
         },
       ]);
       setHistoryIndex(getCommandHistoryData().length);
+      resetAutoCompletePrompt();
+
       pushNewPrompt(latestPrompt);
       pushNewPrompt("");
 
@@ -82,6 +110,11 @@ export const TerminalInputPromptLine = ({
       scrollSmoothlyToBottom("term");
     } else if (key === "Tab") {
       e.preventDefault();
+      // If we have the possibility of autocompleting
+      if (autoCompletePrompt !== "") {
+        updateLatestPrompt(autoCompletePrompt);
+        resetAutoCompletePrompt();
+      }
     } else if (e.ctrlKey && key === "c") {
       e.preventDefault();
 
@@ -99,6 +132,7 @@ export const TerminalInputPromptLine = ({
       scrollSmoothlyToBottom("term");
     } else if (key === "ArrowUp") {
       e.preventDefault();
+      resetAutoCompletePrompt();
 
       // We have reached the end of the history
       if (historyIndex <= 0) {
@@ -109,6 +143,7 @@ export const TerminalInputPromptLine = ({
       setHistoryIndex(historyIndex - 1);
     } else if (key === "ArrowDown") {
       e.preventDefault();
+      resetAutoCompletePrompt();
 
       if (historyIndex >= getCommandHistoryData().length - 1) {
         updateLatestPrompt("");
@@ -122,7 +157,18 @@ export const TerminalInputPromptLine = ({
   };
   return (
     <>
-      <span className="flex flex-row items-center">
+      <span className="mb-[-24px] flex flex-row items-center">
+        <PS1 />
+        <AutoCompleteText
+          autoCorrect="false"
+          autoCapitalize="false"
+          autoComplete="false"
+          spellCheck="false"
+          value={autoCompletePrompt}
+          disabled
+        />
+      </span>
+      <span className="z-10 flex flex-row items-center">
         <PS1 />
         <InputField
           autoCorrect="false"

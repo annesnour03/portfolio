@@ -27,7 +27,8 @@ export const runCommand = (commandFullLine: string): JSX.Element => {
       return (
         <>
           {command}: command not found. Did you mean{" "}
-          <p className="text-yellow-400 inline-block">'{closest.correct}'</p>? To show all commands, run 'help'.
+          <p className="inline-block text-yellow-400">'{closest.correct}'</p>?
+          To show all commands, run 'help'.
         </>
       );
     return <>{command}: command not found. Try to run 'help'!</>;
@@ -52,4 +53,13 @@ const levenshtein = (a: string, b: string): number => {
       levenshtein(a.substring(1), b.substring(1))
     )
   );
+};
+
+export const getAutoCompletePrompt = (currentPrompt: string): string => {
+  if (currentPrompt === "") return "";
+  // We try to get to string that matches the closest to our prompt
+  const candidates = allCommands.map(
+    (command) => (command.startsWith(currentPrompt) && command) || ""
+  );
+  return candidates.find((candidate) => candidate !== "") ?? "";
 };
