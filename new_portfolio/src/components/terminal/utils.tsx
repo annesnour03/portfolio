@@ -1,4 +1,5 @@
 import * as bin from "./bin";
+
 const allCommands = Object.keys(bin);
 export const commandExists = (commandFullLine: string) => {
   const [command, ..._] = commandFullLine.split(" ");

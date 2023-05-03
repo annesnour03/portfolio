@@ -1,5 +1,5 @@
-import { Routes, Route, Outlet, Link } from "react-router-dom";
-import { HomePage, ErrorPage,Terminal } from "pages";
+import { ErrorPage, HomePage, Terminal } from "pages";
+import { Link, Outlet, Route, Routes } from "react-router-dom";
 
 const App = () => {
   return (

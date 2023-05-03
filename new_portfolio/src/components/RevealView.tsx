@@ -1,4 +1,5 @@
 import { useInView } from "react-intersection-observer";
+
 export const RevealView = ({
   children,
   triggerOnce = true,

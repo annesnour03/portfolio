@@ -1,8 +1,10 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
-import tw from "tailwind-styled-components";
 import "index.css";
-import { TerminalInputPromptLine } from "components/terminal/TerminalInputPromptLine";
+import { useEffect, useRef, useState } from "react";
+import tw from "tailwind-styled-components";
+
 import PS1 from "components/terminal/PS1";
+import { TerminalInputPromptLine } from "components/terminal/TerminalInputPromptLine";
+
 type Props = {};
 export type TerminalHistory = {
   command: string;

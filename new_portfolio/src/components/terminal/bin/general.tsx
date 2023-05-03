@@ -1,4 +1,3 @@
-import * as bin from "./index";
 import {
   GITHUB_SOURCE_URL,
   LINKEDIN_URL,
@@ -6,6 +5,8 @@ import {
   myAge,
 } from "appconstants";
 import { openLink } from "helpers/General";
+
+import * as bin from "./index";
 
 export const help = () => {
   const allCommands: string[] = Object.keys(bin);

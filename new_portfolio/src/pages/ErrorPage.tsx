@@ -1,6 +1,7 @@
 import { StarsCanvas } from "components";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { Footer } from "./HomePage";
 
 type ErrorProps = {};

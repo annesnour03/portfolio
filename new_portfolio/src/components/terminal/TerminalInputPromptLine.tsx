@@ -1,3 +1,4 @@
+import { TerminalHistory } from "pages/Terminal";
 import {
   Dispatch,
   RefObject,
@@ -6,8 +7,8 @@ import {
   useState,
 } from "react";
 import tw from "tailwind-styled-components";
+
 import PS1 from "./PS1";
-import { TerminalHistory } from "pages/Terminal";
 import {
   commandExists,
   getAutoCompletePrompt,

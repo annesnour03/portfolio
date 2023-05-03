@@ -1,7 +1,8 @@
-import { useState, useRef, Suspense, Ref } from "react";
+import { PointMaterial, Points, Preload } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Points, PointMaterial, Preload } from "@react-three/drei";
+import { Ref, Suspense, useRef, useState } from "react";
 import { Points as t_Points } from "three";
+
 const random = require("maath/random/dist/maath-random.esm");
 
 type StarsCanvasProps = {

@@ -1,30 +1,31 @@
-import "../App.css";
+import { crafterlogo, uvalogo, weplogo } from "assets/logos";
+import { openLink } from "helpers/General";
 import React, { useCallback, useEffect, useId, useState } from "react";
-import tw from "tailwind-styled-components";
-import {
-  LICHESS_URL,
-  KFC_URL,
-  R6_PROFILE_URL,
-  myAge,
-  GITHUB_URL,
-  LINKEDIN_URL,
-} from "../appconstants/constants";
-import { StarsCanvas, RevealView } from "../components";
+import { IconType } from "react-icons";
+import { FaChess, FaGithub, FaLinkedin } from "react-icons/fa";
+import { GiCook } from "react-icons/gi";
+import { IoGameController } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { FaGithub, FaChess, FaLinkedin } from "react-icons/fa";
-import { IoGameController } from "react-icons/io5";
-import { GiCook } from "react-icons/gi";
-import { IconType } from "react-icons";
-import { openLink } from "helpers/General";
 import styled from "styled-components";
-import { crafterlogo, uvalogo, weplogo } from "assets/logos";
+import tw from "tailwind-styled-components";
 // @ts-expect-error
 import BIRDS from "vanta/dist/vanta.birds.min";
-import { Link } from "react-router-dom";
+
+import "../App.css";
+import {
+  GITHUB_URL,
+  KFC_URL,
+  LICHESS_URL,
+  LINKEDIN_URL,
+  R6_PROFILE_URL,
+  myAge,
+} from "../appconstants/constants";
+import { RevealView, StarsCanvas } from "../components";
 
 const ProjectView: React.FC = () => {
   const t = styled.div`
@@ -320,7 +321,7 @@ export const HomePage = () => {
             <header className="flex h-16 justify-center gap-3 bg-transparent align-baseline">
               <LinkButton>Home</LinkButton>
               <LinkButton>
-                <Link  to="/terminal">Terminal</Link>
+                <Link to="/terminal">Terminal</Link>
               </LinkButton>
               <LinkButton onClick={() => scrollToExperienceSection()}>
                 Experience
