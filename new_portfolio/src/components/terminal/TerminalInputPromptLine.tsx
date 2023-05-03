@@ -3,8 +3,6 @@ import {
   RefObject,
   SetStateAction,
   SyntheticEvent,
-  useEffect,
-  useRef,
   useState,
 } from "react";
 import tw from "tailwind-styled-components";
@@ -57,7 +55,7 @@ export const TerminalInputPromptLine = ({
     const removeAdjacentDuplicates = (arr: string[]): string[] => {
       return arr.filter((elem, i) => i === 0 || elem !== arr[i - 1]);
     };
-    return removeAdjacentDuplicates(allPrompts).filter((elem) => elem !== "");
+    return removeAdjacentDuplicates(allPrompts.filter((elem) => elem !== ""));
   };
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -86,6 +84,7 @@ export const TerminalInputPromptLine = ({
       e.preventDefault();
     } else if (e.ctrlKey && key === "c") {
       e.preventDefault();
+
       setHistory([
         ...history,
         {
@@ -94,32 +93,29 @@ export const TerminalInputPromptLine = ({
           output: <></>,
         },
       ]);
+
       updateLatestPrompt("");
       // After we have inserted the history, we scroll smoothly to it.
       scrollSmoothlyToBottom("term");
     } else if (key === "ArrowUp") {
       e.preventDefault();
+
       // We have reached the end of the history
       if (historyIndex <= 0) {
         return;
       }
-      console.log(
-        "yooyoyoyoy",
-        allPrompts,
-        historyIndex,
-        allPrompts[historyIndex - 1]
-      );
+
       updateLatestPrompt(getCommandHistoryData()[historyIndex - 1]);
       setHistoryIndex(historyIndex - 1);
     } else if (key === "ArrowDown") {
       e.preventDefault();
 
-      console.log("getting past", getCommandHistoryData(), historyIndex);
-      if (historyIndex === getCommandHistoryData().length - 1) {
-        updateLatestPrompt("  ");
-        setHistoryIndex(historyIndex);
+      if (historyIndex >= getCommandHistoryData().length - 1) {
+        updateLatestPrompt("");
+        setHistoryIndex(getCommandHistoryData().length);
         return;
       }
+
       updateLatestPrompt(getCommandHistoryData()[historyIndex + 1]);
       setHistoryIndex(historyIndex + 1);
     }
