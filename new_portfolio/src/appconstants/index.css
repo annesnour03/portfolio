@@ -1,0 +1,28 @@
+.ansi2html-content {
+  display: inline;
+  flex-direction: column;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.neofetch_logo {
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+}
+.neofetch_logo > div {
+  white-space: pre-wrap;
+  /* display: block; */
+  line-height: normal;
+}
+.ansi1 {
+  font-weight: bold;
+}
+.ansi33 {
+  color: #aa5500;
+}
+.ansi37 {
+  color: #f5f1de;
+}
+.ansi38-8 {
+  color: #7f7f7f;
+}

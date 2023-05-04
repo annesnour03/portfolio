@@ -1,14 +1,14 @@
 import React from "react";
 
-type Props = {};
+type PS1Props = { onlyHostName?: boolean };
 
-const PS1 = (props: Props) => {
+const PS1 = ({ onlyHostName = false }: PS1Props) => {
   return (
     <div className="inline-block font-[UbuntuMono] flex-none ">
       <span className="text-blue-400">guest</span>
       <span>@</span>
       <span className="text-green-400">annes.dev</span>
-      <span className="text-purple-400">:$ ~&nbsp;</span>
+      {!onlyHostName && <span className="text-purple-400">:$ ~&nbsp;</span>}
     </div>
   );
 };
