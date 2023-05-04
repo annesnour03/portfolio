@@ -41,19 +41,37 @@ export const runCommand = (commandFullLine: string): JSX.Element => {
 };
 
 const levenshtein = (a: string, b: string): number => {
-  if (a.length === 0) return b.length;
-  if (b.length === 0) return a.length;
+  const { substitution, deletion, insertion } = {
+    substitution: 1,
+    deletion: 1,
+    insertion: 1,
+  };
+  const aIsLonger = a.length > b.length;
+  const longer = (aIsLonger ? a : b).split("");
+  const shorter = (aIsLonger ? b : a).split("");
+  if (shorter.length === 0) return longer.length;
 
-  if (a[0] === b[0]) return levenshtein(a.substring(1), b.substring(1));
-
-  return (
-    1 +
-    Math.min(
-      levenshtein(a, b.substring(1)),
-      levenshtein(a.substring(1), b),
-      levenshtein(a.substring(1), b.substring(1))
-    )
+  const currentMatrixRow = [...Array(shorter.length)].map(
+    (_, index) => index + 1
   );
+
+  longer.forEach((charA, rowIndex) => {
+    let topLeft = rowIndex;
+
+    shorter.forEach((charB, columnIndex) => {
+      const top = currentMatrixRow[columnIndex];
+      const left =
+        columnIndex === 0 ? rowIndex + 1 : currentMatrixRow[columnIndex - 1];
+
+      const tmp = currentMatrixRow[columnIndex];
+      currentMatrixRow[columnIndex] =
+        charA === charB
+          ? topLeft // equality
+          : Math.min(top + deletion, left + insertion, topLeft + substitution);
+      topLeft = tmp;
+    });
+  });
+  return currentMatrixRow[currentMatrixRow.length - 1];
 };
 
 export const getAutoCompletePrompt = (currentPrompt: string): string => {
