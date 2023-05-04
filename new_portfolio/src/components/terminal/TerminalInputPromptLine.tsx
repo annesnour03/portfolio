@@ -116,7 +116,8 @@ export const TerminalInputPromptLine = ({
         updateLatestPrompt(autoCompletePrompt);
         resetAutoCompletePrompt();
       }
-    } else if (e.ctrlKey && key === "c") {
+    } else if (e.ctrlKey && key === "c" && !window.getSelection()?.toString()) {
+      // If we pressed CNTRL + C and we did not have anything selected.
       e.preventDefault();
 
       setHistory([
