@@ -4,6 +4,7 @@ import tw from "tailwind-styled-components";
 
 import PS1 from "components/terminal/PS1";
 import { TerminalInputPromptLine } from "components/terminal/TerminalInputPromptLine";
+import { runCommand } from "components/terminal/utils";
 
 type Props = {};
 export type TerminalHistory = {
@@ -27,9 +28,12 @@ ${(p) => (p.$commandValid ? "text-green-600" : "text-red-600")}
     `;
 
 export const Terminal = ({}: Props) => {
+  const startCommand: string = "welcome";
   const termRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [history, setHistory] = useState<TerminalHistory[]>([]);
+  const [history, setHistory] = useState<TerminalHistory[]>([
+    { command:startCommand, commandValid: true, output: runCommand(startCommand) },
+  ]);
   const scrollToBottom = () => {
     inputRef.current?.scrollIntoView({ behavior: "smooth" });
   };
