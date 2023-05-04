@@ -157,8 +157,8 @@ export const TerminalInputPromptLine = ({
     }
   };
   return (
-    <>
-      <span className="mb-[-24px] flex flex-row items-center">
+    <div className="relative">
+      <span className="mb-[-24px] absolute flex flex-row items-center w-full -z-10">
         <PS1 />
         <AutoCompleteText
           autoCorrect="false"
@@ -169,7 +169,7 @@ export const TerminalInputPromptLine = ({
           disabled
         />
       </span>
-      <span className="z-10 flex flex-row items-center">
+      <span className="z-10 absolute flex flex-row items-center w-full">
         <PS1 />
         <InputField
           autoCorrect="false"
@@ -179,7 +179,6 @@ export const TerminalInputPromptLine = ({
           ref={inputRef}
           className=""
           id="latest-input"
-          key="enterInput"
           value={getLatestPrompt()}
           onChange={handleOnChange}
           onKeyDown={handleKey}
@@ -188,6 +187,6 @@ export const TerminalInputPromptLine = ({
           autoFocus
         />
       </span>
-    </>
+    </div>
   );
 };
