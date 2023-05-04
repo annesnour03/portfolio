@@ -176,6 +176,7 @@ export const TerminalInputPromptLine = ({
           autoCapitalize="false"
           autoComplete="false"
           spellCheck="false"
+          type="email"
           ref={inputRef}
           className=""
           id="latest-input"
