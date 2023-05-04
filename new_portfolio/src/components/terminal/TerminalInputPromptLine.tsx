@@ -92,15 +92,20 @@ export const TerminalInputPromptLine = ({
     // Handle submission
     if (key === "Enter") {
       e.preventDefault();
-      // Create a TerminalHistory object and push it to the history.
-      setHistory([
-        ...history,
-        {
-          command: latestPrompt,
-          commandValid: commandExists(latestPrompt),
-          output: runCommand(latestPrompt),
-        },
-      ]);
+      // We have one special command, "clear", because it interacts with history.
+      if (latestPrompt === "clear") {
+        setHistory([]);
+      } else {
+        // Create a TerminalHistory object and push it to the history.
+        setHistory([
+          ...history,
+          {
+            command: latestPrompt,
+            commandValid: commandExists(latestPrompt),
+            output: runCommand(latestPrompt),
+          },
+        ]);
+      }
       setHistoryIndex(getCommandHistoryData().length);
       resetAutoCompletePrompt();
 

@@ -255,3 +255,7 @@ export const cowsay = (argv: string[]) => {
     </div>
   );
 };
+
+export const clear = () => {
+  return <></>;
+};
