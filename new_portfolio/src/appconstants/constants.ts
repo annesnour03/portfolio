@@ -1,5 +1,7 @@
 const birthday: number = new Date(2003, 2, 1).valueOf();
 export const myAge = new Date(Date.now() - birthday).getUTCFullYear() - 1970;
+export const myAgeDays =
+  Math.floor((Date.now() - birthday) / (1000 * 60 * 60 * 24)) % 365.25;
 export const primary = "#0065b8";
 
 export const LICHESS_URL = "https://lichess.org/@/xruprim";

@@ -4,6 +4,7 @@ import {
   LinuxLogo,
   asciiAnnes,
   myAge,
+  myAgeDays,
 } from "appconstants";
 import { openLink } from "helpers/General";
 
@@ -170,5 +171,14 @@ export const neofetch = () => {
         {currentGPU !== null && <InfoLine infoKey="GPU" info={currentGPU} />}
       </div>
     </div>
+  );
+};
+
+export const age = () => {
+  return (
+    <>
+      I am currently <p className="inline-block text-cyan-300">{myAge}</p> years
+      and <p className="inline-block text-cyan-300">{myAgeDays}</p> days old.
+    </>
   );
 };
