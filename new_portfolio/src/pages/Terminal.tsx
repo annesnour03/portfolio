@@ -23,7 +23,8 @@ ${(p) => (p.$commandValid ? "text-green-600" : "text-red-600")}
     select-none
     outline-none
     font-[UbuntuMono]
-    overflow-y-auto
+    overflow-y-hidden
+    break-all
     flex-grow
     `;
 
