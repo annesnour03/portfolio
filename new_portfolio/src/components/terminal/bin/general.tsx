@@ -3,6 +3,7 @@ import {
   LINKEDIN_URL,
   LinuxLogo,
   asciiAnnes,
+  cow,
   myAge,
   myAgeDays,
 } from "appconstants";
@@ -180,5 +181,77 @@ export const age = () => {
       I am currently <p className="inline-block text-cyan-300">{myAge}</p> years
       and <p className="inline-block text-cyan-300">{myAgeDays}</p> days old.
     </>
+  );
+};
+
+export const cowsay = (argv: string[]) => {
+  if (argv.length === 0) return <></>;
+  const combinedPrompt = argv.join("");
+
+  const MAX_CHARS_WIDTH = 40;
+  const BAR_WIDTH = Math.min(combinedPrompt.length + 2, MAX_CHARS_WIDTH);
+  const TOP_DELIM = "_".repeat(BAR_WIDTH) + "\n";
+  const BOTTOM_DELIM = "-".repeat(BAR_WIDTH) + "\n";
+
+  const amountOfLinesText =
+    Math.floor(combinedPrompt.length / (BAR_WIDTH - 2)) +
+    (combinedPrompt.length % (BAR_WIDTH - 2) > 0 ? 1 : 0);
+
+  const getStartingColumn = (lines: number): JSX.Element[] => {
+    // The starting column varies based on the amount of content lines present.
+    if (lines === 1) return [<p key={"cowsay_0"}>{"<"}</p>];
+    const log: JSX.Element[] = [];
+    for (let i = 0; i < lines; i++) {
+      if (i === 0) log.push(<p>{"/"}</p>);
+      else if (i === lines - 1) log.push(<p>{"\\"}</p>);
+      else log.push(<p>{"|"}</p>);
+    }
+    return log;
+  };
+
+  const startingColumn = getStartingColumn(amountOfLinesText);
+  const getEndingColumn = (lines: number) => {
+    const localStartingColumn = getStartingColumn(lines);
+    if (localStartingColumn.length === 1)
+      return [
+        <>
+          <p>{">"}</p>
+        </>,
+      ];
+    else return localStartingColumn.reverse();
+  };
+  const endingColumn = getEndingColumn(amountOfLinesText);
+
+  return (
+    <div>
+      <span className="w-full whitespace-pre-wrap ml-[1ch] leading-[1rem] block">
+        {TOP_DELIM}
+      </span>
+      {/* Staring column */}
+      <div className="inline-flex flex-col">
+        {startingColumn.map((elem, idx) => (
+          <div key={`cowsay_front_${idx}`}>{elem}</div>
+        ))}
+      </div>
+      {/* Content */}
+      <div
+        className="ml-[1ch] mr-[1ch] break-all inline-block"
+        // Dynamically adjust the size
+        style={{ width: `${BAR_WIDTH - 2}ch`, maxWidth: `${BAR_WIDTH - 2}ch` }}
+      >
+        <p className="flex">{combinedPrompt}</p>
+      </div>
+      <div className="inline-flex flex-col">
+        {endingColumn.map((elem, idx) => (
+          <div key={`cowsay_end_${idx}`}>{elem}</div>
+        ))}
+      </div>
+      <br></br>
+      {/* Ending column */}
+      <span className="whitespace-pre-wrap ml-[1ch] leading-[0.4rem] block">
+        {BOTTOM_DELIM}
+      </span>
+      {cow}
+    </div>
   );
 };

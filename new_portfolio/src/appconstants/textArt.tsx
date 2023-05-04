@@ -153,3 +153,19 @@ export const LinuxLogo = (
     </div>
   </div>
 );
+
+export const cow = (
+  <>
+    <pre className="ansi2html-content">
+      {" "}
+      {"\n"}
+      {"        "}\{"   "}^__^{"\n"}
+      {"         "}\{"  "}(oo)\_______{"\n"}
+      {"            "}(__)\{"       "}
+      {")"}\/\{"\n"}
+      {"                "}||----w |{"\n"}
+      {"                "}||{"     "}||{"\n"}
+      {"\n"}
+    </pre>
+  </>
+);
