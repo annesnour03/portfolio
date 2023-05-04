@@ -48,7 +48,7 @@ export const Terminal = ({}: Props) => {
         id="term"
       >
         <div className="h-full overflow-y-hidden rounded border-2 border-blue-700 p-7">
-          <div className="inner h-full overflow-y-scroll">
+          <div className="inner h-full overflow-y-scroll overflow-x-hidden">
             {history.map((hisInstance, idx) => (
               <div key={`${hisInstance.command}${idx}`}>
                 {/* Inputline */}
