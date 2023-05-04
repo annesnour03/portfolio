@@ -42,15 +42,15 @@ export const welcome = () => {
       </p>
       <p>
         To get started with some commands, type "
-        <p className="inline-block text-cyan-300">help</p>".
+        <span className="inline-block text-cyan-300">help</span>".
       </p>
       <p>
         You can go back into your command history with the{" "}
-        <p className="inline-block text-cyan-300">UP/DOWN</p> arrows.
+        <span className="inline-block text-cyan-300">UP/DOWN</span> arrows.
       </p>
       <p>
         You can also accept a suggestion by simply pressing the{" "}
-        <p className="inline-block text-cyan-300">TAB</p> key.
+        <span className="inline-block text-cyan-300">TAB</span> key.
       </p>
     </div>
   );
