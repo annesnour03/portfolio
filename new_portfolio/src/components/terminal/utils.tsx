@@ -7,7 +7,7 @@ export const commandExists = (commandFullLine: string) => {
 };
 
 export const scrollSmoothlyToBottom = (id: string) => {
-  const element = document.getElementById("tt");
+  const element = document.getElementById(id);
   element?.animate({ scrollTop: element.scrollHeight }, 500);
 };
 
