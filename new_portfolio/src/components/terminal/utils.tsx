@@ -11,7 +11,7 @@ export const scrollSmoothlyToBottom = (id: string) => {
   element?.animate({ scrollTop: element.scrollHeight }, 500);
 };
 
-export const runCommand = (commandFullLine: string): JSX.Element => {
+export const runCommand = async (commandFullLine: string) => {
   const [command, ...argv] = commandFullLine.split(" ");
   // Double check that the command exists
   if (!commandExists(command)) {
@@ -35,8 +35,7 @@ export const runCommand = (commandFullLine: string): JSX.Element => {
     return <>{command}: command not found. Try to run 'help'!</>;
   }
   const output = bin[command as keyof typeof bin];
-  const res = output(argv);
-
+  const res = await output(argv);
   return <div>{res}</div>;
 };
 

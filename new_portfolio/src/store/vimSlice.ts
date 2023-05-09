@@ -1,28 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface VimState {
-  value: number
+  visible: boolean;
+  filepath: string | null;
 }
 
-const initialState = { value: 0 } as VimState
+const initialState = { visible: false, filepath: null } as VimState;
 
 const VimSlice = createSlice({
-  name: 'vim',
+  name: "vim",
   initialState,
   reducers: {
-    increment(state) {
-      state.value++
+    showVim(state, action: PayloadAction<string | null>) {
+      state.visible = true;
+      state.filepath = action.payload;
     },
-    decrement(state) {
-      state.value--
-    },
-    incrementByAmount(state, action: PayloadAction<number>) {
-      state.value += action.payload
+    hideVim(state) {
+      state.visible = false;
+      state.filepath = null;
     },
   },
-})
+});
 
-export const { increment, decrement, incrementByAmount } = VimSlice.actions
-export default VimSlice.reducer
-
+export const { showVim, hideVim } = VimSlice.actions;
+export default VimSlice.reducer;

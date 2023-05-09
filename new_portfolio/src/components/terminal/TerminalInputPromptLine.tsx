@@ -4,8 +4,10 @@ import {
   RefObject,
   SetStateAction,
   SyntheticEvent,
+  useEffect,
   useState,
 } from "react";
+import { useReduxSelector } from "store";
 import tw from "tailwind-styled-components";
 
 import PS1 from "./PS1";
@@ -62,6 +64,13 @@ export const TerminalInputPromptLine = ({
   );
   const [autoCompletePrompt, setAutoCompletePrompt] = useState<string>("");
 
+  const { vimSlice } = useReduxSelector((state) => state.terminal);
+  useEffect(() => {
+    if (!vimSlice.visible) {
+      inputRef.current?.focus();
+    }
+  }, [vimSlice]);
+
   const getLatestPrompt = (): string => allPrompts.at(-1) ?? "";
   const updateLatestPrompt = (newValue: string) => {
     setAllPrompts([...allPrompts.slice(0, -1), newValue]);
@@ -85,9 +94,8 @@ export const TerminalInputPromptLine = ({
     return removeAdjacentDuplicates(allPrompts.filter((elem) => elem !== ""));
   };
 
-  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key;
-
     const latestPrompt = getLatestPrompt();
     // Handle submission
     if (key === "Enter") {
@@ -102,7 +110,7 @@ export const TerminalInputPromptLine = ({
           {
             command: latestPrompt,
             commandValid: commandExists(latestPrompt),
-            output: runCommand(latestPrompt),
+            output: await runCommand(latestPrompt),
           },
         ]);
       }
@@ -190,7 +198,7 @@ export const TerminalInputPromptLine = ({
           onChange={handleOnChange}
           onKeyDown={handleKey}
           $commandValid={commandExists(getLatestPrompt())}
-          onBlur={({ target }) => target.focus()}
+          onBlur={({ target }) => !vimSlice.visible && target.focus()}
           autoFocus
         />
       </span>
