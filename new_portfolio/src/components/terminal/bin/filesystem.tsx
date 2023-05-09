@@ -1,5 +1,6 @@
 import { checkFileExists } from "helpers/SliceHelpers";
 import store from "store";
+import { File } from "store/fileSystemSlice";
 import { showVim } from "store/vimSlice";
 
 export const vim = (argv: string[]) => {
@@ -66,4 +67,29 @@ export const ls = () => {
       ))}
     </>
   );
+};
+
+export const cat = (argv: string[]) => {
+  const filename = [...argv].join();
+  if (filename.trim().length === 0 || !filename)
+    return (
+      <>
+        Invalid usage of the cat command, pass in a filename to edit. Type{" "}
+        <span className="inline-block text-cyan-300">ls</span> to see files!
+      </>
+    );
+  // Check if file exists
+  if (!checkFileExists(filename))
+    return (
+      <>
+        Invalid file. Type{" "}
+        <span className="inline-block text-cyan-300">ls</span> to see files!
+      </>
+    );
+  const state = store.getState();
+  const { fileSystemSlice } = state.terminal;
+  const currentFile: File = fileSystemSlice.files.find(
+    (f) => f.name === filename
+  )!;
+  return <div className="whitespace-pre-wrap">{currentFile.content}</div>;
 };
