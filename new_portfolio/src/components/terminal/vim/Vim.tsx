@@ -7,6 +7,8 @@ import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/keybinding-vim";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-tomorrow_night";
 
@@ -46,10 +48,10 @@ export const Vim = ({ filename }: VimProps) => {
   return (
     <div className="flex justify-center items-center h-full">
       <AceEditor
-        key={filename}
+        key={currentFile.name}
         ref={editorRef}
         style={{ width: "900px" }}
-        mode="python"
+        mode={currentFile.language}
         theme="tomorrow_night"
         onChange={onChange}
         name="vim"
