@@ -304,7 +304,7 @@ export const ls = () => {
   return (
     <>
       {allFiles.map((file) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2" key={file.name}>
           <p className="inline-block" key={`${file.name}perms`}>
             -rw-rw-r--
           </p>
