@@ -7,6 +7,7 @@ import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/keybinding-vim";
+import * as keybindingVim from "ace-builds/src-noconflict/keybinding-vim";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/mode-python";
@@ -26,8 +27,7 @@ export const Vim = ({ filename }: VimProps) => {
     (f) => f.name === filename
   )!;
   const onChange = (newValue: string) => {};
-  const VimApi = require("ace-builds/src-noconflict/keybinding-vim").CodeMirror
-    .Vim;
+  const VimApi = keybindingVim.CodeMirror.Vim;
 
   VimApi.defineEx("quit", "q", () => {
     dispatch(hideVim());
