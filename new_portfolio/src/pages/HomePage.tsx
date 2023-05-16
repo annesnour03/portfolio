@@ -326,8 +326,6 @@ export const HomePage = () => {
               <LinkButton onClick={() => scrollToExperienceSection()}>
                 Experience
               </LinkButton>
-              <LinkButton>Utilities</LinkButton>
-              <LinkButton>Resume</LinkButton>
             </header>
           </div>
           <div className=" vanta flex  h-full flex-col" ref={vantaRef}>
@@ -363,7 +361,7 @@ export const HomePage = () => {
           </div>
 
           {/* Slides with projects */}
-          <div className="my-10">
+          <div className="my-10" hidden>
             <RevealView>
               <h2 className="bounce-in1 text-5xl font-bold">Projects</h2>
             </RevealView>
