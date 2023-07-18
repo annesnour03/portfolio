@@ -55,7 +55,7 @@ export const Terminal = ({}: Props) => {
 
   useEffect(scrollToBottom, [history]);
   return (
-    <div className="h-full w-full overflow-hidden p-2 text-white">
+    <div className="h-full w-full overflow-hidden text-white">
       <div
         ref={termRef}
         className="h-full w-full overflow-hidden font-[UbuntuMono]"

@@ -3,7 +3,7 @@ import "pages/mabel/mabel.css";
 export const Mabel = () => {
   return (
     <>
-      <body>
+      <div id="mabel">
         <h1>Zomervakantieplannen 😄</h1>
         <ul>
           <li>
@@ -72,7 +72,7 @@ export const Mabel = () => {
             />
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 };

@@ -1,32 +1,32 @@
 /* BEGIN TAILWIND REVERTS */
-blockquote,
-dl,
-dd,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-figure,
-p,
-pre {
+#mabel > blockquote,
+#mabel > dl,
+#mabel > dd,
+#mabel > h1,
+#mabel > h2,
+#mabel > h3,
+#mabel > h4,
+#mabel > h5,
+#mabel > h6,
+#mabel > hr,
+#mabel > figure,
+#mabel > p,
+#mabel > pre {
   margin: inherit;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+#mabel > h1,
+#mabel > h2,
+#mabel > h3,
+#mabel > h4,
+#mabel > h5,
+#mabel > h6 {
   font-size: revert;
   font-weight: revert;
 }
 
-ol,
-ul {
+#mabel > ol,
+#mabel > ul {
   list-style: revert;
   margin: 0;
   padding: 0;
@@ -36,7 +36,7 @@ ul {
 }
 /* END TAILWIND REVERTS */
 
-body {
+#mabel {
   font-family: "Helvetica", "Arial", sans-serif;
   color: #000000;
   font-size: 12pt;

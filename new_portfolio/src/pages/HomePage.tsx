@@ -218,7 +218,7 @@ const PersonalInformation: React.FC = () => {
   };
 
   return (
-    <div className=" flex overflow-hidden py-5 max-md:flex-col">
+    <div className="flex overflow-hidden py-5 max-md:flex-col">
       {/* Text about me */}
       <div className="max-h-96  w-1/3 overflow-hidden p-2 max-md:w-full">
         <p className="text-md font-normal">
