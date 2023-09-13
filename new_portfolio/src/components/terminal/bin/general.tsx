@@ -1,14 +1,13 @@
 import {
+  asciiAnnes,
+  cow,
   GITHUB_SOURCE_URL,
   LINKEDIN_URL,
   LinuxLogo,
-  asciiAnnes,
-  cow,
   myAge,
   myAgeDays,
 } from "appconstants";
 import { openLink } from "helpers/General";
-
 import PS1 from "../PS1";
 import * as bin from "./index";
 
@@ -224,7 +223,7 @@ export const cowsay = (argv: string[]) => {
 
   return (
     <div>
-      <span className="w-full whitespace-pre-wrap ml-[1ch] leading-[1rem] block">
+      <span className="ml-[1ch] block w-full whitespace-pre-wrap leading-[1rem]">
         {TOP_DELIM}
       </span>
       {/* Staring column */}
@@ -235,7 +234,7 @@ export const cowsay = (argv: string[]) => {
       </div>
       {/* Content */}
       <div
-        className="ml-[1ch] mr-[1ch] break-all inline-block"
+        className="ml-[1ch] mr-[1ch] inline-block break-all"
         // Dynamically adjust the size
         style={{ width: `${BAR_WIDTH - 2}ch`, maxWidth: `${BAR_WIDTH - 2}ch` }}
       >
@@ -248,7 +247,7 @@ export const cowsay = (argv: string[]) => {
       </div>
       <br></br>
       {/* Ending column */}
-      <span className="whitespace-pre-wrap ml-[1ch] leading-[0.4rem] block">
+      <span className="ml-[1ch] block whitespace-pre-wrap leading-[0.4rem]">
         {BOTTOM_DELIM}
       </span>
       {cow}

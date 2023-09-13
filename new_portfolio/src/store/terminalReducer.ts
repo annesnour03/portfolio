@@ -1,5 +1,4 @@
 import { combineReducers } from "@reduxjs/toolkit";
-
 import fileSystemSlice from "./fileSystemSlice";
 import vimSlice from "./vimSlice";
 

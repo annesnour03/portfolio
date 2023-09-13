@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
+import AceEditor from "react-ace";
+
 import { useReduxDispatch, useReduxSelector } from "store";
 import { type File } from "store/fileSystemSlice";
 import { hideVim } from "store/vimSlice";
 
-import AceEditor from "react-ace";
-
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/keybinding-vim";
+
 import * as keybindingVim from "ace-builds/src-noconflict/keybinding-vim";
+
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/mode-python";
@@ -46,7 +48,7 @@ export const Vim = ({ filename }: VimProps) => {
   }, [vimSlice]);
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex h-full items-center justify-center">
       <AceEditor
         key={currentFile.name}
         ref={editorRef}

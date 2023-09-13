@@ -1,4 +1,3 @@
-import { TerminalHistory } from "pages/Terminal";
 import {
   Dispatch,
   RefObject,
@@ -7,9 +6,10 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { TerminalHistory } from "pages/Terminal";
 import { useReduxSelector } from "store";
 import tw from "tailwind-styled-components";
-
 import PS1 from "./PS1";
 import {
   commandExists,
@@ -172,7 +172,7 @@ export const TerminalInputPromptLine = ({
   };
   return (
     <div className="relative">
-      <span className="mb-[-24px] absolute flex flex-row items-center w-full -z-10">
+      <span className="absolute -z-10 mb-[-24px] flex w-full flex-row items-center">
         <PS1 />
         <AutoCompleteText
           autoCorrect="false"
@@ -183,7 +183,7 @@ export const TerminalInputPromptLine = ({
           disabled
         />
       </span>
-      <span className="z-10 absolute flex flex-row items-center w-full">
+      <span className="absolute z-10 flex w-full flex-row items-center">
         <PS1 />
         <InputField
           autoCorrect="false"

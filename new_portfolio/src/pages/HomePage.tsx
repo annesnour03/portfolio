@@ -1,5 +1,3 @@
-import { crafterlogo, uvalogo, weplogo } from "assets/logos";
-import { openLink } from "helpers/General";
 import React, { useCallback, useEffect, useId, useState } from "react";
 import { IconType } from "react-icons";
 import { FaChess, FaGithub, FaLinkedin } from "react-icons/fa";
@@ -10,20 +8,26 @@ import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
+
+import { crafterlogo, uvalogo, weplogo } from "assets/logos";
+import { openLink } from "helpers/General";
+
 import "react-vertical-timeline-component/style.min.css";
+
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 // @ts-expect-error
 import BIRDS from "vanta/dist/vanta.birds.min";
 
 import "../App.css";
+
 import {
   GITHUB_URL,
   KFC_URL,
   LICHESS_URL,
   LINKEDIN_URL,
-  R6_PROFILE_URL,
   myAge,
+  R6_PROFILE_URL,
 } from "../appconstants/constants";
 import { RevealView, StarsCanvas } from "../components";
 
@@ -218,7 +222,7 @@ const PersonalInformation: React.FC = () => {
   };
 
   return (
-    <div className="flex overflow-hidden py-5 max-md:flex-col">
+    <div className="dbg flex overflow-hidden py-5 max-md:flex-col ">
       {/* Text about me */}
       <div className="max-h-96  w-1/3 overflow-hidden p-2 max-md:w-full">
         <p className="text-md font-normal">

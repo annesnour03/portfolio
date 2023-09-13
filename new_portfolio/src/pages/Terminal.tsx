@@ -1,8 +1,9 @@
 import "index.css";
+
 import { useEffect, useRef, useState } from "react";
+
 import { useReduxSelector } from "store";
 import tw from "tailwind-styled-components";
-
 import PS1 from "components/terminal/PS1";
 import { TerminalInputPromptLine } from "components/terminal/TerminalInputPromptLine";
 import { runCommand } from "components/terminal/utils";
@@ -64,14 +65,14 @@ export const Terminal = ({}: Props) => {
         <div className="h-full overflow-y-hidden rounded border-2 border-blue-700 p-7">
           <div
             id="ace_vim_wrapper"
-            className="absolute top-0 left-0 w-full h-full z-20"
+            className="absolute top-0 left-0 z-20 h-full w-full"
             style={{ display: vimSlice.visible === false ? "none" : "" }}
           >
-            <div className="flex justify-center items-center h-full">
+            <div className="flex h-full items-center justify-center">
               {vimSlice.visible && <Vim filename={vimSlice.filepath} />}
             </div>
           </div>
-          <div className="inner h-full overflow-y-scroll overflow-x-hidden">
+          <div className="inner h-full overflow-x-hidden overflow-y-scroll">
             {history.map((hisInstance, idx) => (
               <div key={`${hisInstance.command}${idx}`}>
                 {/* Inputline */}

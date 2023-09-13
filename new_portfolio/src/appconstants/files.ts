@@ -28,9 +28,9 @@ NOTE: Pressing <ESC> will place you in Normal mode or will cancel
     `,
   },
   {
-    name:"isqrt",
-    language:"c_cpp",
-    content:`float Q_rsqrt(float number){
+    name: "isqrt",
+    language: "c_cpp",
+    content: `float Q_rsqrt(float number){
   long i;
   float x2, y;
   const float threehalfs = 1.5F;
@@ -45,6 +45,6 @@ NOTE: Pressing <ESC> will place you in Normal mode or will cancel
 
   return y;
 }
-    `
-  }
+    `,
+  },
 ];

@@ -1,5 +1,6 @@
-import { ErrorPage, HomePage, Mabel, Terminal } from "pages";
 import { Link, Outlet, Route, Routes } from "react-router-dom";
+
+import { ErrorPage, HomePage, Mabel, Terminal } from "pages";
 
 const App = () => {
   return (
