@@ -100,6 +100,30 @@ const ExperienceTimeLine: React.FC = () => {
   return (
     <div className="select-none">
       <VerticalTimeline>
+        {/* Internship */}
+        <VerticalTimelineElement
+          className="active-activity text-white"
+          date="Sep 2023 - Dec 2023"
+          icon={
+            <img
+              alt="uva"
+              className="select-none rounded-full"
+              draggable={false}
+              src={uvalogo}
+            />
+          }
+        >
+          <div className="text-black">
+            <MainTitle>Internship</MainTitle>
+            <h3 className="vertical-timeline-element-title font-bold">
+              University of Amsterdam
+            </h3>
+            <h4 className="vertical-timeline-element-subtitle">
+            React, RTK query, Redux state management
+            </h4>
+            <p>Contributed to making a new version of DataNose (2.0), a UvA wide system.</p>
+          </div>
+        </VerticalTimelineElement>
         <VerticalTimelineElement
           className="active-activity text-white"
           date="2022 - present"
@@ -186,7 +210,7 @@ const ExperienceTimeLine: React.FC = () => {
         >
           <div className="text-black">
             <h2 className="vertical-timeline-element-title font-bold">
-              2nd year of Bsc Computer Science
+              3rd year of BSc Computer Science
             </h2>
             <h3 className="vertical-timeline-element-title font-bold">
               University of Amsterdam
