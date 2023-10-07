@@ -186,13 +186,12 @@ export const TerminalInputPromptLine = ({
       <span className="absolute z-10 flex w-full flex-row items-center">
         <PS1 />
         <InputField
-          autoCorrect="false"
-          autoCapitalize="false"
-          autoComplete="false"
+          autoCorrect="off"
+          autoCapitalize="off"
+          autoComplete="off"
           spellCheck="false"
           type="email"
           ref={inputRef}
-          className=""
           id="latest-input"
           value={getLatestPrompt()}
           onChange={handleOnChange}
