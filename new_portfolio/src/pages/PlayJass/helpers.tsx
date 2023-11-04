@@ -37,7 +37,7 @@ export const transferPoints = (
   shallowTo.lastHit = true;
 
   // Fix the points
-  shallowTo.points = (shallowTo.points ?? 0) + (shallowFrom.points ?? 0);
+  shallowTo.points = 152;
   shallowFrom.points = 0;
 
   // Fix the roem
