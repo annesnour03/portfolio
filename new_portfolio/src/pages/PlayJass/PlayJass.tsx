@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import React, { Fragment, useEffect, useState } from "react";
 
 import { clamp } from "helpers/General";
-import { calculatePoints, calculateRoem } from "./helpers";
+import { calculatePoints, calculateRoem, transferPoints } from "./helpers";
 
 const NO_GAMES = 16;
 const JASS_CURRENT_KEY = "jass:current";
@@ -29,6 +29,73 @@ export type JassRow = {
   points?: number;
   lastHit: boolean;
 };
+
+const ConfirmGoingWetPopOver = ({
+  open,
+  game,
+  selectedId,
+  closePopOver,
+  confirm,
+}: {
+  open: boolean;
+  game: JassRow[];
+  selectedId: number | null;
+  closePopOver: () => void;
+  confirm: (id: number) => void;
+}) => {
+  if (selectedId === null) return <></>;
+  const teamName = game[selectedId].teamName;
+  const couldBeMistake =
+    calculatePoints(game[selectedId]) < calculatePoints(game[selectedId ^ 1]);
+  return (
+    <Dialog.Root
+      open={open}
+      onOpenChange={(e) => {
+        closePopOver();
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0" />
+        <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+          <Dialog.Title className="m-0 mb-3 text-xl font-medium">
+            Bevestig dat team "{teamName}" nat gaat
+          </Dialog.Title>
+          {couldBeMistake && (
+            <div>
+              Weet je dit zeker? Het team {teamName} heeft minder punten dan de
+              tegenstanders
+            </div>
+          )}
+          <div className="mt-[20px] flex justify-end">
+            <Dialog.Close asChild>
+              <button className="mr-auto inline-flex h-[35px] items-center justify-center rounded-[4px] bg-slate-400 px-[15px] font-medium leading-none text-white focus:shadow-[0_0_0_2px] focus:outline-none">
+                Annuleer
+              </button>
+            </Dialog.Close>
+            <button
+              onClick={() => {
+                confirm(selectedId);
+                closePopOver();
+              }}
+              className="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green-400 px-[15px] font-medium leading-none text-green-900 focus:shadow-[0_0_0_2px] focus:outline-none"
+            >
+              Bevestig
+            </button>
+          </div>
+          <Dialog.Close asChild>
+            <button
+              className="absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+              aria-label="Close"
+            >
+              x
+            </button>
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
+
 const FillInRoemPopOver = ({
   open,
   closePopOver,
@@ -160,7 +227,14 @@ const PlayJass = (props: {}) => {
   }
   const lastGameFilledIn =
     game.at(-1)?.points !== undefined || game.at(-2)?.points !== undefined;
-  const [modalState, setModalState] = useState<{
+  const [roemModalState, setRoemModalState] = useState<{
+    open: boolean;
+    selectedId: number | null;
+  }>({
+    open: false,
+    selectedId: null,
+  });
+  const [confirmWetModalState, setConfirmWetModalOpen] = useState<{
     open: boolean;
     selectedId: number | null;
   }>({
@@ -284,17 +358,18 @@ const PlayJass = (props: {}) => {
               <th scope="col" className="px-6 py-3">
                 Teams
               </th>
-              <th scope="col" className="w-auto px-12 py-3 text-center">
+              <th scope="col" className="w-1/2 px-12 py-3 text-center">
                 Roem
               </th>
               <th></th>
-              <th scope="col" className="w-auto px-6 py-3 text-center">
+              <th scope="col" className="w-1/2 px-6 py-3 text-center">
                 Punten
               </th>
 
               <th scope="col" className="px-6 py-3 text-center">
                 Laatste slag
               </th>
+              <th scope="col" className="px-6 py-3 text-center"></th>
               <th scope="col" className="rounded-tr-md px-6 py-3 text-right">
                 Totaal
               </th>
@@ -352,7 +427,7 @@ const PlayJass = (props: {}) => {
                       <div
                         className="relative cursor-pointer"
                         onClick={() =>
-                          setModalState({
+                          setRoemModalState({
                             selectedId: idx,
                             open: true,
                           })
@@ -407,6 +482,20 @@ const PlayJass = (props: {}) => {
                         ></input>
                       </div>
                     </td>
+                    {/* Going wet */}
+                    <td>
+                      <p
+                        className="text-lg"
+                        onClick={() =>
+                          setConfirmWetModalOpen({
+                            open: true,
+                            selectedId: idx,
+                          })
+                        }
+                      >
+                        💧
+                      </p>
+                    </td>
                     <td className="px-6 py-4">
                       <p className="text-right font-medium">
                         {calculatePoints(hitInfo)}
@@ -448,6 +537,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
+              <td></td>
               <td className="px-6 py-4 text-right">{totalPointsA}</td>
             </tr>
             <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
@@ -461,6 +551,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
+              <td></td>
               <td className="px-6 py-4 text-right">{totalPointsB}</td>
             </tr>
             <tr className="">
@@ -470,7 +561,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="text-right p-0">
+              <td colSpan={2} className="p-0 text-right">
                 <button
                   onClick={resetGame}
                   className="rounded-b-md bg-green-600 p-2 font-medium text-white"
@@ -483,11 +574,30 @@ const PlayJass = (props: {}) => {
         </table>
       </div>
       <FillInRoemPopOver
-        closePopOver={() => setModalState({ open: false, selectedId: null })}
+        closePopOver={() =>
+          setRoemModalState({ open: false, selectedId: null })
+        }
         game={game}
-        open={modalState.open}
+        open={roemModalState.open}
         setCurrentHit={setGame}
-        currentHitId={modalState.selectedId}
+        currentHitId={roemModalState.selectedId}
+      />
+      <ConfirmGoingWetPopOver
+        open={confirmWetModalState.open}
+        selectedId={confirmWetModalState.selectedId}
+        game={game}
+        closePopOver={() =>
+          setConfirmWetModalOpen({ open: false, selectedId: null })
+        }
+        confirm={(id: number) => {
+          const counterId = id ^ 1;
+          const [newA, newB] = transferPoints(game[id], game[counterId]);
+
+          const shallowGame = [...game];
+          shallowGame[id] = newA;
+          shallowGame[counterId] = newB;
+          setGame(shallowGame);
+        }}
       />
     </div>
   );
