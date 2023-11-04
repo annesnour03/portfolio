@@ -2,16 +2,17 @@ import * as Dialog from "@radix-ui/react-dialog";
 import React, { Fragment, useEffect, useState } from "react";
 
 import { clamp } from "helpers/General";
+import { calculatePoints, calculateRoem } from "./helpers";
 
 const NO_GAMES = 16;
-const RoemValues = {
+export const RoemValues = {
   KING_QUEEN: 20,
   THREE_IN_ROW: 20,
   FOUR_IN_ROW: 50,
   FOUR_THE_SAME: 100,
   ALL_HITS: 100,
 } as const;
-type RoemKeys = keyof typeof RoemValues;
+export type RoemKeys = keyof typeof RoemValues;
 
 const RoemTrans: { [_ in RoemKeys]: string } = {
   THREE_IN_ROW: "Drie op eenvolgend",
@@ -20,8 +21,8 @@ const RoemTrans: { [_ in RoemKeys]: string } = {
   FOUR_THE_SAME: "Vier dezelfde kaarten",
   ALL_HITS: "Alle slagen behaald",
 };
-type RoemCount = { [_ in RoemKeys]: number };
-type JassRow = {
+export type RoemCount = { [_ in RoemKeys]: number };
+export type JassRow = {
   teamName: string;
   roemCounter: RoemCount;
   points?: number;
@@ -31,15 +32,17 @@ const FillInRoemPopOver = ({
   open,
   closePopOver,
   currentHitId,
-  currentHit,
+  game,
   setCurrentHit,
 }: {
   open: boolean;
   closePopOver: () => void;
   currentHitId: number | null;
-  currentHit: JassRow;
+  game: JassRow[];
   setCurrentHit: React.Dispatch<React.SetStateAction<JassRow[]>>;
 }) => {
+  if (currentHitId === null) return <></>;
+  const currentHit = game[currentHitId];
   const _alterValue = (type: RoemKeys, value: number) => {
     const currentGame = { ...currentHit };
     currentGame.roemCounter[type] = clamp(
@@ -71,33 +74,43 @@ const FillInRoemPopOver = ({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0" />
         <Dialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-          <Dialog.Title className="m-0 text-2xl font-medium">
-            Roem invullen
+          <Dialog.Title className="m-0 mb-3 text-xl font-medium">
+            Roem invullen voor {currentHit.teamName}
           </Dialog.Title>
           <div className="flex flex-col gap-2">
             {(Object.keys(RoemTrans) as (keyof typeof RoemTrans)[]).map(
               (name) => (
                 <div className="flex" key={name}>
-                  <p className="text-xl">{RoemTrans[name]}</p>
+                  <p className="text-lg">{RoemTrans[name]}</p>
                   <div className="ml-auto flex gap-5">
-                    <button  className="aspect-square h-8 shadow-2xl rounded bg-red-100" onClick={() => decrement(name)}>-</button>
+                    <button
+                      className="aspect-square h-8 rounded bg-red-100 shadow-2xl"
+                      onClick={() => decrement(name)}
+                    >
+                      -
+                    </button>
                     <p className="text-xl">{currentHit?.roemCounter[name]}</p>
-                    <button  className="aspect-square h-8 shadow-2xl rounded bg-green-100" onClick={() => increment(name)}>+</button>
+                    <button
+                      className="aspect-square h-8 rounded bg-green-100 shadow-2xl"
+                      onClick={() => increment(name)}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               )
             )}
           </div>
-          <div className="mt-[25px] flex justify-end">
+          <div className="mt-[20px] flex justify-end">
             <Dialog.Close asChild>
-              <button className="text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green-400 px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
-                Save changes
+              <button className="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-green-400 px-[15px] font-medium leading-none text-green-900 focus:shadow-[0_0_0_2px] focus:outline-none">
+                Opslaan
               </button>
             </Dialog.Close>
           </div>
           <Dialog.Close asChild>
             <button
-              className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+              className="absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
               aria-label="Close"
             >
               x
@@ -109,45 +122,18 @@ const FillInRoemPopOver = ({
   );
 };
 const PlayJass = (props: {}) => {
-  const [game, setGame] = useState<JassRow[]>([]);
-  const lastGameFilledIn =
-    game.at(-1)?.points !== undefined || game.at(-2)?.points !== undefined;
-  const [modalState, setModalState] = useState<{
-    open: boolean;
-    selectedId: number | null;
-  }>({
-    open: false,
-    selectedId: null,
-  });
+  const [game, setGame] = useState<JassRow[]>(getNewObjects());
 
-  const calculatePoints = ({
-    roemCounter,
-    lastHit,
-    points,
-  }: JassRow): number => {
-    const roem = (
-      Object.keys(roemCounter) as (keyof typeof roemCounter)[]
-    ).reduce((acc, type) => {
-      const count = roemCounter[type];
-      const value = RoemValues[type];
-      return acc + count * value;
-    }, 0);
-    return roem + (lastHit ? 10 : 0) + (points ?? 0);
-  };
+  function getTeamNames(game?: JassRow[]) {
+    const teamNameA = game !== undefined ? game[0].teamName : "Team A";
+    const teamNameB = game !== undefined ? game[1].teamName : "Team B";
+    return [teamNameA, teamNameB] as const;
+  }
 
-  // TODO fix proper team namings
-  const totalPointsA = game
-    .filter((game) => game.teamName === "Team A")
-    .map(calculatePoints)
-    .reduce((acc, a) => acc + a, 0);
-  const totalPointsB = game
-    .filter((game) => game.teamName === "Team B")
-    .map(calculatePoints)
-    .reduce((acc, a) => acc + a, 0);
-
-  const addNewHitData = () => {
+  function getNewObjects(game?: JassRow[]) {
+    const [teamNameA, teamNameB] = getTeamNames(game);
     const teamA: JassRow = {
-      teamName: "Team A",
+      teamName: teamNameA,
       roemCounter: {
         ALL_HITS: 0,
         FOUR_IN_ROW: 0,
@@ -159,7 +145,7 @@ const PlayJass = (props: {}) => {
     };
 
     const teamB: JassRow = {
-      teamName: "Team B",
+      teamName: teamNameB,
       roemCounter: {
         ALL_HITS: 0,
         FOUR_IN_ROW: 0,
@@ -169,7 +155,28 @@ const PlayJass = (props: {}) => {
       },
       lastHit: false,
     };
-    setGame((game) => [...game, teamA, teamB]);
+    return [teamA, teamB];
+  }
+  const lastGameFilledIn =
+    game.at(-1)?.points !== undefined || game.at(-2)?.points !== undefined;
+  const [modalState, setModalState] = useState<{
+    open: boolean;
+    selectedId: number | null;
+  }>({
+    open: false,
+    selectedId: null,
+  });
+
+  const totalPointsA = game
+    .filter((localGame) => localGame.teamName === getTeamNames(game)[0])
+    .map(calculatePoints)
+    .reduce((acc, a) => acc + a, 0);
+  const totalPointsB = game
+    .filter((localGame) => localGame.teamName === getTeamNames(game)[1])
+    .map(calculatePoints)
+    .reduce((acc, a) => acc + a, 0);
+  const addNewHitData = () => {
+    setGame((game) => [...game, ...getNewObjects(game)]);
   };
 
   const getRoemCountFormatted = (roemCounter: RoemCount): string => {
@@ -186,7 +193,7 @@ const PlayJass = (props: {}) => {
 
       [] as string[]
     );
-    return roem.join(" + ");
+    return `${roem.join(" + ")} (${calculateRoem(roemCounter)})`;
   };
 
   const updateScore = (value: number, id: number) => {
@@ -205,7 +212,8 @@ const PlayJass = (props: {}) => {
       shallowGame[counterPartId] = counterPartGame;
       setGame(shallowGame);
     };
-    if (!value) {
+    // When the user removes input, it becomes NaN
+    if (isNaN(value)) {
       _adjust(undefined, id);
       return;
     }
@@ -218,7 +226,6 @@ const PlayJass = (props: {}) => {
 
     const counterPartId = id ^ 1; // xor to get counterpart
     const counterPartGame = { ...game[counterPartId] };
-    console.log(counterPartId, counterPartGame);
     // Only one party can have the last hit
     if (counterPartGame.lastHit) return;
 
@@ -228,12 +235,19 @@ const PlayJass = (props: {}) => {
     setGame(shallowGame);
   };
 
-  //Modal logic
-  const openModal = (id: number) => {};
+  // Adjust the team name of a single team for all instances in the game.
+  // We get the id to find out wether it is the first or second team.
+  const adjustTeamNames = (newName: string | null, teamIdx: number): void => {
+    const shallowGame = [...game];
+    const newGame = shallowGame.map((row, idx) => {
+      const isSameTeam = idx % 2 === teamIdx % 2;
+      if (!isSameTeam) return row;
+      row.teamName = newName ?? "";
+      return row;
+    });
+    setGame(newGame);
+  };
 
-  useEffect(() => {
-    addNewHitData();
-  }, []);
   useEffect(() => {
     // After we adjusted, we add a new game
     if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
@@ -251,15 +265,15 @@ const PlayJass = (props: {}) => {
               <th scope="col" className="px-6 py-3">
                 Teams
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Roem
               </th>
               <th></th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Punten
               </th>
 
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Laatste slag
               </th>
               <th scope="col" className="rounded-tr-md px-6 py-3">
@@ -284,9 +298,33 @@ const PlayJass = (props: {}) => {
                     )}
                     <th
                       scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-white"
+                      className="whitespace-nowrap px-6 py-4 text-left font-medium text-white"
                     >
-                      {hitInfo.teamName}
+                      {idx <= 1 && (
+                        <input
+                          title="teanName"
+                          onChange={(e) => adjustTeamNames(e.target.value, idx)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault(); // Prevent the default behavior of Enter (e.g., creating a new line)
+                              e.currentTarget.blur(); // Blur the div to lose focus
+                            }
+                          }}
+                          type="text"
+                          value={hitInfo.teamName}
+                          autoCorrect="false"
+                          spellCheck="false"
+                          style={{
+                            width: `calc(${hitInfo.teamName.length}ex + 1rem)`,
+                          }} // Use 'ch' instead of 'em'
+                          className="max-w-sm select-none border-none bg-transparent font-medium text-white underline underline-offset-2 outline-none"
+                        />
+                      )}
+                      {idx > 1 && (
+                        <p className="max-w-sm overflow-hidden">
+                          {hitInfo.teamName}
+                        </p>
+                      )}
                     </th>
                     <td className="px-6 py-4">
                       {getRoemCountFormatted(hitInfo.roemCounter)}
@@ -337,7 +375,7 @@ const PlayJass = (props: {}) => {
                       ></input>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-center">
                         <input
                           title="lastHit"
                           id="default-checkbox"
@@ -372,9 +410,9 @@ const PlayJass = (props: {}) => {
               <td height="30px"></td>
             </tr>
             {/* Display the total */}
-            <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
+            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
               <td
-                className="whitespace-nowrap bg-gray-700 px-6 py-4  font-medium text-white"
+                className="whitespace-nowrap bg-gray-700 px-6 py-4 text-center  font-medium text-white"
                 rowSpan={2}
               >
                 Total
@@ -383,33 +421,33 @@ const PlayJass = (props: {}) => {
                 scope="row"
                 className="whitespace-nowrap px-6 py-4 font-medium text-white"
               >
-                Team A
+                {game[0].teamName}
               </th>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td>{totalPointsA}</td>
+              <td className="text-center">{totalPointsA}</td>
             </tr>
-            <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
+            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
               <th
                 scope="row"
                 className="whitespace-nowrap px-6 py-4 font-medium text-white"
               >
-                Team B
+                {game[1].teamName}
               </th>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td>{totalPointsB}</td>
+              <td className="text-center">{totalPointsB}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <FillInRoemPopOver
-        currentHit={game[modalState.selectedId ?? 0]}
         closePopOver={() => setModalState({ open: false, selectedId: null })}
+        game={game}
         open={modalState.open}
         setCurrentHit={setGame}
         currentHitId={modalState.selectedId}
