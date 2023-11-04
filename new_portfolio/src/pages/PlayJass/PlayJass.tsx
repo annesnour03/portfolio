@@ -5,6 +5,7 @@ import { clamp } from "helpers/General";
 import { calculatePoints, calculateRoem } from "./helpers";
 
 const NO_GAMES = 16;
+const JASS_CURRENT_KEY = "jass:current";
 export const RoemValues = {
   KING_QUEEN: 20,
   THREE_IN_ROW: 20,
@@ -248,9 +249,27 @@ const PlayJass = (props: {}) => {
     setGame(newGame);
   };
 
+  // We reset the game, but take the players name with us
+  const resetGame = () => {
+    const [A, B] = getTeamNames(game);
+    const freshState = getNewObjects();
+    freshState[0].teamName = A;
+    freshState[1].teamName = B;
+    setGame(freshState);
+  };
+
+  useEffect(() => {
+    const retrieved = localStorage.getItem(JASS_CURRENT_KEY);
+    if (retrieved) {
+      setGame(JSON.parse(retrieved));
+    }
+  }, []);
+
   useEffect(() => {
     // After we adjusted, we add a new game
     if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
+    // We also save to localstorage every time game is changed.
+    localStorage.setItem(JASS_CURRENT_KEY, JSON.stringify(game));
   }, [game]);
 
   return (
@@ -265,18 +284,18 @@ const PlayJass = (props: {}) => {
               <th scope="col" className="px-6 py-3">
                 Teams
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="w-auto px-12 py-3 text-center">
                 Roem
               </th>
               <th></th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="w-auto px-6 py-3 text-center">
                 Punten
               </th>
 
               <th scope="col" className="px-6 py-3 text-center">
                 Laatste slag
               </th>
-              <th scope="col" className="rounded-tr-md px-6 py-3">
+              <th scope="col" className="rounded-tr-md px-6 py-3 text-right">
                 Totaal
               </th>
             </tr>
@@ -389,7 +408,9 @@ const PlayJass = (props: {}) => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium">{calculatePoints(hitInfo)}</p>
+                      <p className="text-right font-medium">
+                        {calculatePoints(hitInfo)}
+                      </p>
                     </td>
                   </tr>
                   {/* Spacing without altering the even/odd */}
@@ -427,7 +448,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="text-center">{totalPointsA}</td>
+              <td className="px-6 py-4 text-right">{totalPointsA}</td>
             </tr>
             <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
               <th
@@ -440,7 +461,23 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="text-center">{totalPointsB}</td>
+              <td className="px-6 py-4 text-right">{totalPointsB}</td>
+            </tr>
+            <tr className="">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td className="text-right p-0">
+                <button
+                  onClick={resetGame}
+                  className="rounded-b-md bg-green-600 p-2 font-medium text-white"
+                >
+                  Nieuwe ronde starten
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
