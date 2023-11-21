@@ -349,28 +349,39 @@ const PlayJass = (props: {}) => {
   return (
     <div>
       <div className="relative overflow-auto p-2 pb-10 shadow-md sm:rounded-xl">
-        <table className="w-full text-left   text-sm  text-gray-400">
-          <thead className="bg-gray-700   text-xs uppercase text-gray-300">
+        <table className="w-full table-fixed text-left text-sm text-gray-400 sm:table-auto">
+          <thead className="bg-gray-700 text-xs uppercase text-gray-300 max-sm:absolute max-sm:m-[-1px] max-sm:h-[1px] max-sm:w-[1px] max-sm:overflow-hidden">
             <tr>
-              <th scope="col" className="rounded-tl-md px-6 py-3 text-center">
+              <th
+                scope="col"
+                className="w-2 rounded-tl-md px-6 py-3 text-center "
+              >
                 -
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="w-4 px-6 py-3"
+                style={{
+                  width: `calc(${game[0].teamName.length}ex + 1rem)`,
+                }} // Use 'ch' instead of 'em'
+              >
                 Teams
               </th>
-              <th scope="col" className="w-1/2 px-12 py-3 text-center">
+              <th scope="col" className="w-4 px-12 py-3 text-center sm:w-1/2">
                 Roem
               </th>
-              <th></th>
-              <th scope="col" className="w-1/2 px-6 py-3 text-center">
+              <th className="w-5"></th>
+              <th scope="col" className="w-7 px-6 py-3 text-center sm:w-1/2">
                 Punten
               </th>
 
-              <th scope="col" className="px-6 py-3 text-center">
-                Laatste slag
+              <th scope="col" className="w-4 px-6 py-3 text-center sm:w-auto">
+                Laatste slag/nat
               </th>
-              <th scope="col" className="px-6 py-3 text-center"></th>
-              <th scope="col" className="rounded-tr-md px-6 py-3 text-right">
+              <th
+                scope="col"
+                className="w-2 rounded-tr-md text-right sm:px-6 sm:py-3"
+              >
                 Totaal
               </th>
             </tr>
@@ -381,18 +392,19 @@ const PlayJass = (props: {}) => {
 
               return (
                 <Fragment key={idx}>
-                  <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
+                  <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
                     {idx % 2 === 0 && (
                       <td
-                        className="whitespace-nowrap bg-gray-700 px-6 py-4  font-medium text-white"
+                        className="whitespace-nowrap bg-gray-700 px-6 py-4 font-medium  text-white max-sm:block"
                         rowSpan={2}
                       >
                         {(idx + 2) / 2}
                       </td>
                     )}
                     <th
+                      data-label="Teams"
                       scope="row"
-                      className="whitespace-nowrap px-6 py-4 text-left font-medium text-white"
+                      className="whitespace-nowrap px-6 py-4 text-left font-medium text-white max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
                     >
                       {idx <= 1 && (
                         <input
@@ -411,7 +423,7 @@ const PlayJass = (props: {}) => {
                           style={{
                             width: `calc(${hitInfo.teamName.length}ex + 1rem)`,
                           }} // Use 'ch' instead of 'em'
-                          className="max-w-sm select-none border-none bg-transparent font-medium text-white underline underline-offset-2 outline-none"
+                          className="max-w-sm select-none border-none bg-transparent font-medium text-white underline underline-offset-2 outline-none max-sm:text-right"
                         />
                       )}
                       {idx > 1 && (
@@ -420,10 +432,13 @@ const PlayJass = (props: {}) => {
                         </p>
                       )}
                     </th>
-                    <td className="px-6 py-4">
+                    <td
+                      data-label="Roem"
+                      className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
+                    >
                       {getRoemCountFormatted(hitInfo.roemCounter)}
                     </td>
-                    <td>
+                    <td className="max-sm:flex max-sm:px-6 max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]">
                       <div
                         className="relative cursor-pointer"
                         onClick={() =>
@@ -449,7 +464,10 @@ const PlayJass = (props: {}) => {
                         </svg>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      data-label="Punten"
+                      className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
+                    >
                       {/* Enter points */}
                       <input
                         type="number"
@@ -468,7 +486,10 @@ const PlayJass = (props: {}) => {
                           [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`}
                       ></input>
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      data-label="Laatste slag/nat"
+                      className="flex items-center justify-center gap-4 px-6 py-4 max-sm:gap-8 max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
+                    >
                       <div className="flex items-center justify-center">
                         <input
                           title="lastHit"
@@ -481,9 +502,6 @@ const PlayJass = (props: {}) => {
                           className="h-4 w-4 select-none rounded border-none border-gray-600 bg-gray-700 text-blue-600 outline-none ring-offset-gray-800 focus:ring-0 focus:ring-blue-600"
                         ></input>
                       </div>
-                    </td>
-                    {/* Going wet */}
-                    <td>
                       <p
                         className="text-lg"
                         onClick={() =>
@@ -496,8 +514,11 @@ const PlayJass = (props: {}) => {
                         💧
                       </p>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="text-right font-medium">
+                    <td
+                      data-label="Totaal"
+                      className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:font-bold max-sm:before:content-[attr(data-label)]"
+                    >
+                      <p className="text-right font-bold">
                         {calculatePoints(hitInfo)}
                       </p>
                     </td>
@@ -520,12 +541,12 @@ const PlayJass = (props: {}) => {
               <td height="30px"></td>
             </tr>
             {/* Display the total */}
-            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
+            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:border-gray-700 even:bg-gray-900 max-sm:block">
               <td
-                className="whitespace-nowrap bg-gray-700 px-6 py-4 text-center  font-medium text-white"
+                className="whitespace-nowrap bg-gray-700 p-1 text-center text-xl font-medium text-white max-sm:block  sm:px-6 sm:py-4"
                 rowSpan={2}
               >
-                Total
+                Totaal
               </td>
               <th
                 scope="row"
@@ -537,10 +558,9 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td className="px-6 py-4 text-right">{totalPointsA}</td>
+              <td className="w-full px-6 py-4 text-right">{totalPointsA}</td>
             </tr>
-            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900">
+            <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
               <th
                 scope="row"
                 className="whitespace-nowrap px-6 py-4 font-medium text-white"
@@ -551,17 +571,15 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td className="px-6 py-4 text-right">{totalPointsB}</td>
+              <td className="w-full px-6 py-4 text-right">{totalPointsB}</td>
             </tr>
-            <tr className="">
+            <tr className="max-sm:block">
               <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td colSpan={2} className="p-0 text-right">
+              <td colSpan={2} className="p-0 text-right max-sm:block">
                 <button
                   onClick={resetGame}
                   className="rounded-b-md bg-green-600 p-2 font-medium text-white"
