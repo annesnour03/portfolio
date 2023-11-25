@@ -311,15 +311,17 @@ const PlayJass = (props: {}) => {
 
   const updateLastHit = (value: boolean, id: number) => {
     const shallowGame = [...game];
+    const ownGame = { ...game[id] };
 
     const counterPartId = id ^ 1; // xor to get counterpart
     const counterPartGame = { ...game[counterPartId] };
-    // Only one party can have the last hit
-    if (counterPartGame.lastHit) return;
 
-    const ownGame = { ...game[id] };
     ownGame.lastHit = value;
+    counterPartGame.lastHit = !value;
+
     shallowGame[id] = ownGame;
+    shallowGame[counterPartId] = counterPartGame;
+
     setGame(shallowGame);
   };
 
