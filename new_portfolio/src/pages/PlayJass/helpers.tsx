@@ -1,5 +1,9 @@
 import { RoemCount, RoemKeys, RoemValues, type JassRow } from "./PlayJass";
 
+export const MAX_POINTS = 152;
+export const LAST_HIT_POINTS = 10;
+export const NO_GAMES = 16;
+
 export const calculateRoem = (roemCounter: RoemCount): number => {
   const roem = (
     Object.keys(roemCounter) as (keyof typeof roemCounter)[]
@@ -17,7 +21,7 @@ export const calculatePoints = ({
   points,
 }: JassRow): number => {
   const roem = calculateRoem(roemCounter);
-  return roem + (lastHit ? 10 : 0) + (points ?? 0);
+  return roem + (lastHit ? LAST_HIT_POINTS : 0) + (points ?? 0);
 };
 
 /**
@@ -37,7 +41,7 @@ export const transferPoints = (
   shallowTo.lastHit = true;
 
   // Fix the points
-  shallowTo.points = 152;
+  shallowTo.points = MAX_POINTS;
   shallowFrom.points = 0;
 
   // Fix the roem

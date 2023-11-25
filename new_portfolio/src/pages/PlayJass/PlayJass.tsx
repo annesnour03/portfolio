@@ -2,10 +2,17 @@ import * as Dialog from "@radix-ui/react-dialog";
 import React, { Fragment, useEffect, useState } from "react";
 
 import { clamp } from "helpers/General";
-import { calculatePoints, calculateRoem, transferPoints } from "./helpers";
+import {
+  calculatePoints,
+  calculateRoem,
+  NO_GAMES,
+  transferPoints,
+} from "./helpers";
 
-const NO_GAMES = 16;
-const JASS_CURRENT_KEY = "jass:current";
+const JASS_LOCAL_STORAGE_KEYS = {
+  CURRENT: "jass:current",
+  HISTORY: "jass:history",
+};
 export const RoemValues = {
   KING_QUEEN: 20,
   THREE_IN_ROW: 20,
@@ -225,8 +232,14 @@ const PlayJass = (props: {}) => {
     };
     return [teamA, teamB];
   }
+  const lastGame = game.at(-1);
+  const secondToLastGame = game.at(-2);
+
+  // Last points have to be filled in, and the last hit has to be filled in
   const lastGameFilledIn =
-    game.at(-1)?.points !== undefined || game.at(-2)?.points !== undefined;
+    (lastGame?.points !== undefined ||
+      secondToLastGame?.points !== undefined) &&
+    Boolean(lastGame?.lastHit) !== Boolean(secondToLastGame?.lastHit);
   const [roemModalState, setRoemModalState] = useState<{
     open: boolean;
     selectedId: number | null;
@@ -325,6 +338,14 @@ const PlayJass = (props: {}) => {
 
   // We reset the game, but take the players name with us
   const resetGame = () => {
+    // Before resetting the game, we save it to local storage.
+    const history = JSON.parse(
+      localStorage.getItem(JASS_LOCAL_STORAGE_KEYS.HISTORY) ?? "[]"
+    );
+    localStorage.setItem(
+      JASS_LOCAL_STORAGE_KEYS.HISTORY,
+      JSON.stringify([...history, { game: game, date: new Date() }])
+    );
     const [A, B] = getTeamNames(game);
     const freshState = getNewObjects();
     freshState[0].teamName = A;
@@ -333,7 +354,7 @@ const PlayJass = (props: {}) => {
   };
 
   useEffect(() => {
-    const retrieved = localStorage.getItem(JASS_CURRENT_KEY);
+    const retrieved = localStorage.getItem(JASS_LOCAL_STORAGE_KEYS.CURRENT);
     if (retrieved) {
       setGame(JSON.parse(retrieved));
     }
@@ -343,7 +364,7 @@ const PlayJass = (props: {}) => {
     // After we adjusted, we add a new game
     if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
     // We also save to localstorage every time game is changed.
-    localStorage.setItem(JASS_CURRENT_KEY, JSON.stringify(game));
+    localStorage.setItem(JASS_LOCAL_STORAGE_KEYS.CURRENT, JSON.stringify(game));
   }, [game]);
 
   return (
