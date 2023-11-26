@@ -69,7 +69,7 @@ const ConfirmGoingWetPopOver = ({
           </Dialog.Title>
           {couldBeMistake && (
             <div>
-              Weet je dit zeker? Het team {teamName} heeft minder punten dan de
+              Weet je dit zeker? Het team {teamName} heeft meer punten dan de
               tegenstanders
             </div>
           )}
@@ -583,10 +583,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="w-full px-6 py-4 text-right">
-                {game.length === NO_GAMES && totalPointsA}
-                {game.length !== NO_GAMES && "???"}
-              </td>
+              <td className="w-full px-6 py-4 text-right">{totalPointsA}</td>
             </tr>
             <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
               <th
@@ -599,10 +596,7 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="w-full px-6 py-4 text-right">
-                {game.length === NO_GAMES && totalPointsB}
-                {game.length !== NO_GAMES && "???"}
-              </td>
+              <td className="w-full px-6 py-4 text-right">{totalPointsB}</td>
             </tr>
             <tr className="max-sm:block">
               <td></td>
