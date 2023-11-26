@@ -1,8 +1,6 @@
 import { RoemCount, RoemKeys, RoemValues, type JassRow } from "./PlayJass";
+import { LAST_HIT_POINTS, MAX_POINTS } from "./PlayJass.constants";
 
-export const MAX_POINTS = 152;
-export const LAST_HIT_POINTS = 10;
-export const NO_GAMES = 16;
 
 export const calculateRoem = (roemCounter: RoemCount): number => {
   const roem = (

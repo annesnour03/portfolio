@@ -1,13 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 
-import { clamp } from "helpers/General";
+import { clamp, randomItem } from "helpers/General";
+import { AUDIO_SOURCES, NO_GAMES } from "./PlayJass.constants";
 import {
   calculatePoints,
   calculateRoem,
-  NO_GAMES,
   transferPoints,
-} from "./helpers";
+} from "./PlayJass.helpers";
 
 const JASS_LOCAL_STORAGE_KEYS = {
   CURRENT: "jass:current",
@@ -198,6 +198,35 @@ const FillInRoemPopOver = ({
 };
 const PlayJass = (props: {}) => {
   const [game, setGame] = useState<JassRow[]>(getNewObjects());
+  const allAudios = useMemo(
+    () => AUDIO_SOURCES.map((file) => new Audio(file)),
+    []
+  );
+  const [roemModalState, setRoemModalState] = useState<{
+    open: boolean;
+    selectedId: number | null;
+  }>({ open: false, selectedId: null });
+  const [confirmWetModalState, setConfirmWetModalState] = useState<{
+    open: boolean;
+    selectedId: number | null;
+  }>({
+    open: false,
+    selectedId: null,
+  });
+
+  useEffect(() => {
+    const retrieved = localStorage.getItem(JASS_LOCAL_STORAGE_KEYS.CURRENT);
+    if (retrieved) {
+      setGame(JSON.parse(retrieved));
+    }
+  }, []);
+
+  useEffect(() => {
+    // After we adjusted, we add a new game
+    if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
+    // We also save to localstorage every time game is changed.
+    localStorage.setItem(JASS_LOCAL_STORAGE_KEYS.CURRENT, JSON.stringify(game));
+  }, [game]);
 
   function getTeamNames(game?: JassRow[]) {
     const teamNameA = game !== undefined ? game[0].teamName : "Team A";
@@ -240,20 +269,6 @@ const PlayJass = (props: {}) => {
     (lastGame?.points !== undefined ||
       secondToLastGame?.points !== undefined) &&
     Boolean(lastGame?.lastHit) !== Boolean(secondToLastGame?.lastHit);
-  const [roemModalState, setRoemModalState] = useState<{
-    open: boolean;
-    selectedId: number | null;
-  }>({
-    open: false,
-    selectedId: null,
-  });
-  const [confirmWetModalState, setConfirmWetModalOpen] = useState<{
-    open: boolean;
-    selectedId: number | null;
-  }>({
-    open: false,
-    selectedId: null,
-  });
 
   const totalPointsA = game
     .filter((localGame) => localGame.teamName === getTeamNames(game)[0])
@@ -355,19 +370,7 @@ const PlayJass = (props: {}) => {
     setGame(freshState);
   };
 
-  useEffect(() => {
-    const retrieved = localStorage.getItem(JASS_LOCAL_STORAGE_KEYS.CURRENT);
-    if (retrieved) {
-      setGame(JSON.parse(retrieved));
-    }
-  }, []);
-
-  useEffect(() => {
-    // After we adjusted, we add a new game
-    if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
-    // We also save to localstorage every time game is changed.
-    localStorage.setItem(JASS_LOCAL_STORAGE_KEYS.CURRENT, JSON.stringify(game));
-  }, [game]);
+  const playRandomSound = () => randomItem(allAudios).play();
 
   return (
     <div>
@@ -412,7 +415,6 @@ const PlayJass = (props: {}) => {
           <tbody>
             {game.map((hitInfo, idx) => {
               const isEven = idx % 2 == 0;
-
               return (
                 <Fragment key={idx}>
                   <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
@@ -526,9 +528,9 @@ const PlayJass = (props: {}) => {
                         ></input>
                       </div>
                       <p
-                        className="text-lg"
+                        className="cursor-pointer text-lg"
                         onClick={() =>
-                          setConfirmWetModalOpen({
+                          setConfirmWetModalState({
                             open: true,
                             selectedId: idx,
                           })
@@ -628,7 +630,7 @@ const PlayJass = (props: {}) => {
         selectedId={confirmWetModalState.selectedId}
         game={game}
         closePopOver={() =>
-          setConfirmWetModalOpen({ open: false, selectedId: null })
+          setConfirmWetModalState({ open: false, selectedId: null })
         }
         confirm={(id: number) => {
           const counterId = id ^ 1;
@@ -638,6 +640,7 @@ const PlayJass = (props: {}) => {
           shallowGame[id] = newA;
           shallowGame[counterId] = newB;
           setGame(shallowGame);
+          playRandomSound();
         }}
       />
     </div>

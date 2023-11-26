@@ -16,3 +16,19 @@ export const openLink = (link: string) => {
 export const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
 };
+
+/**
+ * Returns a random element from the given array.
+ *
+ * @template T
+ * @param {T[]} src - The array from which to select a random element.
+ * @returns {T} - A randomly selected element from the input array.
+ *
+ * @example
+ * const myArray = [1, 2, 3, 4, 5];
+ * const randomElement = randomItem(myArray);
+ * console.log(randomElement); // Output: Random element from the array
+ */
+export const randomItem = <T>(src: T[]): T => {
+  return src[Math.floor(Math.random() * src.length)];
+};
