@@ -270,6 +270,8 @@ const PlayJass = (props: {}) => {
       secondToLastGame?.points !== undefined) &&
     Boolean(lastGame?.lastHit) !== Boolean(secondToLastGame?.lastHit);
 
+  const showFinalTotals = game.length === NO_GAMES && lastGameFilledIn;
+
   const totalPointsA = game
     .filter((localGame) => localGame.teamName === getTeamNames(game)[0])
     .map(calculatePoints)
@@ -583,7 +585,10 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="w-full px-6 py-4 text-right">{totalPointsA}</td>
+              <td className="w-full px-6 py-4 text-right">
+                {showFinalTotals && totalPointsA}
+                {!showFinalTotals && "???"}
+              </td>
             </tr>
             <tr className="border-b odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
               <th
@@ -596,7 +601,10 @@ const PlayJass = (props: {}) => {
               <td></td>
               <td></td>
               <td></td>
-              <td className="w-full px-6 py-4 text-right">{totalPointsB}</td>
+              <td className="w-full px-6 py-4 text-right">
+                {showFinalTotals && totalPointsB}
+                {!showFinalTotals && "???"}
+              </td>
             </tr>
             <tr className="max-sm:block">
               <td></td>
