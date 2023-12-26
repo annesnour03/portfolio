@@ -1,13 +1,12 @@
-import { RoemCount, RoemKeys, RoemValues, type JassRow } from "./PlayJass";
-import { LAST_HIT_POINTS, MAX_POINTS } from "./PlayJass.constants";
-
+import { RoemCount, RoemKeys, type JassRow } from "./PlayJass";
+import { LAST_HIT_POINTS, MAX_POINTS, RootRoem } from "./PlayJass.constants";
 
 export const calculateRoem = (roemCounter: RoemCount): number => {
   const roem = (
     Object.keys(roemCounter) as (keyof typeof roemCounter)[]
   ).reduce((acc, type) => {
     const count = roemCounter[type];
-    const value = RoemValues[type];
+    const value = RootRoem[type].value;
     return acc + count * value;
   }, 0);
   return roem;

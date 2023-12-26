@@ -2,33 +2,20 @@ import * as Dialog from "@radix-ui/react-dialog";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 
 import { clamp, randomItem } from "helpers/General";
-import { AUDIO_SOURCES, NO_GAMES } from "./PlayJass.constants";
+import {
+  AUDIO_SOURCES,
+  JASS_LOCAL_STORAGE_KEYS,
+  NO_GAMES,
+  RootRoem,
+} from "./PlayJass.constants";
 import {
   calculatePoints,
   calculateRoem,
   transferPoints,
 } from "./PlayJass.helpers";
 
-const JASS_LOCAL_STORAGE_KEYS = {
-  CURRENT: "jass:current",
-  HISTORY: "jass:history",
-};
-export const RoemValues = {
-  KING_QUEEN: 20,
-  THREE_IN_ROW: 20,
-  FOUR_IN_ROW: 50,
-  FOUR_THE_SAME: 100,
-  ALL_HITS: 100,
-} as const;
-export type RoemKeys = keyof typeof RoemValues;
+export type RoemKeys = keyof typeof RootRoem;
 
-const RoemTrans: { [_ in RoemKeys]: string } = {
-  THREE_IN_ROW: "Drie op eenvolgend",
-  FOUR_IN_ROW: "Vier op eenvolgend",
-  KING_QUEEN: "De koning + koningin",
-  FOUR_THE_SAME: "Vier dezelfde kaarten",
-  ALL_HITS: "Alle slagen behaald",
-};
 export type RoemCount = { [_ in RoemKeys]: number };
 export type JassRow = {
   teamName: string;
@@ -36,6 +23,10 @@ export type JassRow = {
   points?: number;
   lastHit: boolean;
 };
+
+type OnlyOnceRoem = {
+  [K in RoemKeys]: (typeof RootRoem)[K]["happensOnce"] extends true ? K : never;
+}[RoemKeys];
 
 const ConfirmGoingWetPopOver = ({
   open,
@@ -118,7 +109,7 @@ const FillInRoemPopOver = ({
 }) => {
   if (currentHitId === null) return <></>;
   const currentHit = game[currentHitId];
-  const _alterValue = (type: RoemKeys, value: number) => {
+  const _addValue = (type: RoemKeys, value: number) => {
     const currentGame = { ...currentHit };
     currentGame.roemCounter[type] = clamp(
       currentGame.roemCounter[type] + value,
@@ -127,18 +118,37 @@ const FillInRoemPopOver = ({
     );
     setCurrentHit((game) => {
       const shallowGame = [...game];
-      if (currentHitId) shallowGame[currentHitId] = currentGame;
+      shallowGame[currentHitId] = currentGame;
       return shallowGame;
     });
   };
 
   const increment = (type: RoemKeys) => {
-    _alterValue(type, 1);
-  };
-  const decrement = (type: RoemKeys) => {
-    _alterValue(type, -1);
+    _addValue(type, 1);
   };
 
+  const decrement = (type: RoemKeys) => {
+    _addValue(type, -1);
+  };
+
+  const toggle = (type: OnlyOnceRoem) => {
+    // If we have all the hits, we also fill in the points
+    if (type === "ALL_HITS") {
+      const counterId = currentHitId ^ 1;
+      const [newA, newB] = transferPoints(game[counterId], game[currentHitId]);
+      const shallowGame = [...game];
+      shallowGame[counterId] = newA;
+      shallowGame[currentHitId] = newB;
+      newB.roemCounter["ALL_HITS"] = +!newB.roemCounter["ALL_HITS"];
+      setCurrentHit(shallowGame);
+      return;
+    }
+
+    // Add or subtract one
+    const value = currentHit.roemCounter[type] === 1 ? -1 : 1;
+    _addValue(type, value);
+  };
+  type t = keyof typeof RootRoem;
   return (
     <Dialog.Root
       open={open}
@@ -153,28 +163,43 @@ const FillInRoemPopOver = ({
             Roem invullen voor {currentHit.teamName}
           </Dialog.Title>
           <div className="flex flex-col gap-2">
-            {(Object.keys(RoemTrans) as (keyof typeof RoemTrans)[]).map(
-              (name) => (
+            {(Object.keys(RootRoem) as RoemKeys[]).map((name) => {
+              const kindOfRoem = RootRoem[name];
+              return (
                 <div className="flex" key={name}>
-                  <p className="text-lg">{RoemTrans[name]}</p>
-                  <div className="ml-auto flex gap-5">
-                    <button
-                      className="aspect-square h-8 rounded bg-red-100 shadow-2xl"
-                      onClick={() => decrement(name)}
-                    >
-                      -
-                    </button>
-                    <p className="text-xl">{currentHit?.roemCounter[name]}</p>
-                    <button
-                      className="aspect-square h-8 rounded bg-green-100 shadow-2xl"
-                      onClick={() => increment(name)}
-                    >
-                      +
-                    </button>
-                  </div>
+                  <p className="text-lg">{kindOfRoem.trans}</p>
+                  {kindOfRoem.happensOnce && (
+                    <div className="ml-auto flex items-center justify-center gap-5">
+                      <input
+                        title="lastHit"
+                        type="checkbox"
+                        onChange={() => toggle(name as OnlyOnceRoem)}
+                        checked={currentHit.roemCounter[name] === 1}
+                        className="h-4 w-4 select-none rounded border-none border-gray-600 bg-gray-700 text-blue-600 outline-none ring-offset-gray-800 focus:ring-0 focus:ring-blue-600"
+                      ></input>
+                      <div className="aspect-square h-8"></div>
+                    </div>
+                  )}
+                  {!kindOfRoem.happensOnce && (
+                    <div className="ml-auto flex gap-5">
+                      <button
+                        className="aspect-square h-8 rounded bg-red-100 shadow-2xl"
+                        onClick={() => decrement(name)}
+                      >
+                        -
+                      </button>
+                      <p className="text-xl">{currentHit?.roemCounter[name]}</p>
+                      <button
+                        className="aspect-square h-8 rounded bg-green-100 shadow-2xl"
+                        onClick={() => increment(name)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )
-            )}
+              );
+            })}
           </div>
           <div className="mt-[20px] flex justify-end">
             <Dialog.Close asChild>
@@ -290,7 +315,7 @@ const PlayJass = (props: {}) => {
     ).reduce(
       (acc, type) => {
         const count = roemCounter[type];
-        const value = RoemValues[type];
+        const value = RootRoem[type].value;
         if (count === 0) return acc;
         if (count === 1) return [...acc, value.toString()];
         else return [...acc, `${count} * ${value} `];
