@@ -397,11 +397,17 @@ const PlayJass = (props: {}) => {
     setGame(freshState);
   };
 
-  const playRandomSound = () => randomItem(allAudios).play();
+  const playRandomSound = () => {
+    // Cancel all other songs that are currently playing
+    allAudios.forEach((e) => e.pause());
+
+    // Play actual sound
+    randomItem(allAudios).play();
+  };
 
   return (
     <div>
-      <div className="relative overflow-auto p-2 pb-10 shadow-md sm:rounded-xl">
+      <div className="relative overflow-auto p-2 pb-10 md:px-5 lg:px-16">
         <table className="w-full table-fixed text-left text-sm text-gray-400 sm:table-auto">
           <thead className="bg-gray-700 text-xs uppercase text-gray-300 max-sm:absolute max-sm:m-[-1px] max-sm:h-[1px] max-sm:w-[1px] max-sm:overflow-hidden">
             <tr>
@@ -416,7 +422,7 @@ const PlayJass = (props: {}) => {
                 className="w-4 px-6 py-3"
                 style={{
                   width: `calc(${game[0].teamName.length}ex + 1rem)`,
-                }} // Use 'ch' instead of 'em'
+                }}
               >
                 Teams
               </th>
