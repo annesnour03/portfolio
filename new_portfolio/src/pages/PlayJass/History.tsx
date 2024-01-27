@@ -116,14 +116,15 @@ export const History = () => {
           {currentTableData?.map((game, index) => {
             const teamA = game.game[0];
             const teamB = game.game[1];
+
+            const teamAwon =
+              calculateTotalPoints(game.game, true) >
+              calculateTotalPoints(game.game, false);
+
             return (
               <tr
-                key={`game.date ${index}`}
-                className={`border-b text-center ${
-                  index % 2 === 0
-                    ? "even:mb-10 even:bg-gray-900"
-                    : "odd:bg-gray-800"
-                } border-gray-700`}
+                className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:border-gray-700 even:bg-gray-900 max-sm:block"
+                key={`${game.date}${index}`}
               >
                 <td
                   data-label="Datum"
@@ -134,13 +135,19 @@ export const History = () => {
 
                 <td
                   data-label="Team"
-                  className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
+                  className="whitespace-pre-wrap px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
                 >
-                  {teamA.teamName} vs {teamB.teamName}
+                  <p className={teamAwon ? "text-green-500" : "text-red-500"}>
+                    {teamA.teamName}{" "}
+                  </p>
+                  vs
+                  <p className={!teamAwon ? "text-green-500" : "text-red-500"}>
+                    {" "}
+                    {teamB.teamName}
+                  </p>
                 </td>
-
                 <td
-                  data-label="Total roem"
+                  data-label="Totaal roem"
                   className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
                 >
                   {calculateTotalRoem(game.game, true)} -{" "}
@@ -148,17 +155,14 @@ export const History = () => {
                 </td>
 
                 <td
-                  data-label="Total points"
+                  data-label="Totaal points"
                   className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
                 >
-                  {calculateTotalPoints(game.game, false)} -{" "}
-                  {calculateTotalPoints(game.game, true)}
+                  {calculateTotalPoints(game.game, true)} -{" "}
+                  {calculateTotalPoints(game.game, false)}
                 </td>
 
-                <td
-                  data-label="Controls"
-                  className="px-6 py-4 max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
-                >
+                <td className="px-6 py-4 max-sm:flex max-sm:before:mr-auto">
                   <div className="flex  items-center justify-center gap-4">
                     <IoPlaySharp
                       size={20}

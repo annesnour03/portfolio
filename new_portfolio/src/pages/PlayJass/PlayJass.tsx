@@ -461,7 +461,7 @@ const PlayJass = (props: {}) => {
               return (
                 <Fragment key={idx}>
                   <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
-                    {idx % 2 === 0 && (
+                    {isEven && (
                       <td
                         className="whitespace-nowrap bg-gray-700 px-6 py-4 font-medium  text-white max-sm:block"
                         rowSpan={2}
@@ -476,7 +476,7 @@ const PlayJass = (props: {}) => {
                     >
                       {idx <= 1 && (
                         <input
-                          title="teanName"
+                          title="teamName"
                           onChange={(e) => adjustTeamNames(e.target.value, idx)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
