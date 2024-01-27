@@ -1,7 +1,15 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
+import { Link, useParams } from "react-router-dom";
 
 import { clamp, randomItem } from "helpers/General";
+import { twMerge } from "tailwind-merge";
 import {
   AUDIO_SOURCES,
   JASS_LOCAL_STORAGE_KEYS,
@@ -11,6 +19,7 @@ import {
 import {
   calculatePoints,
   calculateRoem,
+  calculateTotalPoints,
   transferPoints,
 } from "./PlayJass.helpers";
 
@@ -222,7 +231,12 @@ const FillInRoemPopOver = ({
   );
 };
 const PlayJass = (props: {}) => {
-  const [game, setGame] = useState<JassRow[]>(getNewObjects());
+  const { id } = useParams();
+  const readonly = id !== undefined;
+
+  const [game, setGame] = useState<JassRow[]>(
+    readonly ? JSON.parse(atob(id)) : getNewObjects()
+  );
   const allAudios = useMemo(
     () => AUDIO_SOURCES.map((file) => new Audio(file)),
     []
@@ -239,14 +253,15 @@ const PlayJass = (props: {}) => {
     selectedId: null,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const retrieved = localStorage.getItem(JASS_LOCAL_STORAGE_KEYS.CURRENT);
-    if (retrieved) {
+    if (retrieved && !readonly) {
       setGame(JSON.parse(retrieved));
     }
   }, []);
 
   useEffect(() => {
+    if (readonly) return;
     // After we adjusted, we add a new game
     if (game.length < NO_GAMES && lastGameFilledIn) addNewHitData();
     // We also save to localstorage every time game is changed.
@@ -297,14 +312,9 @@ const PlayJass = (props: {}) => {
 
   const showFinalTotals = game.length === NO_GAMES && lastGameFilledIn;
 
-  const totalPointsA = game
-    .filter((localGame) => localGame.teamName === getTeamNames(game)[0])
-    .map(calculatePoints)
-    .reduce((acc, a) => acc + a, 0);
-  const totalPointsB = game
-    .filter((localGame) => localGame.teamName === getTeamNames(game)[1])
-    .map(calculatePoints)
-    .reduce((acc, a) => acc + a, 0);
+  const totalPointsA = calculateTotalPoints(game, true);
+  const totalPointsB = calculateTotalPoints(game, false);
+
   const addNewHitData = () => {
     setGame((game) => [...game, ...getNewObjects(game)]);
   };
@@ -478,10 +488,14 @@ const PlayJass = (props: {}) => {
                           value={hitInfo.teamName}
                           autoCorrect="false"
                           spellCheck="false"
+                          disabled={readonly}
                           style={{
                             width: `calc(${hitInfo.teamName.length}ex + 1rem)`,
                           }} // Use 'ch' instead of 'em'
-                          className="max-w-sm select-none border-none bg-transparent font-medium text-white underline underline-offset-2 outline-none max-sm:text-right"
+                          className={twMerge(
+                            "max-w-sm select-none border-none bg-transparent font-medium text-white outline-none max-sm:text-right",
+                            !readonly ? "underline underline-offset-2" : null
+                          )}
                         />
                       )}
                       {idx > 1 && (
@@ -499,12 +513,13 @@ const PlayJass = (props: {}) => {
                     <td className="max-sm:flex max-sm:px-6 max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]">
                       <div
                         className="relative cursor-pointer"
-                        onClick={() =>
+                        onClick={() => {
+                          if (readonly) return;
                           setRoemModalState({
                             selectedId: idx,
                             open: true,
-                          })
-                        }
+                          });
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -535,6 +550,7 @@ const PlayJass = (props: {}) => {
                         ) => {
                           updateScore(parseInt(event.target.value), idx);
                         }}
+                        disabled={readonly}
                         value={hitInfo?.points ?? ""}
                         className={`${
                           isEven
@@ -553,21 +569,23 @@ const PlayJass = (props: {}) => {
                           title="lastHit"
                           id="default-checkbox"
                           type="checkbox"
+                          disabled={readonly}
                           onChange={(event) =>
                             updateLastHit(event.target.checked, idx)
                           }
                           checked={hitInfo.lastHit}
-                          className="h-4 w-4 select-none rounded border-none border-gray-600 bg-gray-700 text-blue-600 outline-none ring-offset-gray-800 focus:ring-0 focus:ring-blue-600"
+                          className="h-4 w-4 cursor-pointer select-none rounded border-none border-gray-600 bg-gray-700 text-blue-600 outline-none ring-offset-gray-800 focus:ring-0 focus:ring-blue-600"
                         ></input>
                       </div>
                       <p
                         className="cursor-pointer text-lg"
-                        onClick={() =>
+                        onClick={() => {
+                          if (readonly) return;
                           setConfirmWetModalState({
                             open: true,
                             selectedId: idx,
-                          })
-                        }
+                          });
+                        }}
                       >
                         💧
                       </p>
@@ -637,19 +655,28 @@ const PlayJass = (props: {}) => {
                 {!showFinalTotals && "???"}
               </td>
             </tr>
-            <tr className="max-sm:block">
+            <tr className="w-full max-sm:inline-flex">
+              <td colSpan={1} className="flex-1 p-0 text-left max-sm:block">
+                <Link to="../">
+                  <div className="rounded-b-md bg-red-800 p-2 text-center font-medium text-white">
+                    Terug
+                  </div>
+                </Link>
+              </td>
+              <td className="flex-1"></td>
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td colSpan={2} className="p-0 text-right max-sm:block">
-                <button
-                  onClick={resetGame}
-                  className="rounded-b-md bg-green-600 p-2 font-medium text-white"
-                >
-                  Nieuwe ronde starten
-                </button>
+              <td colSpan={2} className="flex-2 p-0 text-right max-sm:block">
+                {!readonly && (
+                  <button
+                    type="button"
+                    onClick={resetGame}
+                    className="rounded-b-md bg-green-600 p-2 font-medium text-white"
+                  >
+                    Nieuwe ronde starten
+                  </button>
+                )}
               </td>
             </tr>
           </tbody>

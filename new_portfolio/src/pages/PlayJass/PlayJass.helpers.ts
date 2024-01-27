@@ -12,6 +12,19 @@ export const calculateRoem = (roemCounter: RoemCount): number => {
   return roem;
 };
 
+export const calculateTotalRoem = (game: JassRow[], isFirstTeam: boolean) => {
+  return game
+    .filter((_, idx) => idx % 2 === +isFirstTeam)
+    .map(({ roemCounter }) => calculateRoem(roemCounter))
+    .reduce((acc, a) => acc + a, 0);
+};
+export const calculateTotalPoints = (game: JassRow[], isFirstTeam: boolean) => {
+  return game
+    .filter((_, idx) => idx % 2 === +isFirstTeam)
+    .map(calculatePoints)
+    .reduce((acc, a) => acc + a, 0);
+};
+
 export const calculatePoints = ({
   roemCounter,
   lastHit,
