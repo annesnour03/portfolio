@@ -74,7 +74,7 @@ export const History = () => {
     );
   };
 
-  if (!games) {
+  if (!games || games.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center">
         <RiInbox2Line size="60vh" color="rgba(255, 255, 255, 0.5)" />
