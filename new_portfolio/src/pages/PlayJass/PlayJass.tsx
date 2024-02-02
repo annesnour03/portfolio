@@ -20,6 +20,7 @@ import {
   calculatePoints,
   calculateRoem,
   calculateTotalPoints,
+  getTeamNames,
   transferPoints,
 } from "./PlayJass.helpers";
 
@@ -157,7 +158,7 @@ const FillInRoemPopOver = ({
     const value = currentHit.roemCounter[type] === 1 ? -1 : 1;
     _addValue(type, value);
   };
-  type t = keyof typeof RootRoem;
+
   return (
     <Dialog.Root
       open={open}
@@ -232,11 +233,9 @@ const FillInRoemPopOver = ({
 };
 const PlayJass = (props: {}) => {
   const { id } = useParams();
-  const readonly = id !== undefined;
-
-  const [game, setGame] = useState<JassRow[]>(
-    readonly ? JSON.parse(atob(id)) : getNewObjects()
-  );
+  const [importedGame, success] = parseImport(id ?? "");
+  const readonly = id !== undefined && success;
+  const [game, setGame] = useState<JassRow[]>(importedGame);
   const allAudios = useMemo(
     () => AUDIO_SOURCES.map((file) => new Audio(file)),
     []
@@ -268,10 +267,12 @@ const PlayJass = (props: {}) => {
     localStorage.setItem(JASS_LOCAL_STORAGE_KEYS.CURRENT, JSON.stringify(game));
   }, [game]);
 
-  function getTeamNames(game?: JassRow[]) {
-    const teamNameA = game !== undefined ? game[0].teamName : "Team A";
-    const teamNameB = game !== undefined ? game[1].teamName : "Team B";
-    return [teamNameA, teamNameB] as const;
+  function parseImport(game: string) {
+    try {
+      return [JSON.parse(atob(game)) as JassRow[], true] as const;
+    } catch {
+      return [getNewObjects(), false] as const;
+    }
   }
 
   function getNewObjects(game?: JassRow[]) {
