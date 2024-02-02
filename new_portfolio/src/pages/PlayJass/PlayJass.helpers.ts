@@ -1,6 +1,29 @@
 import { RoemCount, RoemKeys, type JassRow } from "./PlayJass";
 import { LAST_HIT_POINTS, MAX_POINTS, RootRoem } from "./PlayJass.constants";
 
+export const cumulativeSum = (numbers: number[]): number[] => {
+  return numbers.reduce<number[]>((acc, x) => {
+    if (acc.length > 0) {
+      acc.push(acc[acc.length - 1] + x);
+    } else {
+      acc.push(x);
+    }
+    return acc;
+  }, []);
+};
+
+export const getTotalLastHits = (game: JassRow[], isFirstTeam: boolean) => {
+  return game
+    .filter((_, idx) => idx % 2 === 1 - +isFirstTeam)
+    .map((row) => +row.lastHit)
+    .reduce((acc, a) => acc + a, 0);
+};
+
+export const getTeamNames = (game?: JassRow[]) => {
+  const teamNameA = game !== undefined ? game[0].teamName : "Team A";
+  const teamNameB = game !== undefined ? game[1].teamName : "Team B";
+  return [teamNameA, teamNameB] as const;
+};
 export const calculateRoem = (roemCounter: RoemCount): number => {
   const roem = (
     Object.keys(roemCounter) as (keyof typeof roemCounter)[]
@@ -12,17 +35,23 @@ export const calculateRoem = (roemCounter: RoemCount): number => {
   return roem;
 };
 
-export const calculateTotalRoem = (game: JassRow[], isFirstTeam: boolean) => {
+export const getPoints = (game: JassRow[], isFirstTeam: boolean) => {
   return game
     .filter((_, idx) => idx % 2 === 1 - +isFirstTeam)
-    .map(({ roemCounter }) => calculateRoem(roemCounter))
-    .reduce((acc, a) => acc + a, 0);
+    .map(calculatePoints);
+};
+
+export const getRoem = (game: JassRow[], isFirstTeam: boolean) => {
+  return game
+    .filter((_, idx) => idx % 2 === 1 - +isFirstTeam)
+    .map(({ roemCounter }) => calculateRoem(roemCounter));
+};
+
+export const calculateTotalRoem = (game: JassRow[], isFirstTeam: boolean) => {
+  return getRoem(game, isFirstTeam).reduce((acc, a) => acc + a, 0);
 };
 export const calculateTotalPoints = (game: JassRow[], isFirstTeam: boolean) => {
-  return game
-    .filter((_, idx) => idx % 2 === 1 - +isFirstTeam)
-    .map(calculatePoints)
-    .reduce((acc, a) => acc + a, 0);
+  return getPoints(game, isFirstTeam).reduce((acc, a) => acc + a, 0);
 };
 
 export const calculatePoints = ({

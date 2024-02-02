@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useMemo, useState } from "react";
 import { IoPlaySharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { RiInbox2Line } from "react-icons/ri";
+import { SiGoogleanalytics } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 
 import { format, formatDistanceToNow } from "date-fns";
@@ -59,8 +60,12 @@ export const History = () => {
     }
   };
 
-  const handlePlay = (game: HistoryInstance, index: number) => {
+  const handlePlay = (game: HistoryInstance) => {
     navigate("/klaver/play/" + btoa(JSON.stringify(game.game)));
+  };
+
+  const handleAnalytics = (game: HistoryInstance) => {
+    navigate("/klaver/analytics/" + btoa(JSON.stringify(game.game)));
   };
 
   const handleDelete = (game: HistoryInstance, index: number) => {
@@ -167,7 +172,12 @@ export const History = () => {
                     <IoPlaySharp
                       size={20}
                       className="cursor-pointer"
-                      onClick={() => handlePlay(game, index)}
+                      onClick={() => handlePlay(game)}
+                    />
+                    <SiGoogleanalytics
+                      size={20}
+                      className="cursor-pointer"
+                      onClick={() => handleAnalytics(game)}
                     />
                     <MdDelete
                       size={20}

@@ -119,9 +119,12 @@ const ExperienceTimeLine: React.FC = () => {
               University of Amsterdam
             </h3>
             <h4 className="vertical-timeline-element-subtitle">
-            React, RTK query, Redux state management
+              React, RTK query, Redux state management
             </h4>
-            <p>Contributed to making a new version of DataNose (2.0), a UvA wide system.</p>
+            <p>
+              Contributed to making a new version of DataNose (2.0), a UvA wide
+              system.
+            </p>
           </div>
         </VerticalTimelineElement>
         <VerticalTimelineElement

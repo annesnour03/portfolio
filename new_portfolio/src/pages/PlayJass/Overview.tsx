@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const Overview = () => {
   return (
-    <div className="ml-auto mr-auto flex h-full w-3/4 flex-col items-center justify-center gap-24 p-10 text-white sm:flex-row max-w-3xl">
+    <div className="ml-auto mr-auto flex h-full w-3/4 max-w-3xl flex-col items-center justify-center gap-24 p-10 text-white sm:flex-row">
       <Link
         to="/klaver/history"
         className="inline-flex flex-1 cursor-pointer flex-col items-center justify-center gap-5 p-5 hover:text-cyan-200"
