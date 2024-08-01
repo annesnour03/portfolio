@@ -124,7 +124,7 @@ export const Analytics = (props: {}) => {
 
   const pieOptions = getOptions(
     "Verdeling laatste slagen",
-    -1,
+    -1
   ) satisfies ChartOptions<"pie">;
 
   const barOptions = getOptions(
@@ -246,17 +246,17 @@ export const Analytics = (props: {}) => {
       </div>
       {/* Chart container */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="h-[40vh]  p-2">
+        <div className="h-[40vh] p-2 sm:h-screen">
           <Line options={optionsPoints} data={totalPointsData} />
         </div>
-        <div className="h-[40vh] ">
+        <div className="h-[40vh] p-2 sm:h-screen">
           <Line options={optionsRoem} data={totalRoemData} />
         </div>
 
-        <div className="flex h-[40vh] justify-center">
+        <div className="flex h-[40vh] justify-center sm:h-screen">
           <Pie options={pieOptions} data={lasthitData} />
         </div>
-        <div className="flex h-[40vh] justify-center">
+        <div className="flex h-[40vh] justify-center sm:h-screen">
           <Bar options={barOptions} data={roemCounterData} />
         </div>
       </div>
