@@ -1,10 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { clamp, randomItem } from "helpers/General";
@@ -17,7 +12,6 @@ import {
 } from "./PlayJass.constants";
 import {
   calculatePoints,
-  calculateRoem,
   calculateTotalPoints,
   getTeamNames,
   transferPoints,
@@ -235,6 +229,7 @@ const PlayJass = (props: {}) => {
   const [importedGame, success] = parseImport(id ?? "");
   const readonly = id !== undefined && success;
   const [game, setGame] = useState<JassRow[]>(importedGame);
+  const [choosingTrumpA, setChoosingTrumpA] = useState(true);
   const allAudios = useMemo(
     () => AUDIO_SOURCES.map((file) => new Audio(file)),
     []
@@ -317,23 +312,6 @@ const PlayJass = (props: {}) => {
 
   const addNewHitData = () => {
     setGame((game) => [...game, ...getNewObjects(game)]);
-  };
-
-  const getRoemCountFormatted = (roemCounter: RoemCount): string => {
-    const roem = (
-      Object.keys(roemCounter) as (keyof typeof roemCounter)[]
-    ).reduce(
-      (acc, type) => {
-        const count = roemCounter[type];
-        const value = RootRoem[type].value;
-        if (count === 0) return acc;
-        if (count === 1) return [...acc, value.toString()];
-        else return [...acc, `${count} * ${value} `];
-      },
-
-      [] as string[]
-    );
-    return `${roem.join(" + ")} (${calculateRoem(roemCounter)})`;
   };
 
   const updateScore = (value: number, id: number) => {
@@ -458,8 +436,11 @@ const PlayJass = (props: {}) => {
           <tbody>
             {game.map((hitInfo, idx) => (
               <GameRow
+                choosingTrumpA={choosingTrumpA}
+                setChoosingTrumpA={setChoosingTrumpA}
                 key={idx}
                 hitInfo={hitInfo}
+                counterpartHitInfo={game[idx ^ 1]}
                 idx={idx}
                 readonly={readonly}
                 adjustTeamNames={adjustTeamNames}
@@ -467,7 +448,6 @@ const PlayJass = (props: {}) => {
                 updateScore={updateScore}
                 updateLastHit={updateLastHit}
                 setConfirmWetModalState={setConfirmWetModalState}
-                getRoemCountFormatted={getRoemCountFormatted}
               />
             ))}
             <tr>

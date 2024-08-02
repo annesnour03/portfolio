@@ -62,6 +62,22 @@ export const calculatePoints = ({
   const roem = calculateRoem(roemCounter);
   return roem + (lastHit ? LAST_HIT_POINTS : 0) + (points ?? 0);
 };
+export const getRoemCountFormatted = (roemCounter: RoemCount): string => {
+  const roem = (
+    Object.keys(roemCounter) as (keyof typeof roemCounter)[]
+  ).reduce(
+    (acc, type) => {
+      const count = roemCounter[type];
+      const value = RootRoem[type].value;
+      if (count === 0) return acc;
+      if (count === 1) return [...acc, value.toString()];
+      else return [...acc, `${count} * ${value} `];
+    },
+
+    [] as string[]
+  );
+  return `${roem.join(" + ")} (${calculateRoem(roemCounter)})`;
+};
 
 /**
  *

@@ -1,40 +1,69 @@
-import { Fragment } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
 import { JassRow, RoemCount } from "pages/PlayJass/PlayJass";
-import { calculatePoints } from "pages/PlayJass/PlayJass.helpers";
+import {
+  calculatePoints,
+  getRoemCountFormatted,
+} from "pages/PlayJass/PlayJass.helpers";
 import { twMerge } from "tailwind-merge";
+import { ChooseCardIcon } from "./ChooseCard";
 
 interface GameRowProps {
   hitInfo: JassRow;
+  counterpartHitInfo: JassRow;
   idx: number;
   readonly: boolean;
+  choosingTrumpA: boolean;
+  setChoosingTrumpA: Dispatch<SetStateAction<boolean>>;
   adjustTeamNames: (newName: string | null, teamIdx: number) => void;
-  setRoemModalState: React.Dispatch<
-    React.SetStateAction<{ open: boolean; selectedId: number | null }>
+  setRoemModalState: Dispatch<
+    SetStateAction<{ open: boolean; selectedId: number | null }>
   >;
   updateScore: (value: number, id: number) => void;
   updateLastHit: (value: boolean, id: number) => void;
-  setConfirmWetModalState: React.Dispatch<
-    React.SetStateAction<{ open: boolean; selectedId: number | null }>
+  setConfirmWetModalState: Dispatch<
+    SetStateAction<{ open: boolean; selectedId: number | null }>
   >;
-  getRoemCountFormatted: (roemCounter: RoemCount) => string;
 }
 
 export const GameRow: React.FC<GameRowProps> = ({
   hitInfo,
+  counterpartHitInfo,
   idx,
   readonly,
+  choosingTrumpA,
+  setChoosingTrumpA,
   adjustTeamNames,
   setRoemModalState,
   updateScore,
   updateLastHit,
   setConfirmWetModalState,
-  getRoemCountFormatted,
 }) => {
   const isEven = idx % 2 == 0;
+  const isTeamA = isEven;
+  const roundPosition = idx % 4;
+
+  const isCurrentlyChoosingTrump =
+    (choosingTrumpA && (roundPosition === 0 || roundPosition === 3)) ||
+    (!choosingTrumpA && (roundPosition === 1 || roundPosition === 2));
+
+  const currentPoints = calculatePoints(hitInfo);
+  const counterpartPoints = calculatePoints(counterpartHitInfo);
+  const isWinning = currentPoints > counterpartPoints;
+
+  const isInDanger =
+    !isWinning &&
+    isCurrentlyChoosingTrump &&
+    currentPoints + counterpartPoints > 0;
+
   return (
     <Fragment key={idx}>
-      <tr className="border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block">
+      <tr
+        className={twMerge(
+          "border-b text-center odd:border-gray-700 odd:bg-gray-800 even:mb-10 even:border-gray-700 even:bg-gray-900 max-sm:block",
+          isInDanger && !readonly && "!bg-red-900/80"
+        )}
+      >
         {isEven && (
           <td
             className="whitespace-nowrap bg-gray-700 px-6 py-4 font-medium  text-white max-sm:block"
@@ -49,28 +78,44 @@ export const GameRow: React.FC<GameRowProps> = ({
           className="whitespace-nowrap px-6 py-4 text-left font-medium text-white max-sm:flex max-sm:before:mr-auto max-sm:before:content-[attr(data-label)]"
         >
           {idx <= 1 && (
-            <input
-              title="teamName"
-              onChange={(e) => adjustTeamNames(e.target.value, idx)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault(); // Prevent the default behavior of Enter (e.g., creating a new line)
-                  e.currentTarget.blur(); // Blur the div to lose focus
-                }
-              }}
-              type="text"
-              value={hitInfo.teamName}
-              autoCorrect="false"
-              spellCheck="false"
-              disabled={readonly}
-              style={{
-                width: `calc(${hitInfo.teamName.length}ex + 1rem)`,
-              }} // Use 'ch' instead of 'em'
-              className={twMerge(
-                "max-w-sm select-none border-none bg-transparent font-medium text-white outline-none max-sm:text-right",
-                !readonly ? "underline underline-offset-2" : null
+            <div className="relative">
+              <input
+                title="teamName"
+                onChange={(e) => adjustTeamNames(e.target.value, idx)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevent the default behavior of Enter (e.g., creating a new line)
+                    e.currentTarget.blur(); // Blur the div to lose focus
+                  }
+                }}
+                type="text"
+                value={hitInfo.teamName}
+                autoCorrect="false"
+                spellCheck="false"
+                disabled={readonly}
+                style={{
+                  width: `calc(${hitInfo.teamName.length}ex + 1rem)`,
+                }} // Use 'ch' instead of 'em'
+                className={twMerge(
+                  "max-w-sm select-none border-none bg-transparent font-medium text-white outline-none max-sm:text-right",
+                  !readonly ? "underline underline-offset-2" : null
+                )}
+              />
+              {!readonly && (
+                <div className="absolute">
+                  <div className="absolute bottom-2 right-[-0.5rem]">
+                    <ChooseCardIcon
+                      active={
+                        (choosingTrumpA && isTeamA) ||
+                        (!choosingTrumpA && !isTeamA)
+                      }
+                      onActiveChange={() => setChoosingTrumpA(!choosingTrumpA)}
+                      readonly={readonly}
+                    />
+                  </div>
+                </div>
               )}
-            />
+            </div>
           )}
           {idx > 1 && (
             <p className="max-w-sm overflow-hidden">{hitInfo.teamName}</p>
@@ -145,7 +190,10 @@ export const GameRow: React.FC<GameRowProps> = ({
             ></input>
           </div>
           <p
-            className="cursor-pointer text-lg"
+            className={twMerge(
+              "cursor-pointer text-lg",
+              isInDanger && "animate-bounce"
+            )}
             onClick={() => {
               if (readonly) return;
               setConfirmWetModalState({
